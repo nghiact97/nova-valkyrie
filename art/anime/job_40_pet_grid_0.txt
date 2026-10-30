@@ -1,0 +1,11 @@
+Attached: the approved chibi pets art/anime/pet/hornet.png, art/anime/pet/aegis.png, art/anime/pet/flak.png, art/anime/pet/medic.png.
+
+For EACH of these pets use your image generation tool to create art/anime/pet/anim/<name>_grid.png, 1536x1024, FULLY TRANSPARENT background (alpha 0, no glow or halo), a 3 columns x 2 rows grid of exactly 6 frames (reading order left-to-right, top row first), each frame in its own 512x512 cell, the character centred in every cell and only about 65% of the cell size so EVERY part (wings, tails, manes, smoke) stays inside its own cell with clear empty transparent space around it — nothing may touch or cross a cell border at the SAME size, SAME position and IDENTICAL design to its attached image (same colours, face, proportions, outline; only the pose changes).
+It is a seamless looping IDLE / HOVER animation: frames 1-6 flow smoothly back into frame 1; frame 5 has the eyes CLOSED (blink); the body rises slightly on frames 2-3 and lowers on 5-6. Anime chibi cel shading, crisp dark outline, no text, no borders.
+
+- hornet: orange fluffy bee-fox: translucent bee wings buzz fast (up/down), antennae bob, small tail swish
+- aegis: cyan baby dragon: bat-like wings flap, tail curls, crest gem glints
+- flak: orange round hamster with tiny cannon backpack: cheeks puff, little arms wave, backpack bobs (it hovers with a tiny jet glow)
+- medic: mint-green bunny with heart badge: long ears flop up/down, heart badge pulses, feet kick
+
+Generate all now, do not stop to ask for approval. When done, print the file sizes.

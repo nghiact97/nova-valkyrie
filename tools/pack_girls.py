@@ -1,7 +1,7 @@
 # Pack anime standing art (art/anime/stand_<id>.png) into build/anime_girls.js as WebP data URIs.
 # usage: py tools/pack_girls.py [id=path ...]   (explicit pairs override the stand_<id>.png lookup)
 import base64, io, sys, glob, os
-from PIL import Image
+from PIL import Image, ImageFilter
 
 root = os.path.join(os.path.dirname(__file__), "..")
 src = {os.path.basename(p)[6:-4]: p for p in glob.glob(os.path.join(root, "art/anime/stand_*.png")) if "_blink" not in p}
@@ -175,11 +175,36 @@ with open(os.path.join(root, "build/anime_girls.js"), "w") as f:
         if p.endswith("_sheet.png"): continue
         im = Image.open(p).convert("RGBA"); im = im.crop(im.getchannel("A").point(lambda v: 255 if v > 20 else 0).getbbox())
         f.write(f'SPR_SRC.drone_{os.path.basename(p)[:-4]}="{enc(im, 200)}";\n')
+    def biggest_blob(fr):  # drop stray pieces of the neighbouring frame: keep the region connected to the largest blob
+        a = fr.getchannel("A").point(lambda v: 255 if v > 30 else 0).filter(ImageFilter.MaxFilter(9))
+        w, h = a.size; seen = bytearray(w * h); best = None; pa = a.load()
+        for sy in range(0, h, 6):
+            for sx in range(0, w, 6):
+                if pa[sx, sy] and not seen[sy * w + sx]:
+                    st = [(sx, sy)]; seen[sy * w + sx] = 1; pts = []
+                    while st:
+                        x, y = st.pop(); pts.append((x, y))
+                        for nx, ny in ((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)):
+                            if 0 <= nx < w and 0 <= ny < h and pa[nx, ny] and not seen[ny * w + nx]:
+                                seen[ny * w + nx] = 1; st.append((nx, ny))
+                    if best is None or len(pts) > len(best): best = pts
+        if not best: return fr
+        m = Image.new("L", (w, h), 0); pm = m.load()
+        for x, y in best: pm[x, y] = 255
+        out = Image.new("RGBA", (w, h)); out.paste(fr, (0, 0), m); return out
+    def strip_frames(sh):  # old 1536x384 strips: cut at the emptiest column near each 256 px line
+        n = sh.width // 256; A = sh.getchannel("A").point(lambda v: 255 if v > 30 else 0); px = A.load()
+        col = [sum(1 for y in range(0, sh.height, 2) if px[x, y]) for x in range(sh.width)]
+        cuts = [0] + [min(range(max(1, b - 70), min(sh.width - 1, b + 70)), key=lambda x: (col[x], abs(x - b))) for b in range(256, sh.width, 256)][:n - 1] + [sh.width]
+        return [biggest_blob(sh.crop((cuts[i], 0, cuts[i + 1], sh.height))) for i in range(n)]
     # pet idle animations: 6-frame strips (art/anime/pet/anim/<id>_idle.png, 256x384 slots) -> pet_<id>_<n>;
     # every frame is re-centred on its bounding box and scaled to the strip's median height so the loop does not wobble
     for p in sorted(glob.glob(os.path.join(root, "art/anime/pet/anim/*_idle.png"))):
-        k = os.path.basename(p)[:-9]; sh = Image.open(p).convert("RGBA"); n = sh.width // 256
-        frames = [sh.crop((i * 256, 0, (i + 1) * 256, sh.height)) for i in range(n)]
+        k = os.path.basename(p)[:-9]; g = p.replace("_idle.png", "_grid.png")
+        if os.path.exists(g):  # preferred: 3x2 grid of 512 px cells with clear gaps (no touching frames)
+            gs = Image.open(g).convert("RGBA"); frames = [biggest_blob(gs.crop(((i % 3) * 512, (i // 3) * 512, (i % 3 + 1) * 512, (i // 3 + 1) * 512))) for i in range(6)]
+        else:
+            frames = strip_frames(Image.open(p).convert("RGBA"))
         frames = [fr.crop(fr.getchannel("A").point(lambda v: 255 if v > 30 else 0).getbbox()) for fr in frames]
         hs = sorted(fr.height for fr in frames); H = hs[len(hs) // 2]; S = int(H * 1.15)
         for i, fr in enumerate(frames):

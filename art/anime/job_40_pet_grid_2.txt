@@ -1,0 +1,8 @@
+Attached: the approved chibi pets art/anime/pet/sparrow.png.
+
+For EACH of these pets use your image generation tool to create art/anime/pet/anim/<name>_grid.png, 1536x1024, FULLY TRANSPARENT background (alpha 0, no glow or halo), a 3 columns x 2 rows grid of exactly 6 frames (reading order left-to-right, top row first), each frame in its own 512x512 cell, the character centred in every cell and only about 65% of the cell size so EVERY part (wings, tails, manes, smoke) stays inside its own cell with clear empty transparent space around it — nothing may touch or cross a cell border at the SAME size, SAME position and IDENTICAL design to its attached image (same colours, face, proportions, outline; only the pose changes).
+It is a seamless looping IDLE / HOVER animation: frames 1-6 flow smoothly back into frame 1; frame 5 has the eyes CLOSED (blink); the body rises slightly on frames 2-3 and lowers on 5-6. Anime chibi cel shading, crisp dark outline, no text, no borders.
+
+- sparrow: light-blue fluffy baby bird: wings flap up and down
+
+Generate all now, do not stop to ask for approval. When done, print the file sizes.
