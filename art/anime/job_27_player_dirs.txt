@@ -1,0 +1,15 @@
+Use the image generation tool to create TWO separate PNG images for the in-battle PLAYER sprite of a vertical shooter (anime mecha-girl game). Save them exactly at the paths below (overwrite if present).
+
+Reference images attached: style_a_mika.png = Mika (silver short hair, white/cyan mecha armour, cyan wing thrusters, small pink accents). ship_kestrel.png = the current player jet (for silhouette/readability).
+
+Rules for BOTH images:
+- 1024x1024 PNG, PURE transparent background (alpha 0 everywhere outside the subject). NO glow, halo, shadow or haze outside the outline; glow only on the thruster tips.
+- Seen from directly ABOVE (top-down), nose/head pointing UP, perfectly symmetric left/right.
+- Compact, WIDE silhouette that fills about 90% of the canvas width; must read clearly at small size in game.
+- Crisp dark outline, anime cel shading, colours white + cyan + one pink accent. No text, logo or watermark.
+
+A) art/anime/ships/dirA_mika.png - Mika flying, chibi-ish proportions (big head about 1/3 of the figure), seen from above/back, wearing a big white mecha flight rig: wide swept wings with cyan thrusters, two arm cannons pointing forward (up); legs fully enclosed in an armoured skirt/thruster pod (nothing visible beneath it). Overall outline like a fighter jet with a girl at the centre.
+
+B) art/anime/ships/dirB_kestrel.png - an anime-style fighter jet (no girl visible outside the canopy): soft rounded white panels, cyan glowing lines, forward-swept wings, a canopy where a silver-haired pilot is faintly visible, Mika's pink star emblem on the nose. Clearly "anime mecha", not a realistic military jet.
+
+Generate all now, do not stop to ask for approval. When done, print the file sizes.
