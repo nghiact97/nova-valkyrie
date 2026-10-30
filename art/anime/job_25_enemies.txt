@@ -1,0 +1,11 @@
+Use the image generation tool to create art/anime/enemies/enemy_sheet.png, 1536x1024, fully transparent background (PNG with alpha).
+Exactly 5 enemy sprites in ONE horizontal row with clear transparent gaps between them. All viewed from ABOVE (top-down) and facing DOWNWARD (nose/front toward the bottom of the image).
+Style: anime mecha drone style, cute-but-menacing robots, rounded armour plates, one glowing visor eye each. Palette: crimson red + dark violet + gunmetal, magenta glow. Cel shading, crisp dark outline, saturated, readable at 36 px. They must contrast with our heroine (attached image 1: white/cyan) - do not use white or cyan. Attached image 2 is the old enemy only for role reference; do not copy its look.
+Left to right:
+1 GRUNT - small basic drone with two stubby wings.
+2 DART - slim fast arrow-shaped drone with swept fins.
+3 TANK - heavy wide armoured drone with a shield plate (largest of the five).
+4 ORB - spherical drone with a ring of small spikes and a single big eye.
+5 ELITE - bigger winged command drone with a small crown fin and twin cannons.
+No text, no frames, no background, no ground shadows.
+Generate all now, do not stop to ask for approval. When done, print the file size.
