@@ -1,0 +1,14 @@
+Create ONE image file: art/anime/ships/parts/body_sheet.png, 1536x1024, fully TRANSPARENT background (alpha 0, no halo, no shadow, no ground).
+Style: exactly match the reference images (art/anime/ships/mod/engine_aegis.png, armor_vanguard.png, core_solar.png, hull_kestrel.png): anime cel shading, crisp dark outline, top-down view, nose/front pointing UP, spaceship modular parts.
+Layout: a clear grid of 3 ROWS x 4 COLUMNS, each part alone inside its own cell (cell ~384x340), at least 60 px of empty transparent gap between parts, nothing touching. Parts centred in their cells.
+Rows (set and accent colour):
+ Row 1 VANGUARD: white/steel with cyan #5ee7ff glowing accents, sleek and long shapes.
+ Row 2 AEGIS: white/steel with green #52f19a accents, chunky armoured shapes.
+ Row 3 SOLAR: white/steel with gold #ffc83d accents, rounded shapes with ring motifs.
+Columns (same in every row):
+ Col 1 ENGINE: one single tail thruster pod (right side pod), vertical, nozzle at the BOTTOM pointing down, NO flame, NO exhaust fire. About 230 px tall.
+ Col 2 WIDE ARMOR: one single right-wing armour plate, broad, about 260 px across its longest side.
+ Col 3 NARROW ARMOR: the same set's right-wing armour plate but slimmer/thinner, for a thin wing, about 260 px long and narrow.
+ Col 4 CORE: one small reactor gem / core crystal in a small frame, about 140 px.
+No text, no labels, no grid lines, no background.
+Generate all now, do not stop to ask for approval. When done, print the file size.
