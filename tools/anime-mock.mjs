@@ -1123,7 +1123,13 @@ patch(`if(S.stats.played>0&&!S.ships.seraph)q.push(()=>POPS.offer());`, `if(S.st
 
 const js = `
 /* pet idle animation: 6 Codex-drawn frames per pet (pet_<id>_0..5), ~9 fps, faster while the pet is moving */
-function petFrame(id,t,vx){if(!spr("pet_"+id+"_0"))return null;const f=Math.floor(t*(9+Math.min(6,Math.abs(vx||0)/60)))%6;return spr("pet_"+id+"_"+f);}
+const PET_MIX={};
+// cross-fade between neighbouring frames (4 in-betweens per step, cached) so 6 drawn frames read as a smooth loop
+function petFrame(id,t,vx){const f0=spr("pet_"+id+"_0");if(!f0)return null;const p=t*(7+Math.min(5,Math.abs(vx||0)/70)),i=Math.floor(p)%6,q=Math.floor((p%1)*4)/4;
+  if(q===0)return spr("pet_"+id+"_"+i)||f0;const k=id+i+"_"+q;if(PET_MIX[k])return PET_MIX[k];
+  const A=spr("pet_"+id+"_"+i),Bm=spr("pet_"+id+"_"+((i+1)%6));if(!A||!Bm)return A||f0;
+  const cv=document.createElement("canvas");cv.width=cv.naturalWidth=A.naturalWidth;cv.height=cv.naturalHeight=A.naturalHeight;cv.complete=true;const c=cv.getContext("2d");
+  c.globalAlpha=1-q;c.drawImage(A,0,0);c.globalAlpha=q;c.drawImage(Bm,0,0,cv.width,cv.height);return PET_MIX[k]=cv;}
 /* Modular ship composer: hull + mount-centred parts placed on the hull's own mount points (SHIP_MOUNTS, 1024 grid).
    Draw order engines(tail) -> armour(wings, x wingScale) -> hull -> wing guns -> nose gun -> core(spine). Parts are drawn
    for the right side; the left side is mirrored. Rarity: Rare blue line glow, Epic purple rim, Legendary orange rim + sparkle.
