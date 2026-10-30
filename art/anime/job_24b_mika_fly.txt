@@ -1,0 +1,15 @@
+Read art/anime/STYLE.md. The attached image (art/anime/style_a_mika.png) is the approved look of Mika (pilot of ship "kestrel"): white/cyan mecha armour, short silver hair, cyan glowing wing thrusters. Keep her design.
+
+Use your image generation tool to create art/anime/ships/mika_fly_sheet.png (overwrite), 1536x1024, FULLY TRANSPARENT background.
+3 variations of a classic vertical-shooter PLAYER SPRITE in ONE row, with at least 120 px of fully transparent space between them and around the edges.
+
+Each variation:
+- STEEP top-down camera, looking almost straight down on her back and the top of her head. Flying UPWARD (head toward the top of the image).
+- Slightly chibi proportions: head about 1/4 of the total height.
+- Legs tucked and fully covered: a long armoured hip/skirt plate plus leg armour. No skirt opening, nothing under it visible, no bare thighs. Tasteful, Teen rating.
+- Wings and arm cannons spread wide so the overall silhouette is a compact diamond. Twin cyan arm cannons pointing forward/up.
+- Glow ONLY on the thruster nozzles (small cyan flames at the wing and boot thrusters). NO outer glow, aura or halo around the figure.
+- Clean dark outline around the whole figure, anime cel shading, white + cyan, one small pink accent. Near-symmetric left/right.
+- No text, no frame, no background, no ground shadow.
+
+Generate all now, do not stop to ask for approval. When done, print the file size.
