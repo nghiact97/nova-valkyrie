@@ -10,3 +10,5 @@ android/build/
 android/app/src/main/assets/public/
 *.log
 .claude/worktrees/
+analysis/
+graphify-out/
