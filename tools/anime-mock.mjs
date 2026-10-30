@@ -1190,7 +1190,8 @@ function sfxMuzzle(t){const k="m"+t;if(SFX_C[k])return SFX_C[k];const cv=sfxCv(6
 /* blurred colour silhouette of the composed ship (rarity rim); cached per image + colour */
 const SFX_RIMC=new WeakMap();
 function sfxRim(im,col,blur){let m=SFX_RIMC.get(im);if(!m)SFX_RIMC.set(im,m={});const k=col+blur;if(m[k])return m[k];
-  const n=192,p=24,a=sfxCv(n),ac=a.getContext("2d");ac.drawImage(im,0,0,n,n);ac.globalCompositeOperation="source-in";ac.fillStyle=col;ac.fillRect(0,0,n,n);
+  const n=192,p=24,a=sfxCv(n),ac=a.getContext("2d");ac.drawImage(im,0,0,n,n);{const d=ac.getImageData(0,0,n,n),q=d.data;for(let i=3;i<q.length;i+=4)q[i]=q[i]<60?0:255;ac.putImageData(d,0,0);}   // hard mask: faint specks across the canvas made a visible box
+  ac.globalCompositeOperation="source-in";ac.fillStyle=col;ac.fillRect(0,0,n,n);
   const cv=sfxCv(n+2*p),c=cv.getContext("2d");c.filter="blur("+blur+"px)";c.drawImage(a,p,p);c.drawImage(a,p,p);return m[k]=cv;}
 function sfxAdd(o){if(SFX.pt.length<40)SFX.pt.push(o);}
 {const _ds=drawShip,_fl=flame;let noFlame=false;
@@ -1206,7 +1207,8 @@ drawShip=function(c,def,x,y,s,t=0,star=1){
   c.save();c.globalCompositeOperation="lighter";
   // full 4/4 set: soft ring
   const sets=gearSets(),full=Object.keys(sets).find(k=>sets[k]>=4);
-  if(full){const r=s*1.75*(1+.04*Math.sin(t*3));c.globalAlpha=.45+.15*Math.sin(t*3);c.drawImage(sfxRing(GSETS[full].col),x-r,y-r,r*2,r*2);c.globalAlpha=1;}
+  if(full){const r=s*1.45*(1+.04*Math.sin(t*3)),col=GSETS[full].col;c.globalAlpha=.5+.15*Math.sin(t*3);c.strokeStyle=col;c.shadowColor=col;c.shadowBlur=12;c.lineWidth=2.5;
+    c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.stroke();c.shadowBlur=0;c.globalAlpha=1;}   // drawn directly: the blurred ring sprite left a visible square
   // rarity rim under the ship
   const rar=eq.reduce((m,i)=>Math.max(m,i.rar||0),0);
   if(rar>=1){const rc=sfxRim(im,SFX_RIM[rar],rar>=3?7:rar>=2?5:2),f=W/192;c.globalAlpha=(rar>=2?.75:.55)+.2*Math.sin(t*4);
