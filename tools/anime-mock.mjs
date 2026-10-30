@@ -1160,6 +1160,94 @@ function modBuild(force){const ship=S.ship;if(!modHas(ship)||!mpReady||!MP_IMG["
   im.onload=()=>{IMG[k]=im;SPR_SRC[k]=url;if(cur==="hangar"&&typeof renderHangar==="function")renderHangar();};im.src=url;}
 setInterval(()=>{if(cur!=="battle")modBuild();},400);
 {const _sbm=startBattle;startBattle=function(cfg){modBuild();_sbm(cfg);};}
+/* Ship FX (battle, code-only): engine flames at tailL/R, muzzle flash at nose/wings, core pulse at spine, rarity aura + set ring.
+   Everything is drawn from sprites pre-rendered once per colour (SFX_C cache); particles capped. SHIPFX=0 turns it off (FPS tests).
+   Mount points are 1024-grid coords on the composed ship, which blit() draws as a square of side s*2.3 centred on (x,y). */
+var SHIPFX=1;
+const SFX_C={},SFX_ECOL={vanguard:"#5ee7ff",aegis:"#52f19a",solar:"#ffc83d"},SFX_ION="#9b8bff",SFX_RIM=["","#38a8ff","#b36bff","#ff9a2e"];
+const SFX={vx:0,lx:null,ly:0,lt:0,mz:-9,pt:[]};
+function sfxCv(n,m){const cv=document.createElement("canvas");cv.width=n;cv.height=m||n;return cv;}
+/* soft round glow, white core -> colour -> clear */
+function sfxGlow(col){const k="g"+col;if(SFX_C[k])return SFX_C[k];const cv=sfxCv(64),c=cv.getContext("2d"),g=c.createRadialGradient(32,32,0,32,32,32);
+  g.addColorStop(0,"#ffffff");g.addColorStop(.25,col);g.addColorStop(1,col+"00");c.fillStyle=g;c.fillRect(0,0,64,64);return SFX_C[k]=cv;}
+/* flame plume: nozzle at top centre, tip at bottom */
+function sfxFlame(col){const k="f"+col;if(SFX_C[k])return SFX_C[k];const cv=sfxCv(32,128),c=cv.getContext("2d");c.filter="blur(2px)";
+  const g=c.createLinearGradient(0,0,0,128);g.addColorStop(0,"#ffffff");g.addColorStop(.18,col);g.addColorStop(1,col+"00");c.fillStyle=g;
+  c.beginPath();c.moveTo(4,6);c.quadraticCurveTo(16,-2,28,6);c.quadraticCurveTo(24,70,16,124);c.quadraticCurveTo(8,70,4,6);c.fill();return SFX_C[k]=cv;}
+function sfxRing(col){const k="r"+col;if(SFX_C[k])return SFX_C[k];const cv=sfxCv(128),c=cv.getContext("2d");c.filter="blur(3px)";
+  c.strokeStyle=col;c.lineWidth=5;c.beginPath();c.arc(64,64,54,0,7);c.stroke();c.filter="blur(10px)";c.globalAlpha=.6;c.lineWidth=10;c.stroke();return SFX_C[k]=cv;}
+/* muzzle flash per cannon type */
+function sfxMuzzle(t){const k="m"+t;if(SFX_C[k])return SFX_C[k];const cv=sfxCv(64),c=cv.getContext("2d"),C=32;
+  const col={mg:"#ffe066",laser:"#5ee7ff",missile:"#aab2c2",plasma:"#b36bff",solar:"#ffc83d",frost:"#bfeaff"}[t]||"#ffffff";
+  if(t==="laser"){c.filter="blur(1px)";c.strokeStyle=col;c.lineWidth=5;c.beginPath();c.arc(C,C,18,0,7);c.stroke();c.drawImage(sfxGlow(col),16,16,32,32);}
+  else if(t==="missile"){c.filter="blur(3px)";[[0,4,14],[-9,10,10],[9,10,10],[0,-4,9]].forEach(([dx,dy,r])=>{c.fillStyle=col+"cc";c.beginPath();c.arc(C+dx,C+dy,r,0,7);c.fill();});}
+  else if(t==="frost"){c.fillStyle=col;for(let i=0;i<6;i++){const a=i*Math.PI/3-Math.PI/2;c.beginPath();c.moveTo(C+Math.cos(a)*27,C+Math.sin(a)*27);
+      c.lineTo(C+Math.cos(a+.35)*8,C+Math.sin(a+.35)*8);c.lineTo(C+Math.cos(a-.35)*8,C+Math.sin(a-.35)*8);c.fill();}c.drawImage(sfxGlow("#ffffff"),20,20,24,24);}
+  else if(t==="solar"){c.drawImage(sfxGlow(col),0,0,64,64);c.fillStyle="#fff6c8";c.beginPath();for(let i=0;i<16;i++){const a=i*Math.PI/8,d=i%2?6:30;c.lineTo(C+Math.cos(a)*d,C+Math.sin(a)*d);}c.fill();}
+  else if(t==="plasma"){c.drawImage(sfxGlow(col),0,0,64,64);c.drawImage(sfxGlow("#f3dcff"),16,16,32,32);}
+  else{c.fillStyle=col;c.beginPath();for(let i=0;i<10;i++){const a=i*Math.PI/5-Math.PI/2,d=i%2?6:20;c.lineTo(C+Math.cos(a)*d,C+Math.sin(a)*d);}c.fill();c.drawImage(sfxGlow("#fff2a8"),20,20,24,24);}
+  return SFX_C[k]=cv;}
+/* blurred colour silhouette of the composed ship (rarity rim); cached per image + colour */
+const SFX_RIMC=new WeakMap();
+function sfxRim(im,col,blur){let m=SFX_RIMC.get(im);if(!m)SFX_RIMC.set(im,m={});const k=col+blur;if(m[k])return m[k];
+  const n=192,p=24,a=sfxCv(n),ac=a.getContext("2d");ac.drawImage(im,0,0,n,n);ac.globalCompositeOperation="source-in";ac.fillStyle=col;ac.fillRect(0,0,n,n);
+  const cv=sfxCv(n+2*p),c=cv.getContext("2d");c.filter="blur("+blur+"px)";c.drawImage(a,p,p);c.drawImage(a,p,p);return m[k]=cv;}
+function sfxAdd(o){if(SFX.pt.length<40)SFX.pt.push(o);}
+{const _ds=drawShip,_fl=flame;let noFlame=false;
+flame=function(c,col,x,y,s,t){if(!noFlame)_fl(c,col,x,y,s,t);};
+drawShip=function(c,def,x,y,s,t=0,star=1){
+  const im=spr("ship_"+def.id),M=typeof SHIP_MOUNTS!=="undefined"&&SHIP_MOUNTS[def.id];
+  if(!SHIPFX||!im||!M||typeof B==="undefined"||!B||def!==B.ship||cur!=="battle")return _ds(c,def,x,y,s,t,star);
+  const W=s*2.3,P=pt=>[x+(pt[0]/1024-.5)*W,y+(pt[1]/1024-.5)*W];
+  const en=gEq("engine"),ca=gEq("cannon"),co=gEq("core"),eq=gearEquipped();
+  // speed from player movement delta (smoothed, 0..1)
+  const dt=t-SFX.lt;if(SFX.lx!=null&&dt>0&&dt<.2){const v=Math.hypot(x-SFX.lx,y-SFX.ly)/dt;SFX.vx+=(Math.min(1,v/420)-SFX.vx)*Math.min(1,dt*10);}
+  SFX.lx=x;SFX.ly=y;SFX.lt=t;
+  c.save();c.globalCompositeOperation="lighter";
+  // full 4/4 set: soft ring
+  const sets=gearSets(),full=Object.keys(sets).find(k=>sets[k]>=4);
+  if(full){const r=s*1.75*(1+.04*Math.sin(t*3));c.globalAlpha=.45+.15*Math.sin(t*3);c.drawImage(sfxRing(GSETS[full].col),x-r,y-r,r*2,r*2);c.globalAlpha=1;}
+  // rarity rim under the ship
+  const rar=eq.reduce((m,i)=>Math.max(m,i.rar||0),0);
+  if(rar>=1){const rc=sfxRim(im,SFX_RIM[rar],rar>=3?7:rar>=2?5:2),f=W/192;c.globalAlpha=(rar>=2?.75:.55)+.2*Math.sin(t*4);
+    c.drawImage(rc,x-W/2-24*f,y-W/2-24*f,rc.width*f,rc.height*f);c.globalAlpha=1;}
+  // engine flames
+  if(en){const ion=gType(en)==="ion",col=ion?SFX_ION:SFX_ECOL[en.set]||"#5ee7ff",fs=sfxFlame(col),g=sfxGlow(col);
+    [M.tailL,M.tailR].forEach((pt,i)=>{const [fx,fy0]=P(pt),fy=fy0+W*.07,fl=.85+.15*Math.sin(t*41+i*2)+.1*Math.random();
+      const fw=s*(ion?.16:.34),L=s*(ion?.9:.75)*(1+1.1*SFX.vx)*fl;
+      c.drawImage(g,fx-fw*1.2,fy-fw*1.2,fw*2.4,fw*2.4);c.drawImage(fs,fx-fw/2,fy,fw,L);
+      if(ion&&Math.random()<.35)sfxAdd({x:fx+(Math.random()-.5)*fw,y:fy+L*.4,vx:(Math.random()-.5)*40,vy:60+Math.random()*80,l:.35,m:.35,col:col,r:s*.07});});}
+  c.restore();
+  noFlame=!!en;try{_ds(c,def,x,y,s,t,star);}finally{noFlame=false;}
+  c.save();c.globalCompositeOperation="lighter";
+  // core pulse
+  if(co){const ful=B.ult>=100,sp=ful?9:3.2,b=.5+.5*Math.sin(t*sp),[cx,cy]=P(M.spine),r=s*(ful?.55:.38)*(.85+.25*b),g=sfxGlow((GSETS[co.set]||{}).col||"#9ff0ff");
+    c.globalAlpha=(ful?.75:.45)+(ful?.25:.3)*b;c.drawImage(g,cx-r,cy-r,r*2,r*2);c.globalAlpha=1;}
+  // legendary sparkles drifting off the wings
+  if(rar>=3&&Math.random()<.25){const pt=Math.random()<.5?M.wingL:M.wingR,[wx,wy]=P(pt),sd=pt===M.wingL?-1:1;
+    sfxAdd({x:wx,y:wy,vx:sd*(20+Math.random()*30),vy:40+Math.random()*40,l:.6,m:.6,col:"#ffd58a",r:s*.12});}
+  // muzzle flash (~80 ms) at nose (+ wing guns)
+  const ma=t-SFX.mz;if(ca&&ma>=0&&ma<.08){const ms=sfxMuzzle(gType(ca)||"laser"),k=1-ma/.08,a=[[M.nose,s*.9]];if(M.wingL)a.push([M.wingL,s*.55],[M.wingR,s*.55]);
+    if(gType(ca)==="missile")c.globalCompositeOperation="source-over";
+    a.forEach(([pt,z])=>{const [mx,my0]=P(pt),my=my0-W*.08,r=z*(.7+.5*(1-k));c.globalAlpha=k;c.drawImage(ms,mx-r/2,my-r/2,r,r);});c.globalAlpha=1;c.globalCompositeOperation="lighter";}
+  // particles
+  const pdt=Math.max(0,Math.min(.05,dt));
+  for(let i=SFX.pt.length-1;i>=0;i--){const q=SFX.pt[i];q.l-=pdt;if(q.l<=0){SFX.pt.splice(i,1);continue;}q.x+=q.vx*pdt;q.y+=q.vy*pdt;
+    const r=q.r*(.5+q.l/q.m);c.globalAlpha=q.l/q.m;c.drawImage(sfxGlow(q.col),q.x-r,q.y-r,r*2,r*2);}
+  c.restore();};
+const _fi=fire;fire=function(){_fi.apply(this,arguments);if(typeof B!=="undefined"&&B)SFX.mz=B.t;};}
+/* hangar: brief flash on the part that changed when the composed ship is rebuilt */
+{const _mb=modBuild;let prev=null,prevShip=null;
+modBuild=function(force){const ship=S.ship;if(!modHas(ship)||!mpReady)return _mb(force);
+  const parts=modParts(ship).filter(p=>!p.hull),keys=parts.map(p=>p.k+"|"+p.x+"|"+(p.rar||0)),old=prev;
+  const hit=old&&prevShip===ship?parts.filter((p,i)=>!old.includes(keys[i])):[];prev=keys;prevShip=ship;
+  _mb(force);if(!hit.length||cur!=="hangar")return;
+  setTimeout(()=>document.querySelectorAll(".gship img,img.hv-ship,.hv-form img").forEach(img=>{if(!img.offsetWidth)return;const par=img.parentElement;
+    if(getComputedStyle(par).position==="static")par.style.position="relative";
+    hit.forEach(p=>{const d=document.createElement("i"),w=img.offsetWidth*.32*(p.s||1),cx=img.offsetLeft+img.offsetWidth*p.x/1024,cy=img.offsetTop+img.offsetHeight*p.y/1024;
+      d.style.cssText="position:absolute;pointer-events:none;z-index:3;border-radius:50%;mix-blend-mode:screen;width:"+w+"px;height:"+w+"px;left:"+(cx-w/2)+"px;top:"+(cy-w/2)+"px;background:radial-gradient(circle,#fff 0,#fff8 25%,"+(MOD_RCOL[p.rar]||"#9ff0ff")+"88 50%,transparent 70%)";
+      par.appendChild(d);const an=d.animate([{opacity:0,transform:"scale(.4)"},{opacity:1,transform:"scale(1.1)",offset:.25},{opacity:0,transform:"scale(1.4)"}],{duration:650,easing:"ease-out"});
+      an.onfinish=()=>d.remove();});}),160);};}
 /* gear icon: part centred (by its visible bounds) on a diamond plate with rarity border, set badge, cannon type glyph */
 const GICON={},MP_BOX={};
 function mpBox(k){if(MP_BOX[k])return MP_BOX[k];const im=MP_IMG[k],n=256,cv=document.createElement("canvas");cv.width=cv.height=n;const c=cv.getContext("2d");
