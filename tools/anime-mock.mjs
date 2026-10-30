@@ -1496,7 +1496,7 @@ const vkCleared=()=>{const a=S.stars.normal;let i=0;while(a[i])i++;return i;};
 const VK_FEAT={quests:{q:"#tabbar [data-go=missions]",n:["Quests","Nhiệm vụ"],ic:"ui5_questnav"},hangar:{q:"#tabbar [data-go=hangar]",n:["Hangar","Xưởng"],ic:"ui5_hangar"},
   shop:{q:"[data-go=shop]",n:["Shop","Cửa hàng"],ic:"ui5_shop"},skills:{q:"#hTabs [data-ht=skills]",n:["Skills","Kỹ năng"],ic:"ui_sk_damage"},
   spin:{q:"[data-pop=spin]",n:["Lucky Spin","Vòng quay"],ic:"ui5_spin"},online:{q:"[data-pop=online]",n:["Online Gift","Quà online"],ic:"ui5_onlinegift"},
-  offer:{q:"[data-pop=offer]",n:["Offers","Ưu đãi"],ic:"ui5_offer"},drones:{q:"#hTabs [data-ht=drones]",n:["Drones","Thú cưng drone"],ic:"drone_sparrow"},
+  offer:{q:"[data-pop=offer]",n:["Offers","Ưu đãi"],ic:"ui5_offer"},drones:{q:"#hTabs [data-ht=drones]",n:["Pets","Pet"],ic:"drone_sparrow"},
   gear:{q:"#hTabs [data-ht=gear]",n:["Gear","Trang bị"],ic:"gear_vanguard_cannon"},bossrush:{q:null,n:["Boss Rush","Thử thách Boss"],ic:"ui_st_kills"},
   mail:{q:"[data-pop=mail]",n:["Mail","Thư"],ic:"ui5_mail"},notice:{q:"[data-pop=notice]",n:["Notices","Thông báo"],ic:"ui5_notice"},
   pilots:{q:"#hTabs [data-ht=pilots]",n:["Support","Hỗ trợ"],ic:"pilot_vega"},boss:{q:"#hTabs [data-ht=boss]",n:["Boss Cores","Lõi Boss"],ic:"boss1"},
