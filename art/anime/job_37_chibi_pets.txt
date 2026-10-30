@@ -1,0 +1,13 @@
+Read art/anime/STYLE.md. Attached: art/anime/style_a_mika.png (approved anime style) and art/anime/pet/sparrow.png (the current robot pet, which the owner wants REPLACED: no more robot animals).
+
+Use your image generation tool to create TWO images, both with a FULLY TRANSPARENT background (alpha 0, no glow or halo outside the outline), anime chibi style, soft cel shading, crisp dark outline, big shiny eyes, cute and readable at 48 px, seen from the front and slightly above, floating pose:
+
+1) art/anime/pet/chibi_sheet.png, 1536x1536, a 3x3 grid (at least 80 px empty gaps), each cell one CUTE ANIME CHIBI SPIRIT-PET (fantasy creature, NOT a robot, only small tech accessories such as a tiny visor, earpiece or glowing collar), its main colour as given:
+   row 1: SPARROW (light-blue fluffy baby bird #9fdcff), HORNET (orange fluffy bee-fox with tiny wings #ff9d1c), AEGIS (cyan baby dragon with a little shield crest #38e1ff)
+   row 2: FLAK (orange round hamster with tiny cannon backpack #ff9d1c), MEDIC (mint-green bunny with a heart badge #52f19a), TESLA (blue electric kitten with lightning tail #5aa8ff)
+   row 3: GUARDIAN (cyan baby turtle-spirit with a glowing shell #38e1ff), PHANTOM (violet ghost fox with wispy tail #b36bff), SOLARIS (golden sun-lion cub with a radiant mane #ffc83d)
+   Same size and the same style for all nine, each fully inside its cell.
+
+2) art/anime/pet/escort_sheet.png, 1024x512, two small MECHANICAL ESCORT DRONES side by side (these are NOT pets: small sleek white sci-fi gun drones with cyan lights, a single round thruster each, top-down 3/4 view, facing up), version A plain, version B with a pink accent. Simple silhouettes readable at 24 px.
+
+Generate all now, do not stop to ask for approval. When done, print the file sizes.

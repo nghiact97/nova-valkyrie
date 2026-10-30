@@ -171,6 +171,11 @@ with open(os.path.join(root, "build/anime_girls.js"), "w") as f:
         if os.path.exists(p):
             im = Image.open(p).convert("RGBA"); im = im.crop(im.getchannel("A").getbbox())
             f.write(f'SPR_SRC.ui_cur_{k}="{enc(im, 160)}";\n')
-    for p in sorted(glob.glob(os.path.join(root, "art/anime/pet/*.png"))):  # anime robot pets replace the drone sprites
+    for p in sorted(glob.glob(os.path.join(root, "art/anime/pet/*.png"))):  # anime chibi pets replace the drone sprites
+        if p.endswith("_sheet.png"): continue
         im = Image.open(p).convert("RGBA"); im = im.crop(im.getchannel("A").point(lambda v: 255 if v > 20 else 0).getbbox())
         f.write(f'SPR_SRC.drone_{os.path.basename(p)[:-4]}="{enc(im, 200)}";\n')
+    p = os.path.join(root, "art/anime/escort.png")  # small mechanical drone for the "Escort Drones" run skill (not a pet)
+    if os.path.exists(p):
+        im = Image.open(p).convert("RGBA"); im = im.crop(im.getchannel("A").getbbox())
+        f.write(f'SPR_SRC.drone_escort="{enc(im, 96)}";\n')
