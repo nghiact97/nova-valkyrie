@@ -23,5 +23,6 @@
     P.App.addListener('backButton', back);
     P.App.addListener('pause', function () { if (cur === 'battle' && B && !B.paused && !B.over) pauseGame(); });
   }
-  if (P.StatusBar) { P.StatusBar.hide().catch(function () {}); }
+  // transparent system bars: keep the status bar (time, battery) visible over the game art, light icons, no colour band
+  if (P.StatusBar) { P.StatusBar.show().catch(function () {}); P.StatusBar.setOverlaysWebView({ overlay: true }).catch(function () {}); P.StatusBar.setStyle({ style: 'DARK' }).catch(function () {}); }
 })();

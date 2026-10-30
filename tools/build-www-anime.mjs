@@ -72,7 +72,12 @@ const head = `<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <link rel="stylesheet" href="fonts/fonts.css">
 <style>
-:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root{--sat:env(safe-area-inset-top,0px);--sab:env(safe-area-inset-bottom,0px)}  /* MainActivity overrides both with the real insets */
+/* edge-to-edge: backgrounds fill the whole screen, only the UI is kept inside the safe area */
+.scr{padding-top:var(--sat);box-sizing:border-box}
+#battle{padding-bottom:var(--sab)}
+.navbar{padding-bottom:calc(6px + var(--sab))!important}
+#veil{padding-top:calc(16px + var(--sat))!important;padding-bottom:calc(16px + var(--sab))!important}
 html,body{margin:0;height:100%;font:14px system-ui,sans-serif;background:#070a1c;overscroll-behavior:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 #stage{width:100%!important;height:100%!important;border-radius:0!important;box-shadow:none!important}
 </style>
