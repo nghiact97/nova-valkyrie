@@ -1,0 +1,15 @@
+Create two NEW alternative player-ship hull images. Do NOT modify any existing file. Reference images attached: hull_raptor.png, hull_oblivion.png, hull_kestrel.png (all in art/anime/ships/mod/). Create the folder art/anime/ships/mod/alt/ if missing.
+
+Common rules for both outputs:
+- 1024x1024 PNG, pure transparent background (alpha 0 everywhere outside the ship, no halo, no glow spill, no shadow).
+- Top-down view, nose pointing UP. Same scale and centre as hull_kestrel.png: nose near y=30, tail near y=980, wingtips near x=55 and x=970. Bilaterally symmetric.
+- Bare hull only (no weapons fire, no engine flames, no background, no text).
+- Anime cel shading matching the references, crisp dark outline.
+
+1) art/anime/ships/mod/alt/hull_raptor_v2.png
+Same Raptor identity as hull_raptor.png: heavy hull, orange #ff9d1c accents, rocket pod bays on both sides. CHANGE: clearly FORWARD-SWEPT wings like the Su-47 Berkut / X-29. The wing roots attach on the REAR half of the hull, and the wing leading and trailing edges angle FORWARD so the wingtips sit well ahead of the roots, pointing toward the nose (wingtips around y=330-420, roots around y=600-800). The forward sweep must be unmistakable at a glance. Small canards near the nose are welcome.
+
+2) art/anime/ships/mod/alt/hull_oblivion_v2.png
+Same Oblivion silhouette as hull_oblivion.png: bat wings, void emitter low on the hull, the spine spot left free. CHANGE: armour panels are DARK GUNMETAL / near-black (#2a2d36 to #15161c with cool grey highlights) instead of white, with glowing violet #9b6bff energy lines along panel seams and wing edges. Menacing "dark Valkyrie" look, but still clearly a heroic player ship, readable against a dark space background (use light rim highlights and the violet lines for readability).
+
+Generate all now, do not stop to ask for approval. When done, print the file sizes.
