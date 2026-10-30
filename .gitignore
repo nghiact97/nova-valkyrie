@@ -9,3 +9,4 @@ art/music/src/*.wav
 android/build/
 android/app/src/main/assets/public/
 *.log
+.claude/worktrees/
