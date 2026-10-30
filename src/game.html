@@ -1616,6 +1616,7 @@ const gPow=it=>Math.round((it.rar+1)*(it.rar+1)*12*(1+.12*(it.lv-1)));
 const gName=it=>{const t=gType(it),sl=GSLOTS.find(s=>s.id===it.slot),n=t?GTYPES[t].n:[sl.name,sl.vi],nk=it.rar>=3&&GNICK[t||it.slot];
   return L(n[0],n[1])+" "+GSETS[it.set].name+(nk?" · "+L(...nk[(it.uid||0)%nk.length]):"");};
 const gImg=it=>"gear_"+it.set+"_"+it.slot;
+const gIcon=(it,cls="")=>{const u=typeof gIconURL==="function"&&gIconURL(it);return u?`<img class="${cls}" src="${u}" alt="">`:sprImg(gImg(it),cls);};
 const gById=uid=>S.gear.inv.find(i=>i.uid===uid);
 const gEq=slot=>gById(S.gear.eq[slot]);
 const isEq=it=>S.gear.eq[it.slot]===it.uid;
@@ -1642,9 +1643,9 @@ const gb=()=>(typeof B!=="undefined"&&B&&B.gs)||{dmg:0,rate:0,hp:0,cd:0,xp:0,cri
 
 let gFilter="all";
 function gTile(it){const eq=isEq(it),cur=gEq(it.slot),better=!eq&&(!cur||gPow(it)>gPow(cur));
-  return `<button class="gtile r${it.rar}" data-gi="${it.uid}">${sprImg(gImg(it))}<span class="glv">Lv${it.lv}</span>${eq?'<span class="geq">✓</span>':better?'<span class="gnew"></span>':""}</button>`;}
+  return `<button class="gtile r${it.rar}" data-gi="${it.uid}">${gIcon(it)}<span class="glv">Lv${it.lv}</span>${eq?'<span class="geq">✓</span>':better?'<span class="gnew"></span>':""}</button>`;}
 function renderGear(B){const sets=gearSets(),ship=shipDef(S.ship);
-  const slot=s=>{const it=gEq(s.id);return `<button class="gslot ${it?"r"+it.rar:"empty"}" data-gs="${s.id}">${it?sprImg(gImg(it)):`<span class="gsil">+</span>`}<span class="gsn">${it?"Lv"+it.lv:s.name}</span></button>`;};
+  const slot=s=>{const it=gEq(s.id);return `<button class="gslot ${it?"r"+it.rar:"empty"}" data-gs="${s.id}">${it?gIcon(it):`<span class="gsil">+</span>`}<span class="gsn">${it?"Lv"+it.lv:s.name}</span></button>`;};
   const inv=S.gear.inv.filter(i=>gFilter==="all"||i.slot===gFilter).sort((a,b)=>b.rar-a.rar||b.lv-a.lv||a.slot.localeCompare(b.slot));
   B.innerHTML=`<div class="gtop"><div class="gcol">${slot(GSLOTS[0])}${slot(GSLOTS[1])}</div>
      <div class="gship">${SPR_HAS("ship_"+ship.id)?`<img src="${SPR_SRC["ship_"+ship.id]}" alt="">`:""}<div class="gpow"><span>${L("POWER","LỰC CHIẾN")}</span><b class="num">${fmt(shipPow(S.ship)+gearPower())}</b></div></div>
@@ -1660,7 +1661,7 @@ function renderGear(B){const sets=gearSets(),ship=shipDef(S.ship);
 function gearPop(uid){const it=gById(uid);if(!it)return;const eq=isEq(it),cur=gEq(it.slot),sets=gearSets(),gs=GSETS[it.set],cost=gUpCost(it),mates=gMates(it),mx=it.lv>=GMAX,n=sets[it.set]||0;
   const d=cur&&!eq?gPow(it)-gPow(cur):null;
   const p=pop(gName(it),`<div class="gd">
-    <div class="gtile big r${it.rar}">${sprImg(gImg(it))}</div>
+    <div class="gtile big r${it.rar}">${gIcon(it)}</div>
     <div class="gdr" style="color:${GRCOL[it.rar]}">${GRAR[it.rar]} · Lv ${it.lv}/${GMAX}</div>
     <div class="gdmain">${gMainTxt(it)}</div>${gTraitTxt(it)?`<div class="gdtr">${gTraitTxt(it)}</div>`:""}
     <div class="gdpow">${L("POWER","LỰC CHIẾN")} ${fmt(gPow(it))}${d===null?"":`<span class="${d>=0?"up":"dn"}">${d>=0?"▲":"▼"} ${fmt(Math.abs(d))} ${L("vs equipped","so với đồ đang mặc")}</span>`}</div>
@@ -2042,13 +2043,13 @@ const POPS={
     let busy=false;wheelLoop(p.querySelector("#wheel"));
     const roll=()=>{let k=0;if(S.gwPity>=GW_PITY-1)k=0;else{let r=Math.random()*100;for(;k<GW_W.length-1;k++){r-=GW_W[k];if(r<=0)break;}}
       const s=GWHEEL[k];S.gwPity=s.gear===3?0:S.gwPity+1;let res;if(s.alloy){S.gear.alloy+=s.alloy;res={alloy:s.alloy};}else res={it:randGear(s.gear)};return {k,...res};};
-    const card=r=>r.alloy?`<div class="gwr"><div class="gtile">${sprImg("mat_alloy")}</div><b>+${r.alloy}</b></div>`:`<div class="gwr ${r.it.rar===3?"leg":""}"><div class="gtile r${r.it.rar}">${sprImg(gImg(r.it))}</div><b style="color:${GRCOL[r.it.rar]}">${GRAR[r.it.rar]}</b></div>`;
+    const card=r=>r.alloy?`<div class="gwr"><div class="gtile">${sprImg("mat_alloy")}</div><b>+${r.alloy}</b></div>`:`<div class="gwr ${r.it.rar===3?"leg":""}"><div class="gtile r${r.it.rar}">${gIcon(r.it)}</div><b style="color:${GRCOL[r.it.rar]}">${GRAR[r.it.rar]}</b></div>`;
     const go=n=>{if(busy)return;if(!spend({gem:n===10?C10:GW_COST}))return;busy=true;p.querySelectorAll(".spinbtns .btn,#hub").forEach(b=>b.disabled=true);
       const rs=Array.from({length:n},roll);save();
       const best=rs.reduce((a,r)=>(r.it?r.it.rar+1:0)>(a.it?a.it.rar+1:0)?r:a,rs[0]);   // wheel lands on the best result
       spinWheel(best.k,()=>{refresh();const leg=rs.some(r=>r.it&&r.it.rar===3);
         const html=n===1?(best.alloy?`<div class="gd"><div class="gtile big">${sprImg("mat_alloy")}</div><div class="gdmain">+${best.alloy} Alloy</div></div>`
-          :`<div class="gd"><div class="gtile big r${best.it.rar}">${sprImg(gImg(best.it))}</div><div class="gdr" style="color:${GRCOL[best.it.rar]}">${GRAR[best.it.rar]}</div><div class="gdmain">${gName(best.it)}</div><div class="gdpow">${gMainTxt(best.it)}</div></div>`)
+          :`<div class="gd"><div class="gtile big r${best.it.rar}">${gIcon(best.it)}</div><div class="gdr" style="color:${GRCOL[best.it.rar]}">${GRAR[best.it.rar]}</div><div class="gdmain">${gName(best.it)}</div><div class="gdpow">${gMainTxt(best.it)}</div></div>`)
           :`<div class="gwgrid">${rs.map(card).join("")}</div>`;
         const q=pop(leg?"LEGENDARY!":n===10?"10× results":"You got",html+`<div class="acts"><button class="btn ghost" id="ok2">Close</button><button class="btn pink" id="ok">Spin again</button></div>`,leg?"win":"");
         q.querySelector("#ok").onclick=()=>POPS.gearSpin();q.querySelector("#ok2").onclick=()=>{closePop();if(cur==="hangar")renderHangar();};});};
@@ -2810,7 +2811,7 @@ function endBattle(win){if(!B)return;const c=B.cfg,b=B;B.paused=true;
   const tiles=[`<div class="vrt"><i class="ic-coin"></i><b class="num" data-count="${total}">0</b><small>Coins</small></div>`];
   if(gems)tiles.push(`<div class="vrt"><i class="ic-gem"></i><b class="num">${gems}</b><small>Gems</small></div>`);
   if(alloy)tiles.push(`<div class="vrt">${sprImg("mat_alloy","vrimg")}<b class="num">${alloy}</b><small>Alloy</small></div>`);
-  if(drop)tiles.push(`<div class="vrt gear r${drop.rar}"><span class="vrnew">NEW</span>${sprImg(gImg(drop),"vrimg")}<b style="color:${GRCOL[drop.rar]}">${GRAR[drop.rar]}</b><small>${GSLOTS.find(s=>s.id===drop.slot).name}</small></div>`);
+  if(drop)tiles.push(`<div class="vrt gear r${drop.rar}"><span class="vrnew">NEW</span>${gIcon(drop,"vrimg")}<b style="color:${GRCOL[drop.rar]}">${GRAR[drop.rar]}</b><small>${GSLOTS.find(s=>s.id===drop.slot).name}</small></div>`);
   const p=pop(isWin?(c.mode==="stage"?"Victory!":"Run complete"):"Defeat",`<div class="vr">
    ${c.mode==="stage"&&win?`<div class="bigstars">${[1,2,3].map(k=>`<span class="${k<=stars?"on":""}" style="animation-delay:${k*.25}s">★</span>`).join("")}</div>`:""}
    <div class="vrsub">${sub}</div>

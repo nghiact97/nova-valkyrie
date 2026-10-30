@@ -1112,23 +1112,69 @@ patch(`if(S.stats.played>0&&!S.ships.seraph)q.push(()=>POPS.offer());`, `if(S.st
 
 
 const js = `
-/* Modular ship: the equipped gear shows on the plane. Hull + one part per gear slot, all on one shared grid,
-   stacked engine -> armor -> hull -> cannon -> core. Rarity adds a rim glow. Pilots without a modular hull keep their sprite. */
-const MOD_ORDER=[["engine","engine"],["plating","armor"],[null,"hull"],["cannon","cannon"],["core","core"]];
-const MOD_RCOL=["",  "#38a8ff","#b36bff","#ffb02e"];
-let modKey="",modBusy=false;
-function modHas(ship){return SPR_HAS("mod_hull_"+ship);}
-function modParts(){return MOD_ORDER.map(([slot,part])=>{if(!slot)return {k:"mod_hull_"+S.ship};const it=gEq(slot);return it?{k:\`mod_\${part}_\${it.set}\`,rar:it.rar}:null;}).filter(p=>p&&SPR_HAS(p.k));}
-function modBuild(force){if(!modHas(S.ship)||modBusy)return;const parts=modParts(),key=S.ship+"|"+parts.map(p=>p.k+(p.rar||0)).join(",");if(key===modKey&&!force)return;
-  modBusy=true;const ims=parts.map(p=>{const im=new Image();im.src=SPR_SRC[p.k];return im;});
-  Promise.all(ims.map(im=>im.decode().catch(()=>{}))).then(()=>{const N=320,cv=document.createElement("canvas");cv.width=cv.height=N;const c=cv.getContext("2d");
-    ims.forEach((im,i)=>{const r=parts[i].rar||0;
-      if(r>=2){c.save();c.shadowColor=MOD_RCOL[r];c.shadowBlur=r>=3?14:9;c.drawImage(im,0,0,N,N);c.restore();}   // epic / legendary rim glow
-      c.drawImage(im,0,0,N,N);});
-    const url=cv.toDataURL("image/png"),k="ship_"+S.ship,im=new Image();im.onload=()=>{IMG[k]=im;SPR_SRC[k]=url;modKey=key;modBusy=false;
-      if(cur==="hangar"&&typeof renderHangar==="function")renderHangar();};im.src=url;}).catch(()=>{modBusy=false;});}
+/* Modular ship composer: hull + mount-centred parts placed on the hull's own mount points (SHIP_MOUNTS, 1024 grid).
+   Draw order engines(tail) -> armour(wings, x wingScale) -> hull -> wing guns -> nose gun -> core(spine). Parts are drawn
+   for the right side; the left side is mirrored. Rarity: Rare blue line glow, Epic purple rim, Legendary orange rim + sparkle.
+   Also gIconURL(it): the item's part on a rarity diamond plate (gear UI icons). */
+const MOD_RCOL=["","#38a8ff","#b36bff","#ffb02e"];
+const MP_IMG={};let mpReady=false;
+{const ks=Object.keys(SPR_SRC).filter(k=>k.startsWith("mp_")||k.startsWith("mod_hull_"));
+ Promise.all(ks.map(k=>{const im=new Image();im.src=SPR_SRC[k];MP_IMG[k]=im;return im.decode().catch(()=>{});})).then(()=>{mpReady=true;
+   if(typeof cur!=="undefined"&&cur==="hangar"&&typeof renderHangar==="function")renderHangar();});}
+const mpOk=k=>mpReady&&MP_IMG[k]&&MP_IMG[k].naturalWidth>0;
+let modKey="";
+function modHas(ship){return typeof SHIP_MOUNTS!=="undefined"&&!!SHIP_MOUNTS[ship]&&SPR_HAS("mod_hull_"+ship);}
+/* part list for a ship: {k, x, y (1024 grid), s (scale), m (mirror), rar} */
+function modParts(ship){const M=SHIP_MOUNTS[ship],ws=M.wingScale||1,out=[];
+  const add=(k,pt,s,m,rar)=>{if(mpOk(k))out.push({k:k,x:pt[0],y:pt[1],s:s,m:m,rar:rar});};
+  const en=gEq("engine"),pl=gEq("plating"),ca=gEq("cannon"),co=gEq("core");
+  if(en){add("mp_engine_"+en.set,M.tailL,1,1,en.rar);add("mp_engine_"+en.set,M.tailR,1,0,en.rar);}
+  if(pl){const a="mp_armor_"+pl.set+"_"+(ws<0.8?"narrow":"wide");add(a,M.wingL,ws,1,pl.rar);add(a,M.wingR,ws,0,pl.rar);}
+  out.push({k:"mod_hull_"+ship,hull:1});
+  if(ca){const t=gType(ca)||"laser";add("mp_gun_wing_"+t,M.wingL,ws,1,ca.rar);add("mp_gun_wing_"+t,M.wingR,ws,0,ca.rar);add("mp_gun_nose_"+t,M.nose,1,0,ca.rar);}
+  if(co)add("mp_core_"+co.set,M.spine,1,0,co.rar);
+  return out;}
+function modSparkle(c,x,y,r,col){c.save();c.globalCompositeOperation="lighter";c.fillStyle=col;c.beginPath();
+  for(let i=0;i<8;i++){const a=i*Math.PI/4,d=i%2?r*0.28:r;c.lineTo(x+Math.cos(a)*d,y+Math.sin(a)*d);}c.closePath();c.fill();
+  c.fillStyle="#fff";c.beginPath();c.arc(x,y,r*0.22,0,7);c.fill();c.restore();}
+/* one part image with its rarity effect; (x,y) centre, w size, in the target context's units */
+function modDrawPart(c,im,x,y,w,m,rar){const draw=()=>{c.save();c.translate(x,y);if(m)c.scale(-1,1);c.drawImage(im,-w/2,-w/2,w,w);c.restore();};
+  if(rar>=1){c.save();c.shadowColor=MOD_RCOL[rar];c.shadowBlur=(rar>=3?14:rar>=2?11:6)*w/128;draw();if(rar>=2)draw();c.restore();}
+  draw();}
+function modBuild(force){const ship=S.ship;if(!modHas(ship)||!mpReady||!MP_IMG["mod_hull_"+ship])return;
+  const parts=modParts(ship),key=ship+"|"+parts.map(p=>p.k+(p.m?"L":"")+(p.rar||0)).join(",");if(key===modKey&&!force)return;
+  const N=512,u=N/1024,cv=document.createElement("canvas");cv.width=cv.height=N;const c=cv.getContext("2d");
+  const spark=[];
+  parts.forEach(p=>{const im=MP_IMG[p.k];if(p.hull){c.drawImage(im,0,0,N,N);return;}
+    const w=256*p.s*u;modDrawPart(c,im,p.x*u,p.y*u,w,p.m,p.rar||0);if(p.rar>=3)spark.push([p.x*u+(p.m?-1:1)*w*0.18,p.y*u-w*0.18,w]);});
+  spark.forEach(([x,y,w])=>modSparkle(c,x,y,Math.max(5,w*0.09),"#ffd58a"));
+  const url=cv.toDataURL("image/png"),k="ship_"+ship,im=new Image();modKey=key;
+  im.onload=()=>{IMG[k]=im;SPR_SRC[k]=url;if(cur==="hangar"&&typeof renderHangar==="function")renderHangar();};im.src=url;}
 setInterval(()=>{if(cur!=="battle")modBuild();},400);
 {const _sbm=startBattle;startBattle=function(cfg){modBuild();_sbm(cfg);};}
+/* gear icon: part centred (by its visible bounds) on a diamond plate with rarity border, set badge, cannon type glyph */
+const GICON={},MP_BOX={};
+function mpBox(k){if(MP_BOX[k])return MP_BOX[k];const im=MP_IMG[k],n=128,cv=document.createElement("canvas");cv.width=cv.height=n;const c=cv.getContext("2d");
+  c.drawImage(im,0,0,n,n);const d=c.getImageData(0,0,n,n).data;let x0=n,y0=n,x1=-1,y1=-1;
+  for(let y=0;y<n;y++)for(let x=0;x<n;x++)if(d[(y*n+x)*4+3]>24){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y;}
+  return MP_BOX[k]=x1<0?[0,0,n,n]:[x0,y0,x1-x0+1,y1-y0+1];}
+const GGLYPH={mg:"≡",laser:"│",missile:"➤",plasma:"●",solar:"☀",frost:"❄"};
+function gIconURL(it){if(!it||!mpReady)return null;const t=it.slot==="cannon"?(gType(it)||"laser"):null;
+  const k=it.slot==="cannon"?"mp_gun_nose_"+t:it.slot==="engine"?"mp_engine_"+it.set:it.slot==="plating"?"mp_armor_"+it.set+"_wide":"mp_core_"+it.set;
+  if(!mpOk(k))return null;const ck=k+"|"+it.set+"|"+it.rar;if(GICON[ck])return GICON[ck];
+  const N=160,cv=document.createElement("canvas");cv.width=cv.height=N;const c=cv.getContext("2d"),rc=GRCOL[it.rar]||"#9fb0d0",sc=(GSETS[it.set]||{}).col||"#9ff0ff";
+  const dia=r=>{c.beginPath();c.moveTo(N/2,N/2-r);c.lineTo(N/2+r,N/2);c.lineTo(N/2,N/2+r);c.lineTo(N/2-r,N/2);c.closePath();};
+  c.save();dia(74);const g=c.createLinearGradient(0,0,0,N);g.addColorStop(0,"#1b2f6e");g.addColorStop(1,"#0a1438");c.fillStyle=g;c.shadowColor=rc;c.shadowBlur=it.rar>=2?14:6;c.fill();c.restore();
+  dia(74);c.lineWidth=4;c.strokeStyle=rc;c.stroke();dia(64);c.lineWidth=1.5;c.strokeStyle=rc+"88";c.stroke();
+  const b=mpBox(k),f=Math.min(104/b[2],104/b[3]),w=b[2]*f,h=b[3]*f;
+  c.save();if(it.rar>=1){c.shadowColor=rc;c.shadowBlur=it.rar>=3?16:it.rar>=2?12:6;}
+  c.drawImage(MP_IMG[k],b[0],b[1],b[2],b[3],(N-w)/2,(N-h)/2,w,h);c.restore();
+  if(it.rar>=3)modSparkle(c,N*0.7,N*0.3,9,"#ffd58a");
+  c.beginPath();c.arc(26,26,15,0,7);c.fillStyle="#0a1438";c.fill();c.lineWidth=3;c.strokeStyle=sc;c.stroke();
+  c.fillStyle=sc;c.font="900 16px sans-serif";c.textAlign="center";c.textBaseline="middle";c.fillText((it.set||"?")[0].toUpperCase(),26,27);
+  if(t){c.beginPath();c.arc(N-26,N-26,15,0,7);c.fillStyle="#0a1438";c.fill();c.lineWidth=3;c.strokeStyle=rc;c.stroke();
+    c.fillStyle="#fff";c.font="900 17px sans-serif";c.fillText(GGLYPH[t]||"•",N-26,N-25);}
+  return GICON[ck]=cv.toDataURL("image/png");}
 /* Bullet FX: every Valkyrie fires her own projectile style (core + glow + tapered trail + sparks + impact).
    Mockup only: a "ĐẠN" chip in battle cycles all 9 styles on any pilot (hidden in the app build). */
 const BFX=[
