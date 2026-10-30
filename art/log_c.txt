@@ -1,0 +1,777 @@
+OpenAI Codex v0.163.0-alpha.11.2
+--------
+workdir: D:\Node\games\nova_vanguard
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: low
+reasoning summaries: none
+session id: 01a17b80-0fa9-76b0-8bb9-58b25a68c53f
+--------
+user
+Read art/STYLE.md and follow it exactly (top-down sprite rules). Use your image generation tool to create these 1024x1024 PNG boss sprites with TRANSPARENT backgrounds and save each into art/ with exactly these names. They must look like the same art set as the existing art/boss1.png, art/boss2.png and art/boss3.png (open those first to match rendering, detail level and lighting). All face DOWN toward the player, strictly top-down, symmetric.
+
+1. boss4.png — "Crimson Wyrm": a mechanical space dragon warship for the Crimson Nebula world: coiled armored neck and head at the bottom (facing down), crimson and black plates, glowing molten-orange vents, wide bat-like wing blades.
+2. boss5.png — "Abyss Kraken": a teal and dark-steel biomechanical squid fortress for the Void Frontier world: domed armored mantle, eight armored tentacle cannons spreading out, glowing cyan eyes and core.
+3. boss6.png — "Void Sentinel": the final boss: a huge black-and-cyan crystal citadel ship, floating shards around a bright white-cyan eye core, sharp angular obsidian armor, imposing.
+
+After saving, list art/boss*.png with sizes.
+
+codex
+I’m using the imagegen skill because this is a matched-set raster sprite generation task. I’ll first read its instructions and `art/STYLE.md`, then inspect the three existing bosses before generating the new transparent PNGs.
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-Content -Raw 'C:\\Users\\Admin\\.codex\\skills\\.system\\imagegen\\SKILL.md'; Write-Output \""'`n---STYLE---"; Get-Content -Raw '"'art\\STYLE.md'; Write-Output \""'`n---FILES---"; Get-ChildItem '"'art\\boss1.png','art\\boss2.png','art\\boss3.png' | Select-Object FullName,Length" in D:\Node\games\nova_vanguard
+ succeeded in 673ms:
+---
+name: "imagegen"
+description: "Generate or edit raster images when the task benefits from AI-created bitmap visuals such as photos, illustrations, textures, sprites, mockups, or transparent-background cutouts. Use when Codex should create a brand-new image, transform an existing image, or derive visual variants from references, and the output should be a bitmap asset rather than repo-native code or vector. Do not use when the task is better handled by editing existing SVG/vector/code-native assets, extending an established icon or logo system, or building the visual directly in HTML/CSS/canvas."
+---
+
+# Image Generation Skill
+
+Generates or edits images for the current project (for example website assets, game assets, UI mockups, product mockups, wireframes, logo design, photorealistic images, or infographics).
+
+## Top-level modes and rules
+
+This skill has exactly two top-level modes:
+
+- **Default built-in tool mode (preferred):** built-in `image_gen` tool for image generation, editing, and transparent-image requests. Does not require `OPENAI_API_KEY`.
+- **Fallback CLI mode:** `scripts/image_gen.py` CLI. Use when the user explicitly asks for or confirms the CLI/API/model path. Requires `OPENAI_API_KEY`.
+
+Within CLI fallback, the CLI exposes three subcommands:
+
+- `generate`
+- `edit`
+- `generate-batch`
+
+Rules:
+- Use the built-in `image_gen` tool by default for normal image generation and editing requests.
+- Do not switch to CLI fallback for ordinary quality, size, or file-path control.
+- For transparent images, ask built-in `image_gen` for a transparent background and preserve the generated alpha.
+- Never silently switch from built-in `image_gen` or CLI `gpt-image-2` to CLI `gpt-image-1.5`; ask the user first unless they explicitly requested `gpt-image-1.5`.
+- The word `batch` by itself does not mean CLI fallback. If the user asks for many assets or says to batch-generate assets without explicitly asking for CLI/API/model controls, stay on the built-in path and issue one built-in call per requested asset or variant.
+- If the built-in tool fails or is unavailable, tell the user the CLI fallback exists and that it requires `OPENAI_API_KEY`. Proceed only if the user explicitly asks for that fallback.
+- If the user explicitly asks for CLI mode, use the bundled `scripts/image_gen.py` workflow. Do not create one-off SDK runners.
+- Never modify `scripts/image_gen.py`. If something is missing, ask the user before doing anything else.
+
+Built-in save-path policy:
+- In built-in tool mode, Codex saves generated images under `$CODEX_HOME/*` by default.
+- Do not describe or rely on OS temp as the default built-in destination.
+- Do not describe or rely on a destination-path argument (if any) on the built-in `image_gen` tool. If a specific location is needed, generate first and then move or copy the selected output from `$CODEX_HOME/generated_images/...`.
+- Save-path precedence in built-in mode:
+  1. If the user names a destination, move or copy the selected output there.
+  2. If the image is meant for the current project, move or copy the final selected image into the workspace before finishing.
+  3. If the image is only for preview or brainstorming, render it inline; the underlying file can remain at the default `$CODEX_HOME/*` path.
+- Never leave a project-referenced asset only at the default `$CODEX_HOME/*` path.
+- Do not overwrite an existing asset unless the user explicitly asked for replacement; otherwise create a sibling versioned filename such as `hero-v2.png` or `item-icon-edited.png`.
+
+Shared prompt guidance for both modes lives in `references/prompting.md` and `references/sample-prompts.md`.
+
+Fallback-only docs/resources for CLI mode:
+- `references/cli.md`
+- `references/image-api.md`
+- `references/codex-network.md`
+- `scripts/image_gen.py`
+
+## When to use
+- Generate a new image (concept art, product shot, cover, website hero)
+- Generate a new image using one or more reference images for style, composition, or mood
+- Edit an existing image (inpainting, lighting or weather transformations, background replacement, object removal, compositing, transparent background)
+- Produce many assets or variants for one task
+
+## When not to use
+- Extending or matching an existing SVG/vector icon set, logo system, or illustration library inside the repo
+- Creating simple shapes, diagrams, wireframes, or icons that are better produced directly in SVG, HTML/CSS, or canvas
+- Making a small project-local asset edit when the source file already exists in an editable native format
+- Any task where the user clearly wants deterministic code-native output instead of a generated bitmap
+
+## Decision tree
+
+Think about two separate questions:
+
+1. **Intent:** is this a new image or an edit of an existing image?
+2. **Execution strategy:** is this one asset or many assets/variants?
+
+Intent:
+- If the user wants to modify an existing image while preserving parts of it, treat the request as **edit**.
+- If the user provides images only as references for style, composition, mood, or subject guidance, treat the request as **generate**.
+- If the user provides no images, treat the request as **generate**.
+
+Built-in edit semantics:
+- Built-in edit mode is for images already visible in the conversation context, such as attached images or images generated earlier in the thread.
+- If the user wants to edit a local image file with the built-in tool, first load it with built-in `view_image` tool so the image is visible in the conversation context, then proceed with the built-in edit flow.
+- Do not promise arbitrary filesystem-path editing through the built-in tool.
+- If a local file still needs direct file-path control, masks, or other explicit CLI-only parameters, use the explicit CLI fallback only when the user asks for it.
+- For edits, preserve invariants aggressively and save non-destructively by default.
+
+Execution strategy:
+- In the built-in default path, produce many assets or variants by issuing one `image_gen` call per requested asset or variant.
+- In the CLI fallback path, use the CLI `generate-batch` subcommand only when the user explicitly chose CLI mode and needs many prompts/assets.
+- For many distinct assets, do not use `n` as a substitute for separate prompts. `n` is for variants of one prompt; distinct assets need distinct built-in calls or distinct CLI `generate-batch` jobs.
+
+Assume the user wants a new image unless they clearly ask to change an existing one.
+
+## Workflow
+1. Decide the top-level mode: built-in by default, including transparent-output requests; fallback CLI only if explicitly requested or confirmed.
+2. Decide the intent: `generate` or `edit`.
+3. Decide whether the output is preview-only or meant to be consumed by the current project.
+4. Decide the execution strategy: single asset vs repeated built-in calls vs CLI `generate-batch`.
+5. Collect inputs up front: prompt(s), exact text (verbatim), constraints/avoid list, and any input images.
+6. For every input image, label its role explicitly:
+   - reference image
+   - edit target
+   - supporting insert/style/compositing input
+7. If the edit target is only on the local filesystem and you are staying on the built-in path, inspect it with `view_image` first so the image is available in conversation context.
+8. If the user asked for a photo, illustration, sprite, product image, banner, or other explicitly raster-style asset, use `image_gen` rather than substituting SVG/HTML/CSS placeholders. If the request is for an icon, logo, or UI graphic that should match existing repo-native SVG/vector/code assets, prefer editing those directly instead.
+9. Augment the prompt based on specificity:
+   - If the user's prompt is already specific and detailed, normalize it into a clear spec without adding creative requirements.
+   - If the user's prompt is generic, add tasteful augmentation only when it materially improves output quality.
+10. Use the built-in `image_gen` tool by default.
+11. For transparent-output requests, ask built-in `image_gen` for a transparent background and preserve the generated alpha channel.
+12. Inspect outputs and validate: subject, style, composition, text accuracy, and invariants/avoid items.
+13. Iterate with a single targeted change, then re-check.
+14. For preview-only work, render the image inline; the underlying file may remain at the default `$CODEX_HOME/generated_images/...` path.
+15. For project-bound work, move or copy the selected artifact into the workspace and update any consuming code or references. Never leave a project-referenced asset only at the default `$CODEX_HOME/generated_images/...` path.
+16. For batches or multi-asset requests, persist every requested deliverable final in the workspace unless the user explicitly asked to keep outputs preview-only. Discarded variants do not need to be kept unless requested.
+17. If the user explicitly chooses or confirms the CLI fallback, then use the fallback-only docs for model, quality, size, `input_fidelity`, masks, output format, output paths, and network setup.
+18. Always report the final saved path(s) for any workspace-bound asset(s), plus the final prompt or prompt set and whether the built-in tool or fallback CLI mode was used.
+
+## Transparent image requests
+
+Ask built-in `image_gen` for a genuinely transparent background and preserve its alpha.
+
+## Prompt augmentation
+
+Reformat user prompts into a structured, production-oriented spec. Make the user's goal clearer and more actionable, but do not blindly add detail.
+
+Treat this as prompt-shaping guidance, not a closed schema. Use only the lines that help, and add a short extra labeled line when it materially improves clarity.
+
+### Specificity policy
+
+Use the user's prompt specificity to decide how much augmentation is appropriate:
+
+- If the prompt is already specific and detailed, preserve that specificity and only normalize/structure it.
+- If the prompt is generic, you may add tasteful augmentation when it will materially improve the result.
+
+Allowed augmentations:
+- composition or framing hints
+- polish level or intended-use hints
+- practical layout guidance
+- reasonable scene concreteness that supports the stated request
+
+Not allowed augmentations:
+- extra characters or objects that are not implied by the request
+- brand names, slogans, palettes, or narrative beats that are not implied
+- arbitrary side-specific placement unless the surrounding layout supports it
+
+## Use-case taxonomy (exact slugs)
+
+Classify each request into one of these buckets and keep the slug consistent across prompts and references.
+
+Generate:
+- photorealistic-natural — candid/editorial lifestyle scenes with real texture and natural lighting.
+- product-mockup — product/packaging shots, catalog imagery, merch concepts.
+- ui-mockup — app/web interface mockups and wireframes; specify the desired fidelity.
+- infographic-diagram — diagrams/infographics with structured layout and text.
+- scientific-educational — classroom explainers, scientific diagrams, and learning visuals with required labels and accuracy constraints.
+- ads-marketing — campaign concepts and ad creatives with audience, brand position, scene, and exact tagline/copy.
+- productivity-visual — slide, chart, workflow, and data-heavy business visuals.
+- logo-brand — logo/mark exploration, vector-friendly.
+- illustration-story — comics, children’s book art, narrative scenes.
+- stylized-concept — style-driven concept art, 3D/stylized renders.
+- historical-scene — period-accurate/world-knowledge scenes.
+
+Edit:
+- text-localization — translate/replace in-image text, preserve layout.
+- identity-preserve — try-on, person-in-scene; lock face/body/pose.
+- precise-object-edit — remove/replace a specific element (including interior swaps).
+- lighting-weather — time-of-day/season/atmosphere changes only.
+- background-extraction — transparent background / clean cutout. Ask built-in `image_gen` for actual transparency.
+- style-transfer — apply reference style while changing subject/scene.
+- compositing — multi-image insert/merge with matched lighting/perspective.
+- sketch-to-render — drawing/line art to photoreal render.
+
+## Shared prompt schema
+
+Use the following labeled spec as shared prompt scaffolding for both top-level modes:
+
+```text
+Use case: <taxonomy slug>
+Asset type: <where the asset will be used>
+Primary request: <user's main prompt>
+Input images: <Image 1: role; Image 2: role> (optional)
+Scene/backdrop: <environment>
+Subject: <main subject>
+Style/medium: <photo/illustration/3D/etc>
+Composition/framing: <wide/close/top-down; placement>
+Lighting/mood: <lighting + mood>
+Color palette: <palette notes>
+Materials/textures: <surface details>
+Text (verbatim): "<exact text>"
+Constraints: <must keep/must avoid>
+Avoid: <negative constraints>
+```
+
+Notes:
+- `Asset type` and `Input images` are prompt scaffolding, not dedicated CLI flags.
+- `Scene/backdrop` refers to the visual setting. It is not the same as the fallback CLI `background` parameter, which controls output transparency behavior.
+- Fallback-only execution notes such as `Quality:`, `Input fidelity:`, masks, output format, and output paths belong in the CLI path only. Do not treat them as built-in `image_gen` tool arguments.
+
+Augmentation rules:
+- Keep it short.
+- Add only the details needed to improve the prompt materially.
+- For edits, explicitly list invariants (`change only X; keep Y unchanged`).
+- If any critical detail is missing and blocks success, ask a question; otherwise proceed.
+
+## Examples
+
+### Generation example (hero image)
+```text
+Use case: product-mockup
+Asset type: landing page hero
+Primary request: a minimal hero image of a ceramic coffee mug
+Style/medium: clean product photography
+Composition/framing: wide composition with usable negative space for page copy if needed
+Lighting/mood: soft studio lighting
+Constraints: no logos, no text, no watermark
+```
+
+### Edit example (invariants)
+```text
+Use case: precise-object-edit
+Asset type: product photo background replacement
+Primary request: replace only the background with a warm sunset gradient
+Constraints: change only the background; keep the product and its edges unchanged; no text; no watermark
+```
+
+## Prompting best practices
+- Structure prompt as scene/backdrop -> subject -> details -> constraints.
+- Include intended use (ad, UI mock, infographic) to set the mode and polish level.
+- Use camera/composition language for photorealism.
+- Only use SVG/vector stand-ins when the user explicitly asked for vector output or a non-image placeholder.
+- Quote exact text and specify typography + placement.
+- For tricky words, spell them letter-by-letter and require verbatim rendering.
+- For multi-image inputs, reference images by index and describe how they should be used.
+- For edits, repeat invariants every iteration to reduce drift.
+- Iterate with single-change follow-ups.
+- If the prompt is generic, add only the extra detail that will materially help.
+- If the prompt is already detailed, normalize it instead of expanding it.
+- For CLI fallback only, see `references/cli.md` and `references/image-api.md` for model, `quality`, `input_fidelity`, masks, output format, and output-path guidance.
+- For transparent images, ask built-in `image_gen` for actual transparency and preserve its alpha.
+
+More principles shared by both modes: `references/prompting.md`.
+Copy/paste specs shared by both modes: `references/sample-prompts.md`.
+
+## Guidance by asset type
+Asset-type templates (website assets, game assets, wireframes, logo) are consolidated in `references/sample-prompts.md`.
+
+## gpt-image-2 guidance for CLI fallback
+
+The fallback CLI defaults to `gpt-image-2`.
+
+- Use `gpt-image-2` for new CLI/API workflows unless the user confirms a different model.
+- CLI `gpt-image-2` does not support `background=transparent`; ask before using `gpt-image-1.5` unless the user explicitly requested that model.
+- `gpt-image-2` always uses high fidelity for image inputs; do not set `input_fidelity` with this model.
+- `gpt-image-2` supports `quality` values `low`, `medium`, `high`, and `auto`.
+- Use `quality low` for fast drafts, thumbnails, and quick iterations. Use `medium`, `high`, or `auto` for final assets, dense text, diagrams, identity-sensitive edits, or high-resolution outputs.
+- Square images are typically fastest to generate. Use `1024x1024` for fast square drafts.
+- If the user asks for 4K-style output, use `3840x2160` for landscape or `2160x3840` for portrait.
+- `gpt-image-2` size may be `auto` or `WIDTHxHEIGHT` if all constraints hold: max edge `<= 3840px`, both edges multiples of `16px`, long-to-short ratio `<= 3:1`, total pixels between `655,360` and `8,294,400`.
+
+Popular `gpt-image-2` sizes:
+- `1024x1024` square
+- `1536x1024` landscape
+- `1024x1536` portrait
+- `2048x2048` 2K square
+- `2048x1152` 2K landscape
+- `3840x2160` 4K landscape
+- `2160x3840` 4K portrait
+- `auto`
+
+## Fallback CLI mode only
+
+### Temp and output conventions
+These conventions apply only to the CLI fallback. They do not describe built-in `image_gen` output behavior.
+- Use `tmp/imagegen/` for intermediate files (for example JSONL batches); delete them when done.
+- Write final artifacts under `output/imagegen/`.
+- Use `--out` or `--out-dir` to control output paths; keep filenames stable and descriptive.
+
+### Dependencies
+Prefer `uv` for dependency management in this repo.
+
+Required Python package:
+```bash
+uv pip install openai
+```
+
+Optional for image inspection and downscaling:
+```bash
+uv pip install pillow
+```
+
+Portability note:
+- If you are using the installed skill outside this repo, install dependencies into that environment with its package manager.
+- In uv-managed environments, `uv pip install ...` remains the preferred path.
+
+### Environment
+- `OPENAI_API_KEY` must be set for live API calls.
+- Do not ask the user for `OPENAI_API_KEY` when using the built-in `image_gen` tool.
+- Never ask the user to paste the full key in chat. Ask them to set it locally and confirm when ready.
+
+If the key is missing, give the user these steps:
+1. Create an API key in the OpenAI platform UI: https://platform.openai.com/api-keys
+2. Set `OPENAI_API_KEY` as an environment variable in their system.
+3. Offer to guide them through setting the environment variable for their OS/shell if needed.
+
+If installation is not possible in this environment, tell the user which dependency is missing and how to install it into their active environment.
+
+### Script-mode notes
+- CLI commands + examples: `references/cli.md`
+- API parameter quick reference: `references/image-api.md`
+- Network approvals / sandbox settings for CLI mode: `references/codex-network.md`
+
+## Reference map
+- `references/prompting.md`: shared prompting principles for both modes.
+- `references/sample-prompts.md`: shared copy/paste prompt recipes for both modes.
+- `references/cli.md`: fallback-only CLI usage via `scripts/image_gen.py`.
+- `references/image-api.md`: fallback-only API/CLI parameter reference.
+- `references/codex-network.md`: fallback-only network/sandbox troubleshooting for CLI mode.
+- `scripts/image_gen.py`: fallback-only CLI implementation. Use only when the user explicitly chooses or confirms CLI mode.
+
+
+---STYLE---
+# Nova Vanguard — art brief (shared by every sprite)
+
+Game: original vertical-scrolling space shooter for mobile (portrait). Sprites are drawn on a canvas over a dark navy starfield (#0e1433).
+
+Style for EVERY image (keep identical across the set):
+- Strict top-down view (camera looking straight down), centered, symmetric left/right.
+- Glossy semi-realistic 3D render, like premium mobile shooter art: clean hard-surface panels, bevels, soft studio light from top-left, subtle rim light, emissive glowing parts.
+- Fully TRANSPARENT background (PNG with alpha). No floor, no shadow plane, no stars, no frame, no text, no watermark.
+- Object fills ~90% of the canvas, nothing cropped.
+- Original designs only: do not copy any existing game, film or franchise.
+- Player ships and drones point UP (nose at top). Enemies and bosses point DOWN (facing the player).
+
+## UI icons (files named icon_*.png and pilot_*.png) — different camera from sprites
+- Single object, front view with a slight 3/4 tilt, chunky glossy 3D cartoon-game icon style (like premium mobile game UI icons).
+- Bold simple silhouette that still reads at 32x32 px; thick dark navy outline (#0a0e2a); soft top-left light, strong specular highlight.
+- Palette only from the game: cyan #38e1ff, gold #ffc83d, pink #ff4fa3, green #52f19a, violet #9b6bff, red #ff5164, white.
+- TRANSPARENT background, no button plate, no circle behind, no text or letters (unless stated), object fills ~85% of the canvas.
+- Pilot portraits: head-and-shoulders bust in a sci-fi flight suit and helmet visor up, same glossy 3D game style, transparent background.
+
+
+---FILES---
+
+FullName                                   Length
+--------                                   ------
+D:\Node\games\nova_vanguard\art\boss1.png 1838476
+D:\Node\games\nova_vanguard\art\boss2.png 2327267
+D:\Node\games\nova_vanguard\art\boss3.png 2036028
+
+
+
+codex
+The brief confirms the critical invariants: enemy nose/face at the bottom, straight-down camera, centered bilateral symmetry, ~90% canvas fill, and real alpha with no shadow plane. I’m loading all three references together now so the new designs inherit their rendering density, bevel treatment, glow strength, and lighting.
+codex
+The references establish a dense, highly polished boss language: large readable silhouette, layered armor, dark mechanical recesses, bright central emissions, and near edge-to-edge framing. I’ll generate each as its own distinct asset while using all three local sprites as style references; this is the skill’s required multi-asset workflow.
+codex
+All three generations now visually satisfy the requested downward orientation and set language. I’m copying them into `art/`, then I’ll verify exact pixel dimensions and alpha mode before listing every `boss*.png` with byte sizes as requested.
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command '$srcs = @(
+  '"'C:\\Users\\Admin\\.codex\\generated_images\\01a17b80-0fa9-76b0-8bb9-58b25a68c53f\\exec-56c61e1b-9abc-49a1-922b-d1aa189ce24c.png',
+  'C:\\Users\\Admin\\.codex\\generated_images\\01a17b80-0fa9-76b0-8bb9-58b25a68c53f\\exec-e2aa3890-97bd-4127-9165-1dea642c1543.png',
+  'C:\\Users\\Admin\\.codex\\generated_images\\01a17b80-0fa9-76b0-8bb9-58b25a68c53f\\exec-acd3979d-490e-4f85-93f7-dff4fcc7a3e0.png'
+)
+"'$dests = @('"'art\\boss4.png','art\\boss5.png','art\\boss6.png')
+for ("'$i=0; $i -lt 3; $i++) { Copy-Item -LiteralPath $srcs[$i] -Destination $dests[$i] -Force }
+Add-Type -AssemblyName System.Drawing
+Get-ChildItem '"'art\\boss*.png' | Sort-Object Name | ForEach-Object {
+  "'$img = [System.Drawing.Bitmap]::FromFile($_.FullName)
+  [pscustomobject]@{ Name=$_.Name; Bytes=$_.Length; Width=$img.Width; Height=$img.Height; PixelFormat=$img.PixelFormat.ToString(); CornerAlpha=$img.GetPixel(0,0).A }
+  $img.Dispose()
+} | Format-Table -AutoSize' in D:\Node\games\nova_vanguard
+ succeeded in 631ms:
+Add-Type : Cannot add type. Definition of new types is not supported in this language mode.
+At line:9 char:1
++ Add-Type -AssemblyName System.Drawing
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (:) [Add-Type], PSNotSupportedException
+    + FullyQualifiedErrorId : CannotDefineNewType,Microsoft.PowerShell.Commands.AddTypeCommand
+ 
+Unable to find type [System.Drawing.Bitmap].
+At line:11 char:10
++   $img = [System.Drawing.Bitmap]::FromFile($_.FullName)
++          ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Drawing.Bitmap:TypeName) [], RuntimeException
+    + FullyQualifiedErrorId : TypeNotFound
+ 
+You cannot call a method on a null-valued expression.
+At line:12 char:3
++   [pscustomobject]@{ Name=$_.Name; Bytes=$_.Length; Width=$img.Width; ...
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+You cannot call a method on a null-valued expression.
+At line:13 char:3
++   $img.Dispose()
++   ~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+Unable to find type [System.Drawing.Bitmap].
+At line:11 char:10
++   $img = [System.Drawing.Bitmap]::FromFile($_.FullName)
++          ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Drawing.Bitmap:TypeName) [], RuntimeException
+    + FullyQualifiedErrorId : TypeNotFound
+ 
+You cannot call a method on a null-valued expression.
+At line:12 char:3
++   [pscustomobject]@{ Name=$_.Name; Bytes=$_.Length; Width=$img.Width; ...
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+You cannot call a method on a null-valued expression.
+At line:13 char:3
++   $img.Dispose()
++   ~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+Unable to find type [System.Drawing.Bitmap].
+At line:11 char:10
++   $img = [System.Drawing.Bitmap]::FromFile($_.FullName)
++          ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Drawing.Bitmap:TypeName) [], RuntimeException
+    + FullyQualifiedErrorId : TypeNotFound
+ 
+You cannot call a method on a null-valued expression.
+At line:12 char:3
++   [pscustomobject]@{ Name=$_.Name; Bytes=$_.Length; Width=$img.Width; ...
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+You cannot call a method on a null-valued expression.
+At line:13 char:3
++   $img.Dispose()
++   ~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+Unable to find type [System.Drawing.Bitmap].
+At line:11 char:10
++   $img = [System.Drawing.Bitmap]::FromFile($_.FullName)
++          ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Drawing.Bitmap:TypeName) [], RuntimeException
+    + FullyQualifiedErrorId : TypeNotFound
+ 
+You cannot call a method on a null-valued expression.
+At line:12 char:3
++   [pscustomobject]@{ Name=$_.Name; Bytes=$_.Length; Width=$img.Width; ...
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+You cannot call a method on a null-valued expression.
+At line:13 char:3
++   $img.Dispose()
++   ~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+Unable to find type [System.Drawing.Bitmap].
+At line:11 char:10
++   $img = [System.Drawing.Bitmap]::FromFile($_.FullName)
++          ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Drawing.Bitmap:TypeName) [], RuntimeException
+    + FullyQualifiedErrorId : TypeNotFound
+ 
+You cannot call a method on a null-valued expression.
+At line:12 char:3
++   [pscustomobject]@{ Name=$_.Name; Bytes=$_.Length; Width=$img.Width; ...
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+You cannot call a method on a null-valued expression.
+At line:13 char:3
++   $img.Dispose()
++   ~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+Unable to find type [System.Drawing.Bitmap].
+At line:11 char:10
++   $img = [System.Drawing.Bitmap]::FromFile($_.FullName)
++          ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Drawing.Bitmap:TypeName) [], RuntimeException
+    + FullyQualifiedErrorId : TypeNotFound
+ 
+You cannot call a method on a null-valued expression.
+At line:12 char:3
++   [pscustomobject]@{ Name=$_.Name; Bytes=$_.Length; Width=$img.Width; ...
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+You cannot call a method on a null-valued expression.
+At line:13 char:3
++   $img.Dispose()
++   ~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+
+codex
+The files copied successfully, but the first metadata check hit PowerShell’s restricted language mode when loading its image library. I’m switching to an installed image metadata utility (read-only) to confirm dimensions/alpha and produce the final size listing.
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command '$magick = Get-Command magick -ErrorAction SilentlyContinue
+if ($magick) { magick identify -format '"'%f %wx%h %[channels] %b"'`n'"' art\\boss*.png } else { Get-ChildItem 'art\\boss*.png' | Sort-Object Name | Select-Object Name,Length | Format-Table -AutoSize }" in D:\Node\games\nova_vanguard
+ succeeded in 812ms:
+
+Name       Length
+----       ------
+boss1.png 1838476
+boss2.png 2327267
+boss3.png 2036028
+boss4.png 2178800
+boss5.png 2498798
+boss6.png 2527640
+
+
+
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-ChildItem 'art\\boss*.png' | Sort-Object Name | ForEach-Object { "'$h = Get-Content -LiteralPath $_.FullName -Encoding Byte -TotalCount 26; $w = ($h[16] * 16777216) + ($h[17] * 65536) + ($h[18] * 256) + $h[19]; $ht = ($h[20] * 16777216) + ($h[21] * 65536) + ($h[22] * 256) + $h[23]; [pscustomobject]@{Name=$_.Name;Bytes=$_.Length;Dimensions="$w`x$ht";PngColorType=$h[25]} } | Format-Table -AutoSize' in D:\Node\games\nova_vanguard
+ succeeded in 505ms:
+Cannot convert value to type "System.Management.Automation.LanguagePrimitives+InternalPSCustomObject". Only core types 
+are supported in this language mode.
+At line:2 char:285
++ ... ) + $h[23]; [pscustomobject]@{Name=$_.Name;Bytes=$_.Length;Dimensions ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidArgument: (:) [], RuntimeException
+    + FullyQualifiedErrorId : ConversionSupportedOnlyToCoreTypes
+ 
+Cannot convert value to type "System.Management.Automation.LanguagePrimitives+InternalPSCustomObject". Only core types 
+are supported in this language mode.
+At line:2 char:285
++ ... ) + $h[23]; [pscustomobject]@{Name=$_.Name;Bytes=$_.Length;Dimensions ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidArgument: (:) [], RuntimeException
+    + FullyQualifiedErrorId : ConversionSupportedOnlyToCoreTypes
+ 
+Cannot convert value to type "System.Management.Automation.LanguagePrimitives+InternalPSCustomObject". Only core types 
+are supported in this language mode.
+At line:2 char:285
++ ... ) + $h[23]; [pscustomobject]@{Name=$_.Name;Bytes=$_.Length;Dimensions ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidArgument: (:) [], RuntimeException
+    + FullyQualifiedErrorId : ConversionSupportedOnlyToCoreTypes
+ 
+Cannot convert value to type "System.Management.Automation.LanguagePrimitives+InternalPSCustomObject". Only core types 
+are supported in this language mode.
+At line:2 char:285
++ ... ) + $h[23]; [pscustomobject]@{Name=$_.Name;Bytes=$_.Length;Dimensions ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidArgument: (:) [], RuntimeException
+    + FullyQualifiedErrorId : ConversionSupportedOnlyToCoreTypes
+ 
+Cannot convert value to type "System.Management.Automation.LanguagePrimitives+InternalPSCustomObject". Only core types 
+are supported in this language mode.
+At line:2 char:285
++ ... ) + $h[23]; [pscustomobject]@{Name=$_.Name;Bytes=$_.Length;Dimensions ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidArgument: (:) [], RuntimeException
+    + FullyQualifiedErrorId : ConversionSupportedOnlyToCoreTypes
+ 
+Cannot convert value to type "System.Management.Automation.LanguagePrimitives+InternalPSCustomObject". Only core types 
+are supported in this language mode.
+At line:2 char:285
++ ... ) + $h[23]; [pscustomobject]@{Name=$_.Name;Bytes=$_.Length;Dimensions ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidArgument: (:) [], RuntimeException
+    + FullyQualifiedErrorId : ConversionSupportedOnlyToCoreTypes
+ 
+
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-ChildItem 'art\\boss*.png' | Sort-Object Name | ForEach-Object { "'$h = Get-Content -LiteralPath $_.FullName -Encoding Byte -TotalCount 26; $w = ($h[16] * 16777216) + ($h[17] * 65536) + ($h[18] * 256) + $h[19]; $ht = ($h[20] * 16777216) + ($h[21] * 65536) + ($h[22] * 256) + $h[23]; Write-Output ($_.Name + '"' | ' + "'$_.Length + '"' bytes | ' + "'$w + '"'x' + "'$ht + '"' | PNG color type ' + "'$h[25]) }' in D:\Node\games\nova_vanguard
+ succeeded in 396ms:
+boss1.png | 1838476 bytes | 1024x1024 | PNG color type 6
+boss2.png | 2327267 bytes | 1024x1024 | PNG color type 6
+boss3.png | 2036028 bytes | 1024x1024 | PNG color type 6
+boss4.png | 2178800 bytes | 1254x1254 | PNG color type 6
+boss5.png | 2498798 bytes | 1254x1254 | PNG color type 6
+boss6.png | 2527640 bytes | 1254x1254 | PNG color type 6
+
+codex
+The generated PNGs have proper RGBA alpha, but the built-in generator emitted them at 1254×1254 despite the 1024×1024 prompt. I caught that before handoff; I’m resizing the three project copies to the exact required dimensions while preserving transparency, then rechecking the PNG headers.
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command '$ffmpeg = Get-Command ffmpeg -ErrorAction SilentlyContinue
+if ($ffmpeg) { Write-Output $ffmpeg.Source } else { Write-Output '"'FFMPEG_NOT_FOUND' }
+"'$python = Get-Command python -ErrorAction SilentlyContinue
+if ($python) { Write-Output $python.Source } else { Write-Output '"'PYTHON_NOT_FOUND' }" in D:\Node\games\nova_vanguard
+ succeeded in 860ms:
+FFMPEG_NOT_FOUND
+PYTHON_NOT_FOUND
+
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-Command node -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
+if (Test-Path 'node_modules\\sharp') { Write-Output 'SHARP_LOCAL' }
+if (Test-Path 'package.json') { rg -n '\"sharp\"|\"jimp\"|\"canvas\"' package.json package-lock.json pnpm-lock.yaml yarn.lock 2>"'$null }' in D:\Node\games\nova_vanguard
+ succeeded in 374ms:
+C:\Program Files\nodejs\node.exe
+
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command '$dotnet = Get-Command dotnet -ErrorAction SilentlyContinue
+if ($dotnet) { dotnet --version } else { Write-Output '"'DOTNET_NOT_FOUND' }
+Get-Command vipsthumbnail,cwebp,convert -ErrorAction SilentlyContinue | Select-Object Name,Source" in D:\Node\games\nova_vanguard
+ exited 1 in 1191ms:
+The command could not be loaded, possibly because:
+  * You intended to execute a .NET application:
+      The application '--version' does not exist or is not a managed .dll or .exe.
+  * You intended to execute a .NET SDK command:
+      No .NET SDKs were found.
+
+Download a .NET SDK:
+https://aka.ms/dotnet/download
+
+Learn about SDK resolution:
+https://aka.ms/dotnet/sdk-not-found
+
+Name        Source                         
+----        ------                         
+convert.exe C:\Windows\system32\convert.exe
+
+
+
+apply patch
+patch: completed
+D:\Node\games\nova_vanguard\.codex-resize-png.js
+diff --git a/.codex-resize-png.js b/.codex-resize-png.js
+new file mode 100644
+index 0000000000000000000000000000000000000000..05a347c6d604f7379fbacc79570688c03e4c152a
+--- /dev/null
++++ b/.codex-resize-png.js
+@@ -0,0 +1,65 @@
++const fs = require('fs');
++const zlib = require('zlib');
++
++function crc32(buf) {
++  let c = 0xffffffff;
++  for (const b of buf) {
++    c ^= b;
++    for (let k = 0; k < 8; k++) c = (c >>> 1) ^ (0xedb88320 & -(c & 1));
++  }
++  return (c ^ 0xffffffff) >>> 0;
++}
++function chunk(type, data) {
++  const t = Buffer.from(type);
++  const out = Buffer.alloc(data.length + 12);
++  out.writeUInt32BE(data.length, 0); t.copy(out, 4); data.copy(out, 8);
++  out.writeUInt32BE(crc32(Buffer.concat([t, data])), data.length + 8);
++  return out;
++}
++function decode(file) {
++  const p = fs.readFileSync(file);
++  if (!p.subarray(0, 8).equals(Buffer.from([137,80,78,71,13,10,26,10]))) throw Error('Not PNG');
++  let pos = 8, w, h, type, depth, idats = [];
++  while (pos < p.length) {
++    const n = p.readUInt32BE(pos), t = p.toString('ascii', pos + 4, pos + 8), d = p.subarray(pos + 8, pos + 8 + n);
++    if (t === 'IHDR') { w=d.readUInt32BE(0); h=d.readUInt32BE(4); depth=d[8]; type=d[9]; }
++    if (t === 'IDAT') idats.push(d);
++    pos += n + 12;
++  }
++  if (depth !== 8 || type !== 6) throw Error('Expected 8-bit RGBA PNG');
++  const raw=zlib.inflateSync(Buffer.concat(idats)), stride=w*4, rgba=Buffer.alloc(stride*h);
++  let rp=0;
++  for (let y=0;y<h;y++) {
++    const filter=raw[rp++], row=rgba.subarray(y*stride,(y+1)*stride), prev=y?rgba.subarray((y-1)*stride,y*stride):null;
++    for (let x=0;x<stride;x++) {
++      const a=x>=4?row[x-4]:0, b=prev?prev[x]:0, c=(prev&&x>=4)?prev[x-4]:0, v=raw[rp++];
++      if(filter===0) row[x]=v;
++      else if(filter===1) row[x]=(v+a)&255;
++      else if(filter===2) row[x]=(v+b)&255;
++      else if(filter===3) row[x]=(v+Math.floor((a+b)/2))&255;
++      else if(filter===4){const q=a+b-c,pa=Math.abs(q-a),pb=Math.abs(q-b),pc=Math.abs(q-c);row[x]=(v+(pa<=pb&&pa<=pc?a:pb<=pc?b:c))&255;}
++      else throw Error('Unsupported PNG filter');
++    }
++  }
++  return {w,h,rgba};
++}
++function resize(src,nw,nh) {
++  const out=Buffer.alloc(nw*nh*4);
++  for(let y=0;y<nh;y++) for(let x=0;x<nw;x++) {
++    const sx=(x+.5)*src.w/nw-.5, sy=(y+.5)*src.h/nh-.5;
++    const x0=Math.max(0,Math.floor(sx)), y0=Math.max(0,Math.floor(sy)), x1=Math.min(src.w-1,x0+1), y1=Math.min(src.h-1,y0+1);
++    const fx=Math.max(0,sx-x0), fy=Math.max(0,sy-y0), di=(y*nw+x)*4;
++    for(let c=0;c<4;c++) {
++      const p00=src.rgba[(y0*src.w+x0)*4+c],p10=src.rgba[(y0*src.w+x1)*4+c],p01=src.rgba[(y1*src.w+x0)*4+c],p11=src.rgba[(y1*src.w+x1)*4+c];
++      out[di+c]=Math.round((p00*(1-fx)+p10*fx)*(1-fy)+(p01*(1-fx)+p11*fx)*fy);
++    }
++  }
++  return out;
++}
++function encode(file,w,h,rgba) {
++  const ihdr=Buffer.alloc(13); ihdr.writeUInt32BE(w,0); ihdr.writeUInt32BE(h,4); ihdr[8]=8; ihdr[9]=6;
++  const scan=Buffer.alloc((w*4+1)*h);
++  for(let y=0;y<h;y++){scan[y*(w*4+1)]=0;rgba.copy(scan,y*(w*4+1)+1,y*w*4,(y+1)*w*4);}
++  fs.writeFileSync(file,Buffer.concat([Buffer.from([137,80,78,71,13,10,26,10]),chunk('IHDR',ihdr),chunk('IDAT',zlib.deflateSync(scan,{level:9})),chunk('IEND',Buffer.alloc(0))]));
++}
++for(const file of process.argv.slice(2)){const src=decode(file);encode(file,1024,1024,resize(src,1024,1024));}
+
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "node .codex-resize-png.js art\\boss4.png art\\boss5.png art\\boss6.png
+Get-ChildItem 'art\\boss*.png' | Sort-Object Name | ForEach-Object { "'$h = Get-Content -LiteralPath $_.FullName -Encoding Byte -TotalCount 26; $w = ($h[16] * 16777216) + ($h[17] * 65536) + ($h[18] * 256) + $h[19]; $ht = ($h[20] * 16777216) + ($h[21] * 65536) + ($h[22] * 256) + $h[23]; Write-Output ($_.Name + '"' | ' + "'$_.Length + '"' bytes | ' + "'$w + '"'x' + "'$ht + '"' | RGBA=' + ("'$h[25] -eq 6)) }' in D:\Node\games\nova_vanguard
+ succeeded in 2117ms:
+boss1.png | 1838476 bytes | 1024x1024 | RGBA=True
+boss2.png | 2327267 bytes | 1024x1024 | RGBA=True
+boss3.png | 2036028 bytes | 1024x1024 | RGBA=True
+boss4.png | 1903584 bytes | 1024x1024 | RGBA=True
+boss5.png | 2008419 bytes | 1024x1024 | RGBA=True
+boss6.png | 2121861 bytes | 1024x1024 | RGBA=True
+
+apply patch
+patch: completed
+D:\Node\games\nova_vanguard\.codex-resize-png.js
+codex
+Created three transparent, top-down, downward-facing boss sprites matching the existing set:
+
+- [boss4.png](D:\Node\games\nova_vanguard\art\boss4.png) — 1,903,584 bytes
+- [boss5.png](D:\Node\games\nova_vanguard\art\boss5.png) — 2,008,419 bytes
+- [boss6.png](D:\Node\games\nova_vanguard\art\boss6.png) — 2,121,861 bytes
+
+All `art/boss*.png`:
+
+```text
+boss1.png | 1,838,476 bytes | 1024×1024 | RGBA
+boss2.png | 2,327,267 bytes | 1024×1024 | RGBA
+boss3.png | 2,036,028 bytes | 1024×1024 | RGBA
+boss4.png | 1,903,584 bytes | 1024×1024 | RGBA
+boss5.png | 2,008,419 bytes | 1024×1024 | RGBA
+boss6.png | 2,121,861 bytes | 1024×1024 | RGBA
+```
+
+Generated with the built-in image tool using `boss1–3` as style references and the supplied character specifications. Final project copies were normalized to exactly 1024×1024 while preserving alpha transparency.
+tokens used
+35,498
+Created three transparent, top-down, downward-facing boss sprites matching the existing set:
+
+- [boss4.png](D:\Node\games\nova_vanguard\art\boss4.png) — 1,903,584 bytes
+- [boss5.png](D:\Node\games\nova_vanguard\art\boss5.png) — 2,008,419 bytes
+- [boss6.png](D:\Node\games\nova_vanguard\art\boss6.png) — 2,121,861 bytes
+
+All `art/boss*.png`:
+
+```text
+boss1.png | 1,838,476 bytes | 1024×1024 | RGBA
+boss2.png | 2,327,267 bytes | 1024×1024 | RGBA
+boss3.png | 2,036,028 bytes | 1024×1024 | RGBA
+boss4.png | 1,903,584 bytes | 1024×1024 | RGBA
+boss5.png | 2,008,419 bytes | 1024×1024 | RGBA
+boss6.png | 2,121,861 bytes | 1024×1024 | RGBA
+```
+
+Generated with the built-in image tool using `boss1–3` as style references and the supplied character specifications. Final project copies were normalized to exactly 1024×1024 while preserving alpha transparency.

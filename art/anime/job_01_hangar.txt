@@ -1,0 +1,9 @@
+Use your image generation tool to create ONE background image for the Home screen of an original anime sci-fi mobile game where girls in flight rigs launch into space.
+
+Save it as art/anime/bg_hangar.jpg, portrait 1024x1536, JPG.
+
+Scene: interior of a futuristic orbital launch hangar, seen from the front at standing eye level, symmetrical composition. In the lower-middle of the image a round glowing holographic launch platform (cyan rings, thin light beams rising). Behind it a large sealed blast door with a big painted number "07" is NOT allowed - no numbers, no text, no logos anywhere. Side walls with mechanical arms, catwalks, cables, soft monitor glow. Dark navy and steel palette (#070a1c to #1d3f8a) with cyan (#38e1ff) lights and a few small warm orange warning lights. Painted anime game-background style, clean and detailed, slightly soft focus so a character standing in front stays readable.
+
+Keep the CENTER column (where a character will stand, from 15% to 85% of the height) calm and slightly darker; detail goes to the edges. The top 12% and bottom 15% are covered by UI, keep them simple. No characters, no people, no robots in the middle, no text.
+
+When done, print the file size.

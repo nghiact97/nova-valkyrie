@@ -1,0 +1,14 @@
+Create 3 separate icon images. Save EACH icon as its own PNG file (no sprite sheet, no grid). Do not create any other images.
+
+Style reference attached: art/mono/mono_daily.png and art/mono/mono_spin.png (our approved set). Match them exactly:
+- one colour only: pure white (#FFFFFF) shapes on a pure black (#000000) flat background (we key out the black), no gradients, no grey, no shading, no glow, no 3D
+- the same thin white diamond (rotated square) frame as the reference, same size and line weight; the glyph sits inside and may break out of the frame a little
+- bold solid filled silhouette, clean cut-out gaps for details, crisp edges, readable at 40 px
+- small sci-fi accents only (star sparks, orbit arcs, circuit lines), never ornamental swirls
+- 512x512 PNG, glyph centred, ~8% margin, no text, no letters, no numbers
+These icons are shown small (about 30 px): the glyph fills 80% of the frame, fewer accents.
+
+Files (folder art/mono/):
+1. art/mono/mono_settings.png - settings: a gear with a small wrench crossing it
+2. art/mono/mono_notice.png - notices: a megaphone with three short sound lines
+3. art/mono/mono_mail.png - mail: a closed envelope with a small star seal

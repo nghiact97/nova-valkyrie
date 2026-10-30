@@ -1,0 +1,21 @@
+Create 2 alternative versions of ONE mobile-game UI icon, "Mail", for approval. Do not create any other images.
+
+Game: "Nova Vanguard", a vertical-scrolling space shooter for phones. The icon sits directly on a dark navy deep-space starfield, with no button plate behind it.
+
+Attached: icon_daily.png and icon_shop.png are the APPROVED space-hardware style. Match them exactly: same size in the canvas, same thick dark-navy outline (#0a0e2a), same gunmetal hull with a few white armour panels, same neon light strips, same lighting from the top-left and the same level of simplicity.
+
+Why we are redrawing: the previous Mail icon (a communication satellite) did not read as "mail". The ENVELOPE shape must be the first thing a player sees, rendered as space hardware.
+
+Version A - art/v2/space/icon_mail_a.png:
+A small rugged gunmetal hologram emitter base (low and wide, like the base of icon_daily.png) projecting a large, glowing cyan (#38e1ff) hologram ENVELOPE above it. The envelope is clearly an envelope (rectangle with a V flap), semi-transparent cyan light with bright edges. The envelope takes about 60% of the icon height.
+
+Version B - art/v2/space/icon_mail_b.png:
+An armoured message capsule lying horizontally (rounded rectangular pod, gunmetal with white end caps) with a big glowing cyan ENVELOPE emblem on its front face and a thin cyan light strip along its length.
+
+Shared rules (strict):
+- Bold silhouette, at most 3-4 large shapes. No greebles, rivets, scratches, micro-text, letters, numbers or random sparkles. No satellite dishes, antennas or Wi-Fi waves.
+- Front-on view with at most a very slight 3/4 tilt, centred, filling about 85% of the canvas.
+- Must read as "mail" instantly at 32x32 px on a dark starfield.
+- Output per icon: PNG 1024x1024, FULLY transparent background with a clean, smooth edge (no halo, no speckles). No text, no watermark.
+
+When done, list the files with their sizes.

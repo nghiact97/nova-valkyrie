@@ -1,0 +1,12 @@
+Read art/STYLE.md (top-down sprite rules) and follow it exactly. Attached: the 3 APPROVED support drones drone_sparrow.png, drone_hornet.png, drone_aegis.png. New drones must look like the same game: strict top-down camera (front pointing UP), same glossy semi-realistic rendering, same lighting, same scale in the canvas, same level of detail. Drones are small escort machines that fly beside the player's fighter, so they are compact (not fighter jets).
+
+Use your image generation tool to create 6 NEW drones. Generate each as its OWN separate image (no sheet, no grid). PNG 1024x1024, FULLY transparent background, drone centred, at least 8% empty margin on every side, nothing cut off. No text, no watermark. Each must have a clearly different silhouette from the attached drones and from each other.
+
+1. art/drone_tesla.png - "Tesla": a round drone with two tesla-coil prongs on top, crackling electric-blue core. Accent: electric blue.
+2. art/drone_guardian.png - "Guardian": a hexagonal shield-emitter drone with a glowing cyan hex lens and small side fins. Accent: cyan.
+3. art/drone_flak.png - "Flak": a chunky drone with a wide triple-barrel shotgun cannon at the front. Accent: orange.
+4. art/drone_medic.png - "Medic": a smooth white drone with a glowing green repair cross on top and two small manipulator arms. Accent: green.
+5. art/drone_phantom.png - "Phantom": a sleek black-and-violet stealth drone, arrowhead shape, glowing violet void slit. Accent: violet.
+6. art/drone_solaris.png - "Solaris": an ornate gold-and-white drone with a radiant sun-disc core and four small blade wings. Accent: gold.
+
+Make 1 first and compare it with the attachments, then keep 2-6 consistent. When done, list the files with their sizes.

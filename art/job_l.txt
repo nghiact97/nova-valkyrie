@@ -1,0 +1,10 @@
+Read art/STYLE.md, section "UI icons v2", and follow it exactly (sci-fi military HUD icon set, gunmetal + neon). These are in-battle SKILL icons shown on level-up cards and in a small skill bar (28-48 px), so each needs a bold unique silhouette and its own accent color. Open art/icon_shield.png first and match its materials and lighting. Create 1024x1024 PNGs with TRANSPARENT backgrounds and save into art/ with exactly these names:
+
+1. skill_wing.png — fighter wing with two angled side cannons firing, green
+2. skill_drone.png — small escort drone pair, cyan
+3. skill_nova.png — expanding circular shockwave ring burst, gold
+4. skill_regen.png — hull plate with green repair nanobots / plus sign, green
+5. skill_maxhp.png — armored heart core with an up arrow, pink-red
+6. skill_magnet.png — horseshoe electromagnet pulling small crystals, violet
+7. skill_crit.png — targeting crosshair with a bright star burst, gold
+8. item_xp.png — small glowing teal-cyan experience crystal shard (faceted, bright core), clearly a pickup gem, not a ship

@@ -1,0 +1,12 @@
+Create 4 mobile-game UI icons. Do not create any other images. Generate each icon as its OWN separate image (no sheet, no grid).
+
+Attached: icon_offer.png is the APPROVED sample. Match it EXACTLY: same hologram look (semi-transparent glowing object about 70% opacity with brighter edges, soft bloom, very subtle thin scan lines, only 2-3 small glitch slivers close to the sides), the same small dark gunmetal projector disc with a glowing cyan ring at the bottom centre casting a light cone up into the object, same size and position in the canvas, same camera angle.
+
+These are Home-screen buttons shown at 54 px on a dark navy starfield, so each needs a bold, simple, instantly readable silhouette. No text or letters, no extra objects.
+
+1. art/v3/icon_settings.png - "Settings": a hologram machined gear with 8 chunky teeth and a round hole in the centre. Hologram colour: silver-cyan (#9fe8ff).
+2. art/v3/icon_daily.png - "Daily reward": a hologram calendar page with two binder rings on top and a big bold star in the middle. Hologram colour: pink (#ff4fa3) with the star in gold.
+3. art/v3/icon_quests.png - "Quests": a hologram clipboard / mission tablet with two bold check marks. Hologram colour: green (#52f19a).
+4. art/v3/icon_spin.png - "Lucky spin": a hologram prize wheel with 6 segments and a pointer at the top. Hologram colour: magenta-pink with gold pointer.
+
+Each: PNG 1024x1024, FULLY transparent background, clean edge, centred, at least 6% empty margin on every side. Make 1 first, compare it with icon_offer.png, then keep 2-4 consistent. When done, list the files with their sizes.

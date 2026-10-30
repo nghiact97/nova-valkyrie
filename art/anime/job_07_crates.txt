@@ -1,0 +1,10 @@
+Read art/anime/STYLE.md. Attached: art/anime/nav_sheet.png is the APPROVED icon set of this game. The crates must use the same materials and rendering: sculpted glossy WHITE PORCELAIN + polished metal, soft anime cel shading, glowing edge lights, crisp dark navy outline, light from top-left. Premium anime gacha-game look, not a gritty military box.
+
+Use your image generation tool to create ONE sheet: art/anime/crate_sheet.png, 1536x1024, FULLY TRANSPARENT background. Exactly 3 crates in ONE horizontal row, evenly spaced, each about 380x380 px, centred vertically, at least 80 px empty space between them. Same camera for all three: 3/4 front view from slightly above, lid closed. No text, no letters, no numbers, no frames, no plates behind them.
+
+Left to right (each one clearly more precious than the previous, bigger and more ornate):
+1. SUPPLY CRATE (common) - a compact white porcelain supply capsule-box with cyan (#5ee7ff) light strips, a small cyan latch.
+2. EPIC CRATE - a white and violet (#9b6bff) crate with a glowing pink-violet crystal set in the lid, small white mecha wings on both sides, violet light seams.
+3. LEGEND CRATE - a larger white and gold (#ffd36b) crate with a radiant sun emblem on the lid, six small golden blade-wings fanned out behind it, golden light leaking from the seams, a few sparkles around it.
+
+When done, print the file size.

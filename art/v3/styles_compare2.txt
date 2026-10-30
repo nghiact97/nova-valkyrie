@@ -1,0 +1,15 @@
+Create ONE presentation sheet image comparing 3 NEW icon styles for the Home-screen side buttons of a mobile space shooter. Do not create any other images.
+
+Game: "Nova Vanguard", vertical-scrolling space shooter, dark navy starfield UI. Attached for context: ship_kestrel.png (the game's glossy 3D ship art) and boss1.png.
+
+Sheet: landscape 1536x1152, dark navy starfield background (#0e1433). 3 ROWS, one per style, each with a small clean letter "D", "E", "F" at the left (no other text). In each row show the same 4 icons left to right: Settings (gear), Daily reward (calendar with a star), Quests (checklist), Lucky spin (prize wheel). Each icon about 230x230 px, evenly spaced, aligned.
+
+Style D - ROUND GAME BUTTON: each icon is a glossy round button: a thick metallic silver ring frame with a coloured glossy inner disc (settings steel blue, daily pink, quests green, spin purple), and a bold white-and-gold 3D symbol popping out of the disc. Strong top highlight like a candy/jewel button, as seen in top mobile shooters.
+
+Style E - PREMIUM GOLD EMBLEM: each icon is an ornate faceted gem-like emblem: a gold metal frame shaped like a shield/crest with angular wings, a deep coloured crystal centre (blue, pink, green, purple), and the symbol engraved in glowing white. Luxurious RPG-shooter look.
+
+Style F - CHUNKY CARTOON 3D: no frame; each symbol is a big, rounded, super glossy 3D object with saturated colours, a thick dark outline and a soft drop shadow (settings: chrome gear with blue core; daily: pink calendar with a gold star; quests: green clipboard with white checks; spin: colourful wheel with a gold pointer). Fun, bold, highly readable.
+
+Rules: same icon size in every row; all readable when small; no extra objects, no watermark.
+
+Save as art/v3/styles_compare2.png and list the file.

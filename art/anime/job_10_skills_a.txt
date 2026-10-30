@@ -1,0 +1,6 @@
+Read art/anime/STYLE.md. Attached: art/anime/nav_sheet.png and art/anime/crate_sheet.png are the APPROVED icon style of this game. Match them exactly: sculpted glossy WHITE PORCELAIN + polished metal, soft anime cel shading, glowing edge lights in the item colour, crisp dark navy outline so they read at 40 px, light from top-left, premium anime gacha-game look. No text, no letters, no numbers, no frames or plates behind the items. FULLY TRANSPARENT background.
+
+Use your image generation tool to create ONE sheet: art/anime/skill_sheet_a.png, 1536x1024. A grid of 4 columns x 2 rows = 8 skill icons, each centred in its 384x512 cell, about 260 px big, with at least 60 px of empty space between neighbours. Each icon is ONE bold readable object or symbol.
+Row 1: 1 ENERGY SHIELD (a glowing cyan hex bubble shield), 2 PLASMA BOMB (a white bomb capsule with a pink plasma core), 3 ULT CAPACITOR (a battery cell charging with gold energy), 4 FIREPOWER (a white bullet with red-orange flame burst).
+Row 2: 1 OVERCLOCK (a gear with speed lines and a lightning bolt), 2 CRIT MATRIX (a crosshair reticle with a star burst), 3 BOSS HUNTER (a target over a horned skull-like mecha mask, red), 4 DRONE LINK (two small white drones linked by a cyan beam).
+When done, print the file size.

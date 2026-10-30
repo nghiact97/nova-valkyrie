@@ -1,0 +1,15 @@
+Read art/STYLE.md, section "UI icons", and follow it exactly. Use your image generation tool to create these 1024x1024 PNG icons with TRANSPARENT backgrounds and save each into art/ with exactly these names. Make all of them look like ONE consistent icon set (same lighting, outline thickness and gloss).
+
+1. icon_daily.png — calendar with a gold star on the page
+2. icon_quests.png — clipboard with green check marks
+3. icon_spin.png — colorful lucky prize wheel with a gold pointer
+4. icon_offer.png — pink gift box with gold ribbon
+5. icon_mail.png — cyan envelope
+6. icon_settings.png — silver-cyan gear cog
+7. icon_shop.png — gold shopping bag / cart full of gems
+8. icon_hangar.png — small cyan jet fighter with a wrench crossed behind it
+9. icon_home.png — rounded cyan house
+10. icon_campaign.png — folded star map with a red pin
+11. icon_rank.png — gold trophy cup
+
+After saving, list art/icon_*.png with sizes.

@@ -1,0 +1,21 @@
+Create ONE presentation sheet image. Do not create any other images.
+
+Attached: icon_offer.png is the APPROVED hologram style (semi-transparent glowing hologram object ~70% opacity with brighter edges, soft bloom, very subtle scan lines, a few small glitch slivers, standing on a small dark gunmetal projector disc with a cyan ring that casts a light cone up). Keep EXACTLY this style, projector and camera angle for every icon on the sheet. Only the SUBJECT (shape) changes.
+
+Sheet: landscape 1536x1024, dark navy starfield (#0e1433). 2 ROWS labelled "1" and "2" with a small clean number at the left (no other text). 4 columns: Settings, Daily, Quests, Spin. Each icon about 260x260 px, evenly spaced. Each row shows a DIFFERENT idea for each button, more sci-fi than a plain gear / paper calendar / clipboard / prize wheel:
+
+Row 1:
+- Settings: a holographic control dial (round knob with tick marks) with two small slider bars beside it. Silver-cyan.
+- Daily: a holographic supply crate with a glowing sun-burst emblem on its lid. Pink with gold emblem.
+- Quests: a holographic mission target: a crosshair reticle with a small flag planted in the centre. Green.
+- Spin: a holographic fortune orb: a glowing sphere with a spinning ring of 6 small segments around it and a pointer on top. Magenta with gold.
+
+Row 2:
+- Settings: a holographic wrench crossed over a small gear, angular sci-fi tools. Silver-cyan.
+- Daily: a holographic clock face with a star at 12 o'clock and a looping arrow around it (daily refresh). Pink with gold star.
+- Quests: a holographic star-map dossier: a folded data panel with a route line and a star marker. Green.
+- Spin: a holographic slot-machine style triple reel showing three stars. Magenta with gold.
+
+Bold, simple, readable silhouettes for 54 px. No letters or numbers inside the icons, no watermark.
+
+Save as art/v3/holo_alts.png and list the file.

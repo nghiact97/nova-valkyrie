@@ -1,0 +1,11 @@
+Create 3 mobile-game material icons for "Nova Vanguard", a vertical-scrolling space shooter for phones. Do not create any other images.
+
+Attached: gear_vanguard_cannon.png (approved equipment sample) and icon_shop.png (approved UI style). Match their materials, outline, lighting and size within the canvas.
+
+Rules: one bold object, at most 3-4 large shapes, no greebles, text or sparkles; no badge, plate or frame; centred, about 75% of the canvas; readable at 24x24 px (these icons also appear next to prices); PNG 1024x1024 with a fully transparent background and a clean edge.
+
+1. art/v2/space/mat_alloy.png - "Alloy", the upgrade material: a small stack of three angular gunmetal ingots with thin cyan glowing edges.
+2. art/v2/space/mat_catalyst.png - "Merge catalyst": a sealed glass capsule with three swirling energy streams (cyan, green, gold) merging into one bright white core.
+3. art/v2/space/mat_salvage.png - "Dismantle": a gunmetal wrench crossed with a small plasma cutter, with a short orange cutting spark at the tip.
+
+When done, list the files with their sizes.

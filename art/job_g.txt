@@ -1,0 +1,16 @@
+Read art/STYLE.md, section "UI icons v2", and follow it exactly. Use your image generation tool to create these 1024x1024 PNG icons with TRANSPARENT backgrounds and save each into art/ with exactly these names, OVERWRITING any existing file of the same name. Generate the first one, then open it and match every following icon to it so the set is consistent.
+
+1. icon_shield.png — hexagonal energy shield emitter projecting a cyan force field
+2. icon_bomb.png — sleek gunmetal plasma missile/bomb with red warning stripes and a glowing tip
+3. icon_music.png — gunmetal audio module with a glowing cyan music note hologram
+4. icon_sfx.png — angular speaker grille emitting cyan sound waves
+5. icon_vibration.png — rugged military handheld device with violet vibration lines
+6. icon_graphics.png — sci-fi monitor/visor showing a glowing cyan display
+7. icon_language.png — holographic globe with a cyan comm signal
+8. icon_armor.png — armor plating chest piece with a green repair cross (max HP upgrade)
+9. icon_magnet.png — heavy electromagnet with cyan field arcs (pickup range upgrade)
+10. icon_power.png — glowing weapon power core with upward chevrons (starting weapon level upgrade)
+11. icon_coinboost.png — gold credit chip with upward arrows (coin bonus upgrade)
+12. icon_heart.png — armored mechanical heart / life core glowing red-pink (HP indicator)
+
+After saving, list the files with sizes.

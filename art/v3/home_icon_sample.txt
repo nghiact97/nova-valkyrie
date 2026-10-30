@@ -1,0 +1,15 @@
+Create ONE mobile-game UI icon as a sample for approval. Do not create any other images.
+
+Game: "Nova Vanguard", a vertical-scrolling space shooter for phones. This icon is one of 6 side buttons on the Home screen (Daily, Quests, Spin, Offer, Mail, Settings). It is shown at 54 px on a dark navy starfield, with a short label under it. There is no button plate behind it.
+
+Attached for style only: icon_shop.png and icon_hangar.png (approved materials: dark gunmetal hull, a few clean white armour panels, thin neon strips, thick dark-navy outline #0a0e2a, light from the top-left, one crisp highlight).
+
+NEW SHARED FORM for the whole set of 6 (this sample defines it, so draw it carefully):
+- Every icon stands on the SAME small hexagonal hover-pad at the bottom of the canvas: a flat dark gunmetal hexagon seen from a slight 3/4 top angle, about 70% of the canvas width and 18% of its height, with a thin glowing rim and a soft underglow in the icon's accent colour.
+- The subject floats just above the pad, large, chunky and glossy, filling the upper ~75% of the canvas. Bold silhouette, at most 3-4 big shapes, instantly readable at 32x32 px.
+- No square/round badge, no frame, no text or letters, no sparkles, no greebles.
+
+This sample: "Special Offer" (accent: gold #ffc83d with a pink #ff4fa3 tag).
+Subject: a premium sci-fi gift crate - a chunky white-and-gunmetal armoured box with a glowing gold ribbon cross and a big gold bow on top, plus a small pink round tag hanging from the bow that shows a bold white "%" symbol (the % is the only allowed symbol). It must read as "gift / special deal", NOT as a bomb or capsule.
+
+Output: PNG 1024x1024, FULLY transparent background with a clean smooth edge (no halo, no speckles), centred, at least 6% empty margin on every side, generated as one single image (no sheet). Save as art/v3/icon_offer.png and list the file with its size.

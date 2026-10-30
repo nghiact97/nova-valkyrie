@@ -1,0 +1,9 @@
+Create ONE background image for the Home screen of our mobile space shooter "Nova Vanguard". Do not create any other images.
+
+Attached: ref_minimal.jpg shows the LOOK the user wants: a calm, painterly sci-fi sky with lots of empty space. Use it ONLY for mood and composition (calm, minimal, large soft shapes). Do NOT copy its content, colours or any element from it, and include no UI. Also attached: bg_home.jpg, our current background (too busy).
+
+art/v5/bg_home2.jpg - portrait 1080x1920 JPG (quality ~88), our own blue palette:
+- Upper third: a large softly lit blue-cyan planet rising, with a thin glowing atmosphere rim, a smaller moon, a few faint stars.
+- Middle: mostly calm, empty, slightly darker deep-blue sky with soft drifting nebula clouds (this is where the hero ship sits, keep it clean).
+- Bottom quarter: a distant futuristic city / spaceport silhouette in dark blue with a few small cyan lights, fading into darkness at the very bottom.
+- Soft painterly digital-art style, smooth gradients, low detail, low contrast except the planet rim. No ships, no text, no UI, no hologram pads.

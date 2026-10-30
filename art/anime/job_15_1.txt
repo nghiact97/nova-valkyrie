@@ -1,0 +1,17 @@
+Style reference attached: art/mono/w_daily.png, art/mono/w_spin.png, art/mono/w_rank.png (our approved icon set). Match them exactly:
+- one colour only: pure white (#FFFFFF) shapes on a pure black (#000000) flat background, no gradients, no grey, no shading, no glow, no 3D
+- the same thin white diamond (rotated square) frame as the reference, same size and line weight; the glyph sits inside and may break out of the frame a little
+- ONE bold solid filled object, details made with clean cut-out gaps, crisp edges, readable at 36 px
+- 1-3 small accents from this set only: star sparks, small wings, a halo arc, a short ribbon. No ornamental swirls
+- 512x512 PNG, glyph centred, about 8% margin, no text, no letters, no numbers
+- save EACH icon as its own file in art/anime/mono/, no sprite sheet, do not create any other images
+
+Icons (battle screen):
+1. art/anime/mono/rs_orbit.png - a small ship silhouette with two orbs circling it
+2. art/anime/mono/rs_lightning.png - a forked chain lightning bolt jumping between three dots
+3. art/anime/mono/rs_wing.png - two small cannons angled outward on wings
+4. art/anime/mono/rs_drone.png - two small drones side by side
+5. art/anime/mono/rs_nova.png - a ring shockwave bursting from a central star
+6. art/anime/mono/rs_regen.png - a wrench crossed with a plus sign
+
+The attached reference icons are APPROVED: match their frame size and line weight exactly. Generate ALL listed icons now in one go; do not stop to ask for approval or confirmation. When done, list the files with their sizes.

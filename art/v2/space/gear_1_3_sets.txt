@@ -1,0 +1,36 @@
+Create 11 mobile-game equipment icons for "Nova Vanguard", a vertical-scrolling space shooter for phones. Do not create any other images.
+
+Attached: gear_vanguard_cannon.png is the APPROVED equipment sample. icon_shop.png and icon_mail.png are the approved UI style. Match the sample exactly in size within the canvas, view angle (slight 3/4 front), outline thickness, materials and lighting.
+
+Shared style (strict):
+- Dark gunmetal hull (#2a3150 to #141a44), a few clean white armour panels, thin neon strips in the SET colour, one glowing energy element, a thick dark-navy outline (#0a0e2a), light from the top-left and one crisp highlight.
+- One bold object, at most 3-4 large shapes. NO greebles, rivets, scratches, micro-text, letters, numbers or sparkles.
+- No badge, plate, circle or frame (the game adds rarity frames). Centred, filling about 80% of the canvas, readable at 48x48 px.
+- PNG 1024x1024, FULLY transparent background, clean edge, no halo. No text, no watermark.
+- The 4 items of one set must look like they belong together (same colour, same panel shapes). The 3 sets must be clearly different from each other in shape language.
+
+SET colours and shape language:
+- VANGUARD: cyan #38e1ff, balanced, clean angular panels.
+- AEGIS: green #52f19a, defensive, thick rounded armour, hexagon motifs.
+- SOLAR: gold #ffc83d, aggressive, sharp swept fins, sun-ray accents.
+
+Slot subjects (same for every set):
+- CANNON: a twin-barrel plasma gun module, barrels pointing up-right.
+- ENGINE: a thruster module seen from the back, with one big glowing nozzle and two small side vents.
+- PLATING: a curved hull armour plate segment, like a shield-shaped panel.
+- CORE: a reactor core cylinder with a glowing energy chamber in the middle.
+
+Files:
+1. art/v2/space/gear_vanguard_engine.png
+2. art/v2/space/gear_vanguard_plating.png
+3. art/v2/space/gear_vanguard_core.png
+4. art/v2/space/gear_aegis_cannon.png
+5. art/v2/space/gear_aegis_engine.png
+6. art/v2/space/gear_aegis_plating.png
+7. art/v2/space/gear_aegis_core.png
+8. art/v2/space/gear_solar_cannon.png
+9. art/v2/space/gear_solar_engine.png
+10. art/v2/space/gear_solar_plating.png
+11. art/v2/space/gear_solar_core.png
+
+Make 1-3 first and compare them with the sample, then the Aegis set, then the Solar set. When done, list the files with their sizes.

@@ -1,0 +1,13 @@
+Read art/anime/STYLE.md and follow it exactly.
+
+Use your image generation tool to create 4 STYLE CANDIDATES of the same character, "Mika" (id kestrel), standing art. Generate each as its OWN separate image (no sheet, no grid). PNG 1024x1536, FULLY transparent background, full body head to feet, nothing cropped, no text, no watermark.
+
+Mika: cyan + white colour scheme, short silver-blue bob, cheerful rookie pilot. Sci-fi flight jacket over a fitted suit, short pleated skirt, thigh-high boots with armored thruster boots. Rig: two small cyan delta wings attached to her back with glowing thrusters, a compact blaster mounted on each forearm.
+
+Vary ONLY the rendering style between the 4 files (keep the design the same):
+1. art/anime/style_a_mika.png - crisp gacha-game cel shading, strong line art, bright saturated colours.
+2. art/anime/style_b_mika.png - softer painterly anime shading, more gradients, glossy highlights, slightly more realistic mecha.
+3. art/anime/style_c_mika.png - sharp high-contrast shading, darker metal, intense cyan glow, cool military mood.
+4. art/anime/style_d_mika.png - bright clean "idol" look, thin delicate lines, pastel highlights, white rig with cyan lights.
+
+When done, list the files with their sizes.

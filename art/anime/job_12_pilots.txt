@@ -1,0 +1,7 @@
+Read art/anime/STYLE.md. Attached: art/anime/style_a_mika.png is the APPROVED character style. Match its anime line art, cel shading and colouring exactly.
+
+Use your image generation tool to create ONE sheet: art/anime/pilot_sheet.png, 1536x1024, FULLY TRANSPARENT background. Three head-and-shoulders BUST portraits side by side, each centred in its 512 px wide column, same size and framing (top of the head to mid-chest), facing slightly toward the viewer, at least 40 px of empty space between them. They are support officers at HQ (not pilots in rigs): sci-fi uniforms with a headset. No text.
+1 RIN (pink accent #ff4fa3): cheerful young quartermaster girl, short pink bob, a coin-shaped hair clip, holding a small tablet.
+2 BO (green accent #52f19a): a big friendly bearded mechanic man in his thirties, green bandana, a wrench on his shoulder, warm smile.
+3 VEGA (gold accent #ffc83d): a calm older tactical commander woman, silver hair in a low ponytail, a gold-trimmed officer coat, a monocle-like HUD visor.
+When done, print the file size.

@@ -1,0 +1,9 @@
+Read art/anime/STYLE.md and follow it exactly. Attached: art/anime/style_a_mika.png is the APPROVED rendering style. Match its anime line art, cel shading, colouring and level of detail exactly; only the character design changes.
+
+Use your image generation tool to create ONE image: art/anime/stand_seraph.png, PNG 1024x1536, FULLY transparent background, full body from head to feet, nothing cropped, no text, no watermark.
+
+Character: Seraphina "Seraph", the LEGENDARY solar commander. Gold + white colour scheme. Very long flowing golden hair with a small white-gold crown-like headset. Calm confident smile, golden eyes. Outfit: an elegant white-and-gold armoured commander dress with a high collar, gold trims, a short cape, armoured gauntlets, white thigh-high armoured boots with thrusters. Tasteful, fully covered chest, Teen rating.
+Rig: SIX radiant golden blade-wings spread behind her back like a sun halo, glowing warm gold energy edges. In her raised right hand a small glowing sun orb; left hand on her hip. Regal, powerful pose, slight 3/4 view, looking at the viewer.
+The figure fills about 90% of the height, centred, feet near the bottom with a small margin. No background elements.
+
+When done, print the file size.

@@ -1,0 +1,3 @@
+Attached: art/anime/mono/cur_coin.png, cur_gem.png, cur_energy.png are an APPROVED set of flat currency icons. Draw ONE more icon in EXACTLY the same style (same 3 flat colours rule, same thick dark navy #0A1030 outline, same white cut-out detail lines, no gradients, no shading, no 3D, shape fills ~90% of the canvas):
+art/anime/mono/cur_bomb.png - a round bomb with a short fuse and a spark on top, fill hot orange #FF9D1C, white cut-out highlight arc, 512x512 PNG, transparent background, no text.
+Generate it now, do not stop to ask for approval. When done, print the file size.

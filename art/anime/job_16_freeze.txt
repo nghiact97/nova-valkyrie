@@ -1,0 +1,14 @@
+Style reference attached: art/mono/w_daily.png, art/mono/w_spin.png, art/mono/w_rank.png (our approved icon set). Match them exactly:
+- one colour only: pure white (#FFFFFF) shapes on a pure black (#000000) flat background, no gradients, no grey, no shading, no glow, no 3D
+- the same thin white diamond (rotated square) frame as the reference, same size and line weight; the glyph sits inside and may break out of the frame a little
+- ONE bold solid filled object, details made with clean cut-out gaps, crisp edges, readable at 36 px
+- 1-3 small accents from this set only: star sparks, small wings, a halo arc, a short ribbon. No ornamental swirls
+- 512x512 PNG, glyph centred, about 8% margin, no text, no letters, no numbers
+- save EACH icon as its own file in art/anime/mono/, no sprite sheet, do not create any other images
+
+Attached: art/anime/mono/ult_blackhole.png and art/anime/mono/ult_storm.png are APPROVED icons from the same set. Match their frame size, line weight and glyph size exactly.
+
+Icon:
+1. art/anime/mono/ult_freeze_raw.png - TIME FREEZE: an hourglass with a large six-arm snowflake in front of it, two small star sparks
+
+Generate it now, do not stop to ask for approval. When done, print the file size.

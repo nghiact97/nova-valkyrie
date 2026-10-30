@@ -1,0 +1,11 @@
+node_modules/
+android/app/build/
+android/.gradle/
+build/*.apk
+www/
+build/
+tmp/
+art/music/src/*.wav
+android/build/
+android/app/src/main/assets/public/
+*.log

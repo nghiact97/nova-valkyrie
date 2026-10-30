@@ -1,0 +1,8 @@
+Create 2 images for the Android app of our mobile space shooter "Nova Vanguard". Do not create any other images. Generate each as its OWN separate image.
+
+Attached: ship_kestrel.png (hero fighter) and bg_home.jpg (Home background) for style.
+
+1. art/app/icon.png - 1024x1024 launcher icon, FULL BLEED (no transparency, no rounded corners - the phone masks it): a dramatic close-up of the Kestrel-style blue-white fighter jet flying diagonally up-right, glowing cyan engines, against a deep blue space background with a bright planet rim and a gold light flare. Keep the ship inside the central 66% (safe zone for round masks). Bold, glossy, readable when small. No text.
+2. art/app/splash.png - 2048x2048 splash image, centred composition: the title "NOVA VANGUARD" in a bold chrome-and-cyan sci-fi logo with a small gold subtitle "SKY DEFENSE", over a dark navy starfield with a soft blue glow behind the logo. Keep everything important inside the central 50%, outer area plain dark starfield (#0a1430) so it can be cropped on any screen ratio.
+
+When done, list the files with their sizes.

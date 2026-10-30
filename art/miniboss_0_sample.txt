@@ -1,0 +1,7 @@
+Read art/STYLE.md (top-down sprite rules) and follow it exactly. Attached: the APPROVED bosses boss1.png and boss7.png and the enemy enemy_elite.png. Create ONE mini-boss sprite as a sample for approval. Do not create any other images.
+
+Mini-bosses sit between normal enemies and bosses: clearly bigger and more detailed than enemy_elite.png, but simpler and smaller-looking than the bosses (about 60% of a boss's visual weight). Same strict top-down camera facing DOWN toward the player, symmetric, glossy semi-realistic rendering, same lighting and materials as the attachments.
+
+art/miniboss_carrier.png - "Carrier": a wide, flat drone-carrier ship, gunmetal hull with white armour panels, a large rectangular hangar bay in the centre glowing cyan (the weak spot), two small flight-deck lights rows, short stubby side wings.
+
+Rules: one object, at most 4-5 large shapes, no text. PNG 1024x1024, FULLY transparent background, centred, at least 6% empty margin on every side, nothing cut off. Generate it as its own single image (no sheet). When done, list the file with its size.

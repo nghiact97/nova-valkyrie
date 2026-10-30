@@ -1,0 +1,16 @@
+Read art/STYLE.md, section "UI icons v2", and follow it exactly. Use your image generation tool to create these 1024x1024 PNG icons with TRANSPARENT backgrounds and save each into art/ with exactly these names, OVERWRITING any existing file of the same name. Generate the first one, then open it and match every following icon to it so the set is consistent.
+
+1. icon_home.png — angular command-base hangar dome with a glowing cyan door
+2. icon_hangar.png — top-down fighter jet silhouette with a cyan engine glow and a small wrench crossed behind it
+3. icon_shop.png — armored supply crate with a glowing gold lid seam
+4. icon_campaign.png — holographic star chart / planet with an orbit ring and a target marker
+5. icon_rank.png — military winged medal/chevron insignia in gold and gunmetal
+6. icon_daily.png — sci-fi data-pad calendar with a glowing gold star
+7. icon_quests.png — holographic mission dossier with cyan check marks
+8. icon_spin.png — metal radar-style prize wheel with cyan segments and a gold pointer
+9. icon_offer.png — reinforced gold-trimmed supply drop capsule with a parachute strap
+10. icon_mail.png — sealed metallic transmission envelope with a cyan signal light
+11. icon_settings.png — machined gunmetal gear with a cyan core
+12. icon_energy.png — cyan energy cell battery with a lightning core
+
+After saving, list the files with sizes.

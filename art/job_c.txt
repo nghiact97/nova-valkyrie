@@ -1,0 +1,7 @@
+Read art/STYLE.md and follow it exactly (top-down sprite rules). Use your image generation tool to create these 1024x1024 PNG boss sprites with TRANSPARENT backgrounds and save each into art/ with exactly these names. They must look like the same art set as the existing art/boss1.png, art/boss2.png and art/boss3.png (open those first to match rendering, detail level and lighting). All face DOWN toward the player, strictly top-down, symmetric.
+
+1. boss4.png — "Crimson Wyrm": a mechanical space dragon warship for the Crimson Nebula world: coiled armored neck and head at the bottom (facing down), crimson and black plates, glowing molten-orange vents, wide bat-like wing blades.
+2. boss5.png — "Abyss Kraken": a teal and dark-steel biomechanical squid fortress for the Void Frontier world: domed armored mantle, eight armored tentacle cannons spreading out, glowing cyan eyes and core.
+3. boss6.png — "Void Sentinel": the final boss: a huge black-and-cyan crystal citadel ship, floating shards around a bright white-cyan eye core, sharp angular obsidian armor, imposing.
+
+After saving, list art/boss*.png with sizes.

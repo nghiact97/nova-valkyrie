@@ -1,0 +1,7 @@
+Read art/STYLE.md, section "UI icons v2", for materials and lighting. Use your image generation tool to create these 1024x1024 PNGs with TRANSPARENT backgrounds and save into art/ with exactly these names. Front view with slight 3/4 top angle, closed, one consistent set of sci-fi military supply crates for a space shooter shop.
+
+1. crate_silver.png — compact gunmetal supply crate with cyan glowing seams and a small cyan lock light
+2. crate_epic.png — larger armored crate with violet glowing seams, reinforced corners, purple energy core lock
+3. crate_legend.png — big heavy gold-and-black armored crate with blazing gold seams, ornate winged emblem, light leaking from the lid
+
+After saving, list the files with sizes.

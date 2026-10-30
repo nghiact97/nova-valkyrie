@@ -1,0 +1,16 @@
+Read art/STYLE.md, section "UI icons", and follow it exactly. Use your image generation tool to create these 1024x1024 PNG images with TRANSPARENT backgrounds and save each into art/ with exactly these names. If art/icon_*.png already exist, open one to match its style; otherwise just keep a consistent glossy 3D mobile-game icon style.
+
+1. icon_shield.png — glowing cyan energy shield crest
+2. icon_bomb.png — round dark bomb with orange lit fuse and sparks
+3. icon_energy.png — cyan lightning bolt
+4. icon_music.png — gold music note pair
+5. icon_sfx.png — speaker with sound waves, cyan
+6. icon_vibration.png — smartphone with vibration lines, violet
+7. icon_graphics.png — sparkling gem-like monitor / diamond with sparkles, pink
+8. icon_language.png — globe with a speech bubble, green
+9. pilot_rin.png — pilot portrait: young woman ace pilot, short pink hair, confident grin, pink-white flight suit
+10. pilot_bo.png — pilot portrait: big friendly bearded engineer-pilot, green-and-grey flight suit, goggles on forehead
+11. pilot_vega.png — pilot portrait: calm veteran woman commander, silver hair bun, gold-and-navy flight suit, scar across eyebrow
+12. pilot_player.png — pilot portrait: generic young player pilot, helmet on with visor up, cyan-and-white flight suit
+
+After saving, list the files with sizes.

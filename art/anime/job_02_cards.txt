@@ -1,0 +1,9 @@
+Read art/anime/STYLE.md for the art style and the cast. Attached: art/anime/style_a_mika.png is the APPROVED look for Mika; match its anime rendering exactly.
+
+Use your image generation tool to create 3 banner illustrations for the Home mode buttons of the game. Each one is its OWN separate image, LANDSCAPE 1536x1024, opaque background, painted anime gacha-game key-art style, dynamic and colourful. No text, no letters, no logos, no UI, no frames. The important content must sit in the CENTRAL horizontal band (from 25% to 75% of the height) because the images get cropped to a wide strip.
+
+1. art/anime/card_campaign.jpg - Mika (cyan/white rig, short silver-blue bob) flying toward the viewer-right over a blue planet in space, blasters firing cyan shots, a squad of small enemy drones ahead, bright optimistic mood. Mika on the right half, her face clearly visible.
+2. art/anime/card_boss.jpg - a huge dark crimson-and-black mechanical boss warship looming, red glowing eyes/core, and Seraphina (gold/white rig, very long golden hair, six radiant blade wings) seen from behind-side on the left facing it, purple-red nebula, dramatic tense mood.
+3. art/anime/card_explore.jpg - Elle (violet/white, long wavy lilac hair, floating halo ring of glowing orbs) gliding through a violet nebula with crystal asteroids and a distant strange planet, calm mysterious mood, Elle on the right half.
+
+Keep the content tasteful (Teen rating). When done, list the files with their sizes.

@@ -1,0 +1,19 @@
+Create 4 mobile-game UI icons for "Nova Vanguard", a vertical-scrolling space shooter (dark navy UI, cyan and gold accents). Attached: two APPROVED style samples (icon_settings.png, icon_hangar.png).
+
+STYLE (identical for every icon; match the two attached approved samples icon_settings.png and icon_hangar.png exactly):
+- Same rounded-square badge as the samples: corner radius about 25%, same size and margin, soft inner glow, glossy band across the top, thin light rim. Only the badge TINT changes per icon (given below).
+- One bold subject, centred, symmetric where the object allows, flat front-on view (no tilt, no perspective).
+- Glossy toy-like game-UI rendering: smooth gradients, one soft light from the top-left, one crisp specular highlight, thick dark-navy outline (#0a0e2a) around the subject, same thickness as the samples.
+- Subject material: polished white-silver like the gear and the jet in the samples, with colour only where an accent is stated. Glowing parts use that accent colour.
+- At most 3-4 large shapes. NO greebles, rivets, bolts, scratches, panel noise, micro-text, letters, numbers or sparkles.
+- Must stay instantly readable at 32x32 px.
+- Output per icon: PNG 1024x1024, background outside the badge FULLY transparent with a clean smooth edge (no outer glow spray, no speckles). No text, no watermark, no frame.
+- Generate the first icon, compare it with the samples, then do the rest; keep every icon in the batch consistent with each other.
+
+ICONS (file - badge tint - subject - accent):
+1. art/v2/icon_armor.png - badge green: gradient #0f3326 (bottom) to #2fae72 (top) - an armored chest plate with a repair cross in the centre - accent: green cross.
+2. art/v2/icon_magnet.png - badge violet: gradient #22124a (bottom) to #7d4fd6 (top) - a horseshoe electromagnet pointing up with white tips and energy arcs between the tips - accent: violet arcs.
+3. art/v2/icon_power.png - badge cyan: gradient #141a44 (bottom) to #2a8fd0 (top) - a square power-core chip with pins on all sides and two upward chevrons on its face - accent: cyan chevrons.
+4. art/v2/icon_coinboost.png - badge gold: gradient #3a2a10 (bottom) to #c99a2e (top) - a coin with a star emblem and a small upward arrow at the top right - accent: gold coin, green arrow.
+
+Save each file at exactly the path given. When done, list the files with their sizes.

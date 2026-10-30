@@ -1,0 +1,24 @@
+Create 9 mobile-game UI icons for "Nova Vanguard", a vertical-scrolling space shooter (dark navy UI, cyan and gold accents). Attached: two APPROVED style samples (icon_settings.png, icon_hangar.png).
+
+STYLE (identical for every icon; match the two attached approved samples icon_settings.png and icon_hangar.png exactly):
+- Same rounded-square badge as the samples: corner radius about 25%, same size and margin, soft inner glow, glossy band across the top, thin light rim. Only the badge TINT changes per icon (given below).
+- One bold subject, centred, symmetric where the object allows, flat front-on view (no tilt, no perspective).
+- Glossy toy-like game-UI rendering: smooth gradients, one soft light from the top-left, one crisp specular highlight, thick dark-navy outline (#0a0e2a) around the subject, same thickness as the samples.
+- Subject material: polished white-silver like the gear and the jet in the samples, with colour only where an accent is stated. Glowing parts use that accent colour.
+- At most 3-4 large shapes. NO greebles, rivets, bolts, scratches, panel noise, micro-text, letters, numbers or sparkles.
+- Must stay instantly readable at 32x32 px.
+- Output per icon: PNG 1024x1024, background outside the badge FULLY transparent with a clean smooth edge (no outer glow spray, no speckles). No text, no watermark, no frame.
+- Generate the first icon, compare it with the samples, then do the rest; keep every icon in the batch consistent with each other.
+
+ICONS (file - badge tint - subject - accent):
+1. art/v2/icon_home.png - badge cyan: gradient #141a44 (bottom) to #2a8fd0 (top) - a sci-fi command-base hangar dome with a glowing arched door - accent: cyan door glow.
+2. art/v2/icon_shop.png - badge gold: gradient #3a2a10 (bottom) to #c99a2e (top) - an armored supply crate with a glowing seam around the lid - accent: gold seam.
+3. art/v2/icon_campaign.png - badge cyan: gradient #141a44 (bottom) to #2a8fd0 (top) - a planet with a tilted orbit ring and a small location pin on the ring - accent: gold ring and pin.
+4. art/v2/icon_rank.png - badge gold: gradient #3a2a10 (bottom) to #c99a2e (top) - a trophy cup with two handles on a short pedestal - accent: gold trophy body.
+5. art/v2/icon_daily.png - badge pink: gradient #3a1033 (bottom) to #c43f8e (top) - a calendar page with two binder rings on top and a big star in the middle - accent: gold star, pink calendar header.
+6. art/v2/icon_quests.png - badge green: gradient #0f3326 (bottom) to #2fae72 (top) - a clipboard with two check marks - accent: green checks.
+7. art/v2/icon_spin.png - badge pink: gradient #3a1033 (bottom) to #c43f8e (top) - a prize wheel with 6 segments (pink, white, gold alternating) and a pointer at the top - accent: gold pointer.
+8. art/v2/icon_offer.png - badge pink: gradient #3a1033 (bottom) to #c43f8e (top) - a gift box with a ribbon and a big bow on top - accent: gold ribbon and bow.
+9. art/v2/icon_mail.png - badge cyan: gradient #141a44 (bottom) to #2a8fd0 (top) - a closed envelope with a glowing seal in the centre of the flap - accent: cyan seal.
+
+Save each file at exactly the path given. When done, list the files with their sizes.

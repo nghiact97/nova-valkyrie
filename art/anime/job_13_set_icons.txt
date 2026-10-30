@@ -1,0 +1,21 @@
+Style reference attached: art/mono/w_daily.png, art/mono/w_spin.png, art/mono/w_rank.png (our approved icon set). Match them exactly:
+- one colour only: pure white (#FFFFFF) shapes on a pure black (#000000) flat background, no gradients, no grey, no shading, no glow, no 3D
+- the same thin white diamond (rotated square) frame as the reference, same size and line weight; the glyph sits inside and may break out of the frame a little
+- ONE bold solid filled object, details made with clean cut-out gaps, crisp edges, readable at 36 px
+- 1-3 small accents from this set only: star sparks, small wings, a halo arc, a short ribbon. No ornamental swirls
+- 512x512 PNG, glyph centred, about 8% margin, no text, no letters, no numbers
+- save EACH icon as its own file in art/anime/mono/, no sprite sheet, do not create any other images
+
+Icons (settings screen):
+1. art/anime/mono/mono_set_music.png - a music note pair, a small star spark
+2. art/anime/mono/mono_set_sfx.png - a speaker with two sound arcs
+3. art/anime/mono/mono_set_vib.png - a phone outline with short shake lines on both sides
+4. art/anime/mono/mono_set_sens.png - a pointing finger touching a small circle with drag arrows left and right
+5. art/anime/mono/mono_set_lefty.png - a hand silhouette with a small diamond button on its left
+6. art/anime/mono/mono_set_hint.png - a speech bubble with a question mark, one small wing
+7. art/anime/mono/mono_set_gfx.png - a picture frame with a mountain and a sun, a star spark
+8. art/anime/mono/mono_set_motion.png - a shooting star with three motion trails
+9. art/anime/mono/mono_set_fps.png - a speedometer gauge with the needle high
+10. art/anime/mono/mono_set_lang.png - a globe with a small speech bubble
+
+Make 1 first and compare it with the attached reference icons, then keep 2-10 consistent (same frame size, same line weight). When done, list the files with their sizes.

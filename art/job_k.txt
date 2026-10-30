@@ -1,0 +1,9 @@
+Read art/STYLE.md, section "UI icons v2", and follow it exactly (sci-fi military HUD icon set, gunmetal + neon). These are in-battle SKILL icons shown on level-up cards and in a small skill bar (28-48 px), so each needs a bold unique silhouette and its own accent color. Open art/icon_shield.png first and match its materials and lighting. Create 1024x1024 PNGs with TRANSPARENT backgrounds and save into art/ with exactly these names:
+
+1. skill_multishot.png — three parallel energy bolts fanning out from a cannon muzzle, cyan
+2. skill_rapid.png — gatling barrel with motion streaks, orange
+3. skill_damage.png — glowing armor-piercing round with a red impact flare, red
+4. skill_pierce.png — single bolt passing through two plates, cyan-white
+5. skill_missile.png — pair of homing missiles with curved smoke trails, orange-red
+6. skill_orbit.png — three plasma orbs orbiting a core, violet
+7. skill_lightning.png — forked chain lightning bolt between nodes, electric blue

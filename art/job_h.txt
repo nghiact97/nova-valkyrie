@@ -1,0 +1,8 @@
+Read art/STYLE.md, section "Backgrounds", and follow it exactly. Use your image generation tool to create these portrait 1024x1536 background paintings and save each into art/ as JPG with exactly these names (convert to .jpg, quality ~88). No transparency needed.
+
+1. bg_world1.jpg — "Orbit Belt": deep navy-blue space, faint blue nebula wisps, scattered asteroid fragments and distant small planet near the edges.
+2. bg_world2.jpg — "Crimson Nebula": dark space with crimson and magenta nebula clouds, glowing red gas filaments near edges.
+3. bg_world3.jpg — "Void Frontier": almost black space with teal/cyan cosmic dust, distant crystalline debris and a faint black-hole glow near one edge.
+4. bg_menu.jpg — main menu backdrop: a large glowing blue-violet planet curve at the bottom, star field and soft nebula above, epic but calm in the middle.
+
+After saving, list the files with sizes.

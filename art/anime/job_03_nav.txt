@@ -1,0 +1,14 @@
+Read art/anime/STYLE.md. Attached: art/anime/style_a_mika.png (approved character look) and the current Home screenshot for context.
+
+Use your image generation tool to create ONE icon sheet: art/anime/nav_sheet.png, 1536x1024, FULLY TRANSPARENT background. Exactly 5 icons in ONE horizontal row, evenly spaced, centred vertically, each about 240x240 px, with at least 50 px of empty transparent space between neighbours. No text, no labels, no frames, no button plates, no circles behind them.
+
+These are the bottom navigation icons of an anime mecha-girl mobile game. They must look like ONE designed set: sculpted glossy WHITE PORCELAIN and polished SILVER material, soft anime cel shading, thin glowing cyan (#5ee7ff) edge lights, one small hot-pink (#ff6fae) accent per icon, crisp dark navy outline so they read at 40 px, 3/4 front view, light from top-left. Cute but sleek, premium gacha-game UI, not cartoon toys, not realistic photos.
+
+Left to right:
+1. SHOP - a small boutique shopping bag with a pink star charm hanging from the handle.
+2. VALKYRIES (characters) - a stylised bust silhouette of an anime girl with short hair and a small winged headset, white porcelain like a statue, cyan visor line.
+3. SORTIE (main button, make it ~15% bigger) - a winged diamond emblem: a glowing cyan crystal diamond in the centre with two swept white mecha wings and a gold rim, an upward launch chevron.
+4. QUESTS - a slim sci-fi tablet/notebook with a check mark on the screen and a pink bookmark ribbon.
+5. GEAR - a sleek mecha wing-thruster module (back-pack armour piece) with a glowing cyan thruster ring.
+
+When done, print the file size.

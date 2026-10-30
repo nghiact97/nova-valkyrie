@@ -1,0 +1,24 @@
+Create 7 mobile-game UI icons for "Nova Vanguard", a vertical-scrolling space shooter for phones. The icons sit directly on a dark navy deep-space starfield. Do not create any other images.
+
+Attached: the APPROVED style samples icon_daily.png, icon_mail.png, icon_shop.png.
+
+STYLE (identical for every icon; match the attached APPROVED samples icon_daily.png, icon_mail.png, icon_shop.png exactly):
+- Space-hardware look: dark gunmetal hull (#2a3150 to #141a44) with a few clean white armour panels, thin neon light strips in the icon's accent colour, and one glass or hologram element. Real spaceship hardware, stylised for a game. No toy plastic, no everyday household objects.
+- Two families, as in the samples: HARDWARE (a solid object, like icon_shop.png) or HOLOGRAM (a low, wide gunmetal emitter base projecting a glowing symbol, like icon_daily.png and icon_mail.png). Each icon below says which family it belongs to.
+- Thick dark-navy outline (#0a0e2a) around the whole object; one soft light from the top-left; one crisp specular highlight; neon parts glow softly with a tight glow (no spray).
+- Bold silhouette, at most 3-4 large shapes. NO greebles, rivets, scratches, micro-text, letters, numbers or random sparkles.
+- No badge, plate, circle or frame behind the object. Front-on view, at most a very slight 3/4 tilt, centred, filling about 85% of the canvas, same visual size as the samples.
+- Must stay instantly readable at 32x32 px on a dark starfield.
+- Output per icon: PNG 1024x1024, FULLY transparent background with a clean, smooth edge (no halo, no speckles). No text, no watermark.
+- Make the first icon, compare it with the samples, then keep the rest of the batch consistent with it.
+
+ICONS (file - family - subject - accent colour):
+1. art/v2/space/icon_sk_multishot.png - HARDWARE - a triple-barrel cannon muzzle firing three bolts that fan out upward - accent: cyan bolts.
+2. art/v2/space/icon_sk_rapid.png - HARDWARE - a short gatling barrel cluster with bright speed streaks - accent: gold.
+3. art/v2/space/icon_sk_damage.png - HARDWARE - an armour-piercing round hitting with a hot impact starburst - accent: red + gold.
+4. art/v2/space/icon_sk_pierce.png - HARDWARE - a bolt passing straight through two upright armour plates - accent: cyan.
+5. art/v2/space/icon_sk_crit.png - HOLOGRAM - a targeting crosshair with a bright four-point star in the centre - accent: gold.
+6. art/v2/space/icon_sk_missile.png - HARDWARE - a homing missile flying diagonally up-right with a curved exhaust trail - accent: red + gold trail.
+7. art/v2/space/icon_sk_orbit.png - HARDWARE - a bright core orb with three plasma orbs circling it on a ring - accent: violet.
+
+Save each file at exactly the path given. When done, list the files with their sizes.

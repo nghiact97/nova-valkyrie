@@ -1,0 +1,7 @@
+Create 3 currency icons for an anime sci-fi mobile game, in the SAME flat glyph language as the attached white icons (art/mono/w_daily.png): solid filled shapes, details made with clean cut-out lines, crisp edges, no gradients, no shading, no glow, no 3D.
+Each icon uses exactly 3 flat colours: its own fill colour, white (#FFFFFF) for the cut-out detail lines, and a thick dark navy (#0A1030) outline around the whole shape. No diamond frame. Shape fills about 90% of the canvas. 512x512 PNG, transparent background, no text, no letters, no currency symbols. Must read clearly at 18 px. Save each as its own file:
+1. art/anime/mono/cur_coin.png - a round coin seen from the front, fill #FFD36B, a small pair of wings cut out in the centre, a thin inner ring.
+2. art/anime/mono/cur_gem.png - a faceted diamond gem seen from the front, fill #FF6FAE, 3-4 facet lines cut out in white, one small sparkle.
+3. art/anime/mono/cur_energy.png - a lightning bolt inside a hexagon cell, fill #5EE7FF, the bolt cut out in white.
+
+Make 1 first, check it reads at 18 px, then keep 2-3 consistent. When done, list the files with their sizes.

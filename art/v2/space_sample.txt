@@ -1,0 +1,23 @@
+Create 4 mobile-game UI icons as a SAMPLE for approval. Do not create any other images.
+
+Game: "Nova Vanguard", a vertical-scrolling space shooter for phones. The icons sit directly on a dark navy deep-space starfield, with no button plate behind them.
+
+Problem with our current icons: they use everyday casual-game objects (paper calendar, gift box with a bow, paper envelope, wooden-style chest) in white toy plastic, which feels out of place in outer space. Reinterpret each meaning as SPACE / SCI-FI hardware, while keeping the meaning instantly recognisable.
+
+Attached: icon_settings.png is the approved reference for size, outline thickness and readability. Keep that level of boldness and simplicity, but use the space materials below instead of white toy plastic.
+
+Shared style (strict):
+- Materials: dark gunmetal hull (#2a3150 to #141a44) combined with a few clean white armour panels, thin neon light strips in the icon's accent colour, and one glass or hologram element. Feels like real spaceship hardware, but stylised for a game.
+- Thick dark-navy outline (#0a0e2a) around the whole object; one soft light from the top-left; one crisp specular highlight; the neon parts glow softly (tight glow, no spray).
+- Bold silhouette, at most 3-4 large shapes. No greebles, rivets, scratches, micro-text, letters, numbers or random sparkles.
+- No badge, plate, circle or frame behind the object. Front-on view with at most a very slight 3/4 tilt, centred, filling about 85% of the canvas.
+- Must stay instantly readable at 32x32 px on a dark starfield.
+- Output per icon: PNG 1024x1024, FULLY transparent background with a clean, smooth edge (no halo, no speckles). No text, no watermark.
+
+Icons:
+1. art/v2/space/icon_daily.png - "Daily reward": a sci-fi holographic data-pad (rugged gunmetal tablet) projecting a glowing pink calendar grid with one big gold star on it. Accent: pink + gold.
+2. art/v2/space/icon_offer.png - "Special offer": an orbital supply-drop capsule (rounded armoured pod) with a glowing gold lock band around its middle and small pink thruster lights at the bottom. Accent: gold + pink.
+3. art/v2/space/icon_mail.png - "Mail": a small communication satellite with one dish and two short solar panels, emitting two curved cyan signal waves. Accent: cyan.
+4. art/v2/space/icon_shop.png - "Shop": an armoured cargo container (space freight crate) with a glowing gold seam and a small gold credit-chip emblem on the front. Accent: gold.
+
+Do icon 1 first, check it against the rules, then make the other three consistent with it. When done, list the files with their sizes.

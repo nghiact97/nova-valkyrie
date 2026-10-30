@@ -1,0 +1,4 @@
+Use your image generation tool to create ONE image: art/anime/logo_valkyrie.png, 1536x768, FULLY TRANSPARENT background.
+A mobile game title logo that reads exactly "NOVA VALKYRIE" on two lines ("NOVA" smaller above, "VALKYRIE" big below), with the small subtitle "SKY ANGELS" under it. Spell every letter exactly: N-O-V-A, V-A-L-K-Y-R-I-E.
+Style: anime gacha-game logo, bold italic angular letters in polished white-silver metal with a hot-pink (#ff6fae) to cyan (#5ee7ff) glowing edge, a pair of sleek white mecha wings spreading behind the word VALKYRIE, a small four-point star spark on the V. Crisp, readable, centred, nothing cropped. No other text, no watermark, no background.
+Generate it now, do not stop to ask for approval. When done, print the file size.

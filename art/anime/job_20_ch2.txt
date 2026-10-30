@@ -1,0 +1,6 @@
+Read art/anime/STYLE.md. Attached: art/anime/style_a_mika.png shows the APPROVED anime rendering style only (line art, cel shading, level of detail). Do NOT draw Mika: draw a completely NEW original character described below, clearly different from her in face, hair, outfit and colours.
+
+Use your image generation tool to create ONE image: art/anime/chapter_2.jpg, LANDSCAPE 1536x1024, opaque background, no text, no logo, no watermark.
+Chapter key art for a mobile game campaign. NEW character: CARMINE, dragon commander of the Crimson Nebula: very long crimson-orange braid, dragon-horn shaped headset, golden slit eyes, proud smile; red-and-gold armoured dress with scale patterns; rig of segmented dragon-tail blade and two flame-red dragon wings breathing fire trails. Background: swirling red and orange nebula.
+Composition: the character on the RIGHT 55% of the image, full body from head to feet inside the frame (nothing cropped), dynamic pose, facing left toward the viewer, confident rival look. The LEFT 45% is calmer background (title text goes there). Bottom 20% a bit darker. Tasteful, fully covered outfit, Teen rating. Original design, not based on any existing game or anime character.
+Generate it now, do not stop to ask for approval. When done, print the file size.

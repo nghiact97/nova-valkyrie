@@ -1,0 +1,6 @@
+Read art/anime/STYLE.md. Attached: art/anime/style_a_mika.png shows the APPROVED anime rendering style only (line art, cel shading, level of detail). Do NOT draw Mika: draw a completely NEW original character described below, clearly different from her in face, hair, outfit and colours.
+
+Use your image generation tool to create ONE image: art/anime/chapter_3.jpg, LANDSCAPE 1536x1024, opaque background, no text, no logo, no watermark.
+Chapter key art for a mobile game campaign. NEW character: IRIS, silent sniper of the Void Frontier: long straight silver-white hair with a teal streak, calm half-closed teal eyes, long scarf; white-and-teal armoured coat; rig of a huge rail-sniper rifle held across her body and floating hexagon drone shields. Background: teal void with frozen derelict space station wreckage.
+Composition: the character on the RIGHT 55% of the image, full body from head to feet inside the frame (nothing cropped), dynamic pose, facing left toward the viewer, confident rival look. The LEFT 45% is calmer background (title text goes there). Bottom 20% a bit darker. Tasteful, fully covered outfit, Teen rating. Original design, not based on any existing game or anime character.
+Generate it now, do not stop to ask for approval. When done, print the file size.

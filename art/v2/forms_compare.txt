@@ -1,0 +1,24 @@
+Create ONE presentation sheet image that compares 3 alternative icon FRAME FORMS for a mobile game. Do not create any other images.
+
+Game: "Nova Vanguard", a vertical-scrolling space shooter for phones (dark navy UI, cyan and gold accents).
+
+Attached: our approved icons. Reuse their SUBJECTS exactly (same shapes, white-silver material, thick dark-navy outline #0a0e2a, glossy toy-like lighting from the top-left). Only the frame around the subject changes.
+
+Sheet layout:
+- Landscape 1536x1024, background = dark navy starfield (#0e1433 with small faint stars), like the game screen.
+- 3 rows, one per form. In every row show the same 4 icons, left to right: Settings (gear), Hangar (jet fighter), Daily (calendar with star), Shop (supply crate).
+- Each icon about 200x200 px, evenly spaced, perfectly aligned in a grid.
+- A small, clean label at the left of each row: "A", "B", "C". No other text.
+
+Frame forms (role colour per icon: Settings = steel blue, Hangar = cyan, Daily = pink, Shop = gold):
+A) HEX EMBLEM: a hexagonal sci-fi frame (pointy top), gunmetal rim with a thin neon edge in the role colour, dark smoked-glass centre. The subject sits in the centre and breaks slightly out over the top edge of the frame for depth.
+B) ROUND MEDAL: a circular polished-silver ring with a thick bevel; inside, a glowing disc in the role colour (lighter in the centre, darker at the edge). The subject sits on the disc.
+C) HOLOGRAM: no solid plate. Behind the subject a soft, round glow in the role colour, plus thin HUD targeting brackets (four short corner arcs) in the role colour around it. Clean and minimal.
+
+Rules (strict):
+- Same subject size, outline thickness and lighting in all 3 rows so only the frame differs.
+- Bold, simple shapes. No greebles, rivets, scratches, micro-text, sparkles or noise.
+- Every icon must stay readable when the sheet is viewed small.
+- No watermark.
+
+Save as art/v2/forms_compare.png.

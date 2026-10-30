@@ -1,0 +1,17 @@
+Create ONE image containing a set of 6 mobile-game UI icons, laid out for preview. Do not create any other images.
+
+Game: "Nova Vanguard", a vertical-scrolling space shooter (like the popular mobile "galaxy attack / sky shooter" games). Attached for context: ship_kestrel.png and boss1.png (the game's glossy 3D art).
+
+Style: the classic side-button icon style of top mobile shooter games - big, bold, chunky 3D objects, very glossy with a strong white highlight on top, vivid saturated colours, a thick dark outline (#0a0e2a) around each object, a soft drop shadow underneath. NO frame, NO circle, NO badge, NO base under the icons. Simple shapes, instantly readable at 54 px. No letters or numbers except the "%" on the offer tag.
+
+The 6 icons (each a single object):
+1. Offer: a shiny red-and-gold gift box with a big gold bow and a small pink tag with "%".
+2. Mail: a fat glossy light-blue envelope with a gold star seal.
+3. Settings: a chrome-silver gear with a glowing blue centre.
+4. Spin: a colourful prize wheel (6 segments: red, orange, yellow, green, blue, purple) with a gold rim and a red pointer on top.
+5. Quests: a green clipboard with white paper and two bold green check marks, gold clip on top.
+6. Daily: a calendar with a red top bar, two gold rings and a big gold star on the white page.
+
+Layout: canvas 1536x1024, FULLY transparent background. 3 columns x 2 rows (row 1: Offer, Mail, Settings; row 2: Spin, Quests, Daily). Each icon about 340x340 px, centred in its cell, with at least 120 px of empty transparent space between icons so they can be cut apart. Same size and lighting for all 6. No text labels, no watermark.
+
+Save as art/v3/shooter_set.png and list the file.

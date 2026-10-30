@@ -1,0 +1,10 @@
+Read art/STYLE.md (top-down sprite rules) and follow it exactly. Attached: the 4 APPROVED player ships ship_kestrel.png, ship_viper.png, ship_halo.png, ship_seraph.png. The new ships must look like the same game: same strict top-down camera (nose pointing UP), same glossy semi-realistic rendering, same lighting, same scale inside the canvas, same level of detail.
+
+Use your image generation tool to create 4 NEW player fighter ships. Generate each ship as its OWN separate image (no sheet, no grid). PNG 1024x1024, FULLY transparent background, ship centred, at least 6% empty margin on every side, nothing cut off. No text, no watermark. Each ship must have a clearly different silhouette from the 4 attached ships and from each other.
+
+1. art/ship_raptor.png - "Raptor" (rare): an aggressive gunmetal-and-orange strike fighter with forward-swept wings and two missile pods under the wings, orange engine glow.
+2. art/ship_tempest.png - "Tempest" (epic): an electric-blue and white interceptor with twin tail booms and crackling blue energy coils on the wing tips, blue engine glow.
+3. art/ship_nebula.png - "Nebula" (epic): a sleek magenta-pink and white stealth fighter with a long central beam emitter in the nose and a crescent-shaped wing, pink engine glow.
+4. art/ship_oblivion.png - "Oblivion" (legendary): a large black-and-violet dreadnought-fighter with sharp obsidian armour, a glowing violet void core in the centre and four swept blade wings, violet engine glow.
+
+Make 1 first and compare it with the attached ships, then keep 2-4 consistent. When done, list the files with their sizes.

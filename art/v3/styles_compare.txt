@@ -1,0 +1,15 @@
+Create ONE presentation sheet image comparing 3 different icon STYLES for a mobile space-shooter game's Home side buttons. Do not create any other images.
+
+Game: "Nova Vanguard", vertical-scrolling space shooter, dark navy starfield UI with cyan and gold accents. Attached: the game's current approved ship/UI art for context (icon_hangar.png, ship_kestrel.png).
+
+Sheet: landscape 1536x1024, dark navy starfield background (#0e1433). 3 columns, one per style, each labelled at the top with a small clean letter "A", "B", "C" (no other text). In each column show the SAME two icons stacked: "Special Offer" (top) and "Mail" (bottom), each about 260x260 px, evenly spaced.
+
+Style A - NEON HUD: flat-ish glowing line icons like a fighter-jet cockpit display. Thick neon strokes (offer: gold, mail: cyan) with soft bloom, inside a thin angular HUD bracket frame (corner brackets only). Offer = a stylised crate outline with a "%" mark; Mail = an envelope outline with a signal chevron. Clean, minimal, futuristic.
+
+Style B - HOLOGRAM PROJECTION: semi-transparent glowing hologram objects (scan lines, slight transparency, light flicker edge) floating above a tiny slim projector light. Offer = a hologram gift box with a "%" tag; Mail = a hologram envelope. Colours: gold hologram for offer, cyan for mail.
+
+Style C - BOLD CASUAL-SCI-FI 3D: chunky, rounded, very glossy 3D objects with strong rim light and a thick dark outline, vibrant saturated colours, like a top-grossing mobile game. Offer = a shiny gold treasure chest with a pink "%" sticker; Mail = a fat glossy cyan envelope with a red notification heart-seal. No base, no frame.
+
+Rules: same icon size in every column; each icon readable when small; no extra objects, no watermark.
+
+Save as art/v3/styles_compare.png and list the file.

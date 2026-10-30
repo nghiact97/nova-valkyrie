@@ -1,0 +1,10 @@
+Read art/STYLE.md, section "UI icons v2", for materials and lighting. These are in-battle PICKUP items that fall down the screen in a space shooter, drawn on a dark navy background at only 26-32 px, so each must have a strong, instantly readable silhouette and its own color. They must NOT look like spaceships or enemies. Use your image generation tool to create these 1024x1024 PNGs with TRANSPARENT backgrounds and save into art/ with exactly these names, OVERWRITING existing files. Make them one consistent set: each is a glowing round energy capsule/orb with a metal ring frame and a clear symbol inside.
+
+1. item_power.png — weapon power-up: magenta-pink glowing orb, metal ring, bold white upward double-chevron symbol inside
+2. item_heal.png — repair pickup: green glowing orb, metal ring, bold white medical cross / wrench symbol inside
+3. item_shield.png — shield pickup: cyan glowing orb, metal ring, white shield crest symbol inside
+4. item_magnet.png — magnet pickup: violet glowing orb, metal ring, white horseshoe magnet symbol inside
+5. item_coin.png — gold credit coin, thick rim, embossed star, bright and shiny (seen face-on)
+6. item_gem.png — faceted pink-magenta gem crystal, clearly a jewel (not a ship), bright highlight
+
+After saving, list the files with sizes.

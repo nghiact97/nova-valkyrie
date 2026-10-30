@@ -1,0 +1,16 @@
+Create ONE mobile-game equipment icon as a sample for approval. Do not create any other images.
+
+Game: "Nova Vanguard", a vertical-scrolling space shooter for phones. This icon is a piece of ship EQUIPMENT shown in an inventory grid (64-96 px) and in a detail popup (about 120 px), on a dark navy background.
+
+Attached: icon_shop.png, icon_daily.png, icon_mail.png are the APPROVED style. Match them exactly: dark gunmetal hull (#2a3150 to #141a44) with a few clean white armour panels, thin neon light strips in the accent colour, a thick dark-navy outline (#0a0e2a), one soft light from the top-left and one crisp specular highlight.
+
+Subject: "Vanguard Cannon", the main gun module of the Vanguard equipment set. It is a compact, heavy twin-barrel plasma cannon module seen from a slight 3/4 front view, barrels pointing up-right. It has a glowing cyan (#38e1ff) energy core window on its side and cyan neon strips along the barrels.
+
+Rules (strict):
+- One bold object, at most 3-4 large shapes. NO greebles, rivets, scratches, micro-text, letters, numbers or random sparkles.
+- No badge, plate, circle or frame behind the object. Rarity frames are added by the game, so do not draw any.
+- Centred, filling about 80% of the canvas.
+- Must stay readable at 48x48 px.
+- Output: PNG 1024x1024, FULLY transparent background with a clean, smooth edge (no halo, no speckles). No text, no watermark.
+
+Save as art/v2/space/gear_vanguard_cannon.png.

@@ -1,0 +1,19 @@
+Create 5 mobile-game UI icons for the SETTINGS screen of "Nova Vanguard", a vertical-scrolling space shooter for phones. Do not create any other images. Generate each icon as its OWN separate image (no sheet, no grid).
+
+Attached: icon_music.png, icon_sfx.png, icon_vibration.png are the APPROVED settings icons. Match them exactly: dark gunmetal hull (#2a3150 to #141a44), a few clean white armour panels, thin neon strips in the accent colour, a thick dark-navy outline (#0a0e2a), light from the top-left, one crisp highlight, same size within the canvas.
+
+Rules (strict):
+- One bold object, at most 3-4 large shapes. NO greebles, rivets, scratches, micro-text, letters, numbers or sparkles.
+- No badge, plate, circle or frame behind the object. Centred, about 80% of the canvas, at least 8% empty margin on every side.
+- Must stay readable at 28x28 px (these icons sit at the start of a settings row).
+- PNG 1024x1024, FULLY transparent background, clean edge, no halo, no text, no watermark.
+- Each icon must look clearly different from the other four and from the attached ones.
+
+Files:
+1. art/v2/space/icon_set_sens.png - "Drag sensitivity": a sci-fi slider control (one horizontal track with a glowing knob) with a small curved arrow showing a finger-drag motion. Accent: cyan.
+2. art/v2/space/icon_set_lefty.png - "Skill buttons on the left": a rugged handheld device seen front-on, with two glowing round buttons on its LEFT side and a short left-pointing arrow. Accent: orange.
+3. art/v2/space/icon_set_hint.png - "Show control hint": a stylised pointing hand (gloved, sci-fi) with a dashed swipe trail curving left and right. Accent: green.
+4. art/v2/space/icon_set_motion.png - "Background motion": a small framed window showing three diagonal speed-streak stars moving downward. Accent: violet.
+5. art/v2/space/icon_set_fps.png - "Show FPS": a compact speedometer gauge with a glowing needle pointing high. Accent: gold.
+
+Make 1 first and compare it with the attachments, then keep 2-5 consistent. When done, list the files with their sizes.

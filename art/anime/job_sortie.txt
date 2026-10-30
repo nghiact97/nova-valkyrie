@@ -1,0 +1,14 @@
+Read art/anime/STYLE.md. Attached: art/anime/style_a_mika.png (approved character look), art/anime/nav_sheet.png (the approved bottom-navigation icon set: the new icon must match its material and lighting), art/anime/nav_battle.png (the CURRENT sortie icon, which the owner finds ugly and off-style - do NOT copy it).
+
+Use your image generation tool to create ONE icon sheet: art/anime/sortie_sheet.png, 1536x1024, FULLY TRANSPARENT background. Exactly 5 icons in ONE horizontal row, evenly spaced, centred vertically, each about 260x260 px, with at least 40 px of empty transparent space between neighbours. No text, no labels, no numbers, no button plates, no circles or squares behind them.
+
+This is the big centre "SORTIE / LAUNCH" button of the bottom navigation of an anime mecha-girl space shooter. It sits between the shop bag, the girl bust, the quest tablet and the settings gear, so it must belong to the same set: sculpted glossy WHITE PORCELAIN and polished SILVER, soft anime cel shading, thin glowing cyan (#5ee7ff) edge lights, ONE small hot-pink (#ff6fae) accent, crisp dark navy outline that reads at 56 px, light from top-left, premium gacha-game UI. It must read instantly as "go fight / launch" and stay simple: one clear silhouette, no clutter, no gold, no big crystal gem.
+
+Five different concepts, left to right:
+1. A sleek white space fighter jet seen from the front-top, nose up, launching with a short cyan afterburner flame and two speed lines.
+2. A pair of white mecha wings swept upward around a vertical silver energy sword / lance pointing up, cyan glow along the blade.
+3. Three stacked upward chevrons (launch arrows) in white porcelain with cyan edge light, a small pink spark at the top tip, motion trails below.
+4. A cute anime pilot helmet with a cyan visor and small white wing fins on the sides, facing 3/4 front.
+5. A rounded "play" triangle made of white porcelain with a cyan glowing edge, wrapped by a thin silver orbit ring and a tiny pink star.
+
+Generate all now, do not stop to ask for approval. When done, print the file size.

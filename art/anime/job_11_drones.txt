@@ -1,0 +1,7 @@
+Read art/anime/STYLE.md. Attached: art/anime/nav_sheet.png and art/anime/crate_sheet.png are the APPROVED icon style of this game. Match them exactly: sculpted glossy WHITE PORCELAIN + polished metal, soft anime cel shading, glowing edge lights in the item colour, crisp dark navy outline so they read at 40 px, light from top-left, premium anime gacha-game look. No text, no letters, no numbers, no frames or plates behind the items. FULLY TRANSPARENT background.
+These are DRONES that fly next to the girl in battle, so they are seen from STRICT TOP-DOWN view (camera looking straight down), nose pointing UP, symmetric left/right.
+
+Use your image generation tool to create ONE sheet: art/anime/drone_sheet.png, 1536x1024. Two rows: row 1 has 5 drones, row 2 has 4 drones, each about 200 px big, evenly spaced with at least 60 px of empty space between them. Small cute-but-sleek porcelain support drones, each with its own glow colour:
+Row 1: 1 SPARROW (light blue, tiny delta drone with one small gun), 2 HORNET (orange, drone with two missile pods), 3 AEGIS (cyan, slim drone with a long laser emitter), 4 FLAK (orange, chunky drone with a shotgun barrel cluster), 5 MEDIC (green, round drone with a plus-shaped light).
+Row 2: 1 TESLA (blue, drone with two tesla coils), 2 GUARDIAN (cyan, drone with a hexagon shield projector ring), 3 PHANTOM (violet, sharp ghost-like stealth drone with a void orb), 4 SOLARIS (gold, radiant sun-disc drone with rays).
+When done, print the file size.

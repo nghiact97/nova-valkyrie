@@ -1,0 +1,6 @@
+Read art/anime/STYLE.md. Attached: art/anime/nav_sheet.png and art/anime/crate_sheet.png are the APPROVED icon style of this game. Match them exactly: sculpted glossy WHITE PORCELAIN + polished metal, soft anime cel shading, glowing edge lights in the item colour, crisp dark navy outline so they read at 40 px, light from top-left, premium anime gacha-game look. No text, no letters, no numbers, no frames or plates behind the items. FULLY TRANSPARENT background.
+
+Use your image generation tool to create ONE sheet: art/anime/skill_sheet_b.png, 1536x1024. A grid of 4 columns x 2 rows = 8 skill icons, each centred in its 384x512 cell, about 260 px big, with at least 60 px of empty space between neighbours. Each icon is ONE bold readable object or symbol.
+Row 1: 1 HULL ARMOR (a thick white armour chest plate with a cyan line), 2 NANO PLATING (a plate with green repair nanobots and a plus sign), 3 PHOENIX CORE (a heart-shaped crystal with small flame wings, pink), 4 TRACTOR MAGNET (a horseshoe magnet with cyan pull rings).
+Row 2: 1 TACTICAL CORE (a glowing violet power chip), 2 CREDIT BOOSTER (a gold coin with an up arrow), 3 XP AMPLIFIER (a green star crystal with up arrows), 4 SALVAGE LUCK (a small gold crate with a four-leaf sparkle).
+When done, print the file size.

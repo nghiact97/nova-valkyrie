@@ -1,0 +1,13 @@
+Read art/STYLE.md (top-down sprite rules) and follow it exactly. Attached: the APPROVED mini-boss sample miniboss_carrier.png plus boss1.png and enemy_elite.png for scale. Match miniboss_carrier.png exactly in camera (strict top-down, facing DOWN), rendering, lighting, materials, level of detail and size in the canvas.
+
+Create 7 mini-boss sprites. Generate each as its OWN separate image (no sheet, no grid). PNG 1024x1024, FULLY transparent background, centred, at least 6% empty margin on every side, nothing cut off, no text. Each must have a clearly different silhouette from the others and from the carrier.
+
+1. art/miniboss_sniper.png - "Sniper": a long, narrow gunship built around one very long rail-gun barrel pointing down, a red glowing scope lens near the muzzle. Accent: red.
+2. art/miniboss_minelayer.png - "Mine Layer": a round, heavy hull with a ring of six mine pods around its rim, orange warning lights. Accent: orange.
+3. art/miniboss_shield.png - "Shield Bearer": a compact armoured hull carrying a large curved hexagon-pattern energy shield emitter at its front (bottom). Accent: cyan.
+4. art/miniboss_turret.png - "Twin Turret" (one turret; the game mirrors it): a heavy armoured gun turret on a small hover base, a laser emitter on one side that will link to its twin. Accent: magenta.
+5. art/miniboss_splitter.png - "Splitter": an organic-mechanical alien blob with visible cell segments and a glowing green core, looks like it could split apart. Accent: green.
+6. art/miniboss_wraith.png - "Phase Wraith": a thin, ghostly translucent violet ship with trailing veil fins and a bright white eye core. Accent: violet.
+7. art/miniboss_charger.png - "Charger": a wedge-shaped ram ship with a huge reinforced prow spike pointing down and big rear thrusters. Accent: gold.
+
+Make 1 first and compare it with miniboss_carrier.png, then keep 2-7 consistent. When done, list the files with their sizes.

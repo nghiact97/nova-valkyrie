@@ -1,0 +1,11 @@
+Read art/STYLE.md and follow it exactly. Attached: APPROVED bosses boss1.png, boss4.png, boss6.png and the background bg_world3.jpg. New art must look like the same game.
+
+Part A - 4 NEW BOSSES (top-down sprite rules: strict top-down camera, facing DOWN toward the player, symmetric, glossy semi-realistic, same rendering, lighting and scale as the attached bosses). Generate each as its OWN separate image (no sheet, no grid). PNG 1024x1024, FULLY transparent background, centred, at least 6% empty margin on every side, nothing cut off, no text. Each must have a clearly different silhouette from the attached bosses and from each other.
+1. art/boss7.png - "Iron Leviathan": a long armoured gunmetal battleship-serpent with segmented plates, two rows of missile hatches glowing magenta, a heavy jaw-like prow at the bottom.
+2. art/boss8.png - "Starforge": a square orbital fortress with four heavy mortar cannons on the corners, molten-orange furnace core in the centre, thick riveted-free armour slabs.
+3. art/boss9.png - "Wraith Queen": a ghostly translucent teal-and-white alien flagship with long trailing veil-like fins, a glowing pale cyan crown core, eerie and elegant.
+4. art/boss10.png - "Eclipse Titan": the final boss, a massive black-and-gold ring-shaped titan with an eclipsed sun core (black disc with a blazing golden corona) in the centre and six blade arms.
+
+Part B - 1 BACKGROUND (follow the "Backgrounds" section): art/bg_world4.jpg - "Abyssal Rift": portrait 1024x1536, a dark violet-indigo deep-space rift with a glowing magenta crack of light near one edge, drifting obsidian shards near the edges, calm and dark in the middle 70%. Convert to JPG quality ~88.
+
+When done, list the files with their sizes.

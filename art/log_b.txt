@@ -1,0 +1,1122 @@
+2026-10-27T03:42:09.565666Z ERROR codex_skills_extension::host_service: failed to install system skills: io error while remove existing system skills dir: Access is denied. (os error 5)
+OpenAI Codex v0.163.0-alpha.11.2
+--------
+workdir: D:\Node\games\nova_vanguard
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: low
+reasoning summaries: none
+session id: 01a17b73-8271-7f31-b072-de7018208425
+--------
+user
+Read art/STYLE.md and follow it exactly. Use your image generation tool to create these PNG sprites with TRANSPARENT backgrounds, then save each one into the folder art/ with exactly these file names (copy the generated file there). Square 1024x1024.
+
+1. ship_kestrel.png — "Kestrel" (common): balanced starter jet fighter, cyan and blue paint, glass cockpit, twin engines glowing cyan, points UP.
+2. ship_viper.png — "Viper" (rare): sleek aggressive fighter, emerald green with dark trim, long nose, twin laser cannons, points UP.
+3. ship_halo.png — "Halo" (epic): elegant fighter with a glowing violet ring/halo around the hull, purple and white, points UP.
+4. ship_seraph.png — "Seraph" (legendary): majestic gold-and-white angelic warship, 4 swept wing blades, glowing golden engines, points UP.
+5. drone_sparrow.png — small light-blue support drone, diamond shape, points UP.
+6. drone_hornet.png — small orange missile drone with two mini rocket pods, points UP.
+7. drone_aegis.png — small cyan beam drone with a lens emitter, points UP.
+8. item_power.png — glowing pink power-up capsule with a bold "P" emblem.
+9. item_coin.png — shiny gold coin with a star emblem, seen face-on.
+10. item_gem.png — faceted pink gem crystal.
+
+After saving all files, list art/ with sizes. If transparent background is not possible for one, still save it and say which one.
+
+2026-10-27T03:42:12.570202Z ERROR codex_memories_write::phase2: Phase 2 no changes
+codex
+I’ll first read the project’s art direction, then generate each sprite as a transparent 1024×1024 asset and verify the saved PNG dimensions/alpha before listing file sizes. I’m using the image-generation skill because these are new raster game assets.
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-Content -Raw -LiteralPath 'C:\\Users\\Admin\\.codex\\skills\\.system\\imagegen\\SKILL.md'; Write-Output \""'`n---STYLE---"; Get-Content -Raw -LiteralPath '"'art\\STYLE.md'" in D:\Node\games\nova_vanguard
+ succeeded in 574ms:
+---
+name: "imagegen"
+description: "Generate or edit raster images when the task benefits from AI-created bitmap visuals such as photos, illustrations, textures, sprites, mockups, or transparent-background cutouts. Use when Codex should create a brand-new image, transform an existing image, or derive visual variants from references, and the output should be a bitmap asset rather than repo-native code or vector. Do not use when the task is better handled by editing existing SVG/vector/code-native assets, extending an established icon or logo system, or building the visual directly in HTML/CSS/canvas."
+---
+
+# Image Generation Skill
+
+Generates or edits images for the current project (for example website assets, game assets, UI mockups, product mockups, wireframes, logo design, photorealistic images, or infographics).
+
+## Top-level modes and rules
+
+This skill has exactly two top-level modes:
+
+- **Default built-in tool mode (preferred):** built-in `image_gen` tool for image generation, editing, and transparent-image requests. Does not require `OPENAI_API_KEY`.
+- **Fallback CLI mode:** `scripts/image_gen.py` CLI. Use when the user explicitly asks for or confirms the CLI/API/model path. Requires `OPENAI_API_KEY`.
+
+Within CLI fallback, the CLI exposes three subcommands:
+
+- `generate`
+- `edit`
+- `generate-batch`
+
+Rules:
+- Use the built-in `image_gen` tool by default for normal image generation and editing requests.
+- Do not switch to CLI fallback for ordinary quality, size, or file-path control.
+- For transparent images, ask built-in `image_gen` for a transparent background and preserve the generated alpha.
+- Never silently switch from built-in `image_gen` or CLI `gpt-image-2` to CLI `gpt-image-1.5`; ask the user first unless they explicitly requested `gpt-image-1.5`.
+- The word `batch` by itself does not mean CLI fallback. If the user asks for many assets or says to batch-generate assets without explicitly asking for CLI/API/model controls, stay on the built-in path and issue one built-in call per requested asset or variant.
+- If the built-in tool fails or is unavailable, tell the user the CLI fallback exists and that it requires `OPENAI_API_KEY`. Proceed only if the user explicitly asks for that fallback.
+- If the user explicitly asks for CLI mode, use the bundled `scripts/image_gen.py` workflow. Do not create one-off SDK runners.
+- Never modify `scripts/image_gen.py`. If something is missing, ask the user before doing anything else.
+
+Built-in save-path policy:
+- In built-in tool mode, Codex saves generated images under `$CODEX_HOME/*` by default.
+- Do not describe or rely on OS temp as the default built-in destination.
+- Do not describe or rely on a destination-path argument (if any) on the built-in `image_gen` tool. If a specific location is needed, generate first and then move or copy the selected output from `$CODEX_HOME/generated_images/...`.
+- Save-path precedence in built-in mode:
+  1. If the user names a destination, move or copy the selected output there.
+  2. If the image is meant for the current project, move or copy the final selected image into the workspace before finishing.
+  3. If the image is only for preview or brainstorming, render it inline; the underlying file can remain at the default `$CODEX_HOME/*` path.
+- Never leave a project-referenced asset only at the default `$CODEX_HOME/*` path.
+- Do not overwrite an existing asset unless the user explicitly asked for replacement; otherwise create a sibling versioned filename such as `hero-v2.png` or `item-icon-edited.png`.
+
+Shared prompt guidance for both modes lives in `references/prompting.md` and `references/sample-prompts.md`.
+
+Fallback-only docs/resources for CLI mode:
+- `references/cli.md`
+- `references/image-api.md`
+- `references/codex-network.md`
+- `scripts/image_gen.py`
+
+## When to use
+- Generate a new image (concept art, product shot, cover, website hero)
+- Generate a new image using one or more reference images for style, composition, or mood
+- Edit an existing image (inpainting, lighting or weather transformations, background replacement, object removal, compositing, transparent background)
+- Produce many assets or variants for one task
+
+## When not to use
+- Extending or matching an existing SVG/vector icon set, logo system, or illustration library inside the repo
+- Creating simple shapes, diagrams, wireframes, or icons that are better produced directly in SVG, HTML/CSS, or canvas
+- Making a small project-local asset edit when the source file already exists in an editable native format
+- Any task where the user clearly wants deterministic code-native output instead of a generated bitmap
+
+## Decision tree
+
+Think about two separate questions:
+
+1. **Intent:** is this a new image or an edit of an existing image?
+2. **Execution strategy:** is this one asset or many assets/variants?
+
+Intent:
+- If the user wants to modify an existing image while preserving parts of it, treat the request as **edit**.
+- If the user provides images only as references for style, composition, mood, or subject guidance, treat the request as **generate**.
+- If the user provides no images, treat the request as **generate**.
+
+Built-in edit semantics:
+- Built-in edit mode is for images already visible in the conversation context, such as attached images or images generated earlier in the thread.
+- If the user wants to edit a local image file with the built-in tool, first load it with built-in `view_image` tool so the image is visible in the conversation context, then proceed with the built-in edit flow.
+- Do not promise arbitrary filesystem-path editing through the built-in tool.
+- If a local file still needs direct file-path control, masks, or other explicit CLI-only parameters, use the explicit CLI fallback only when the user asks for it.
+- For edits, preserve invariants aggressively and save non-destructively by default.
+
+Execution strategy:
+- In the built-in default path, produce many assets or variants by issuing one `image_gen` call per requested asset or variant.
+- In the CLI fallback path, use the CLI `generate-batch` subcommand only when the user explicitly chose CLI mode and needs many prompts/assets.
+- For many distinct assets, do not use `n` as a substitute for separate prompts. `n` is for variants of one prompt; distinct assets need distinct built-in calls or distinct CLI `generate-batch` jobs.
+
+Assume the user wants a new image unless they clearly ask to change an existing one.
+
+## Workflow
+1. Decide the top-level mode: built-in by default, including transparent-output requests; fallback CLI only if explicitly requested or confirmed.
+2. Decide the intent: `generate` or `edit`.
+3. Decide whether the output is preview-only or meant to be consumed by the current project.
+4. Decide the execution strategy: single asset vs repeated built-in calls vs CLI `generate-batch`.
+5. Collect inputs up front: prompt(s), exact text (verbatim), constraints/avoid list, and any input images.
+6. For every input image, label its role explicitly:
+   - reference image
+   - edit target
+   - supporting insert/style/compositing input
+7. If the edit target is only on the local filesystem and you are staying on the built-in path, inspect it with `view_image` first so the image is available in conversation context.
+8. If the user asked for a photo, illustration, sprite, product image, banner, or other explicitly raster-style asset, use `image_gen` rather than substituting SVG/HTML/CSS placeholders. If the request is for an icon, logo, or UI graphic that should match existing repo-native SVG/vector/code assets, prefer editing those directly instead.
+9. Augment the prompt based on specificity:
+   - If the user's prompt is already specific and detailed, normalize it into a clear spec without adding creative requirements.
+   - If the user's prompt is generic, add tasteful augmentation only when it materially improves output quality.
+10. Use the built-in `image_gen` tool by default.
+11. For transparent-output requests, ask built-in `image_gen` for a transparent background and preserve the generated alpha channel.
+12. Inspect outputs and validate: subject, style, composition, text accuracy, and invariants/avoid items.
+13. Iterate with a single targeted change, then re-check.
+14. For preview-only work, render the image inline; the underlying file may remain at the default `$CODEX_HOME/generated_images/...` path.
+15. For project-bound work, move or copy the selected artifact into the workspace and update any consuming code or references. Never leave a project-referenced asset only at the default `$CODEX_HOME/generated_images/...` path.
+16. For batches or multi-asset requests, persist every requested deliverable final in the workspace unless the user explicitly asked to keep outputs preview-only. Discarded variants do not need to be kept unless requested.
+17. If the user explicitly chooses or confirms the CLI fallback, then use the fallback-only docs for model, quality, size, `input_fidelity`, masks, output format, output paths, and network setup.
+18. Always report the final saved path(s) for any workspace-bound asset(s), plus the final prompt or prompt set and whether the built-in tool or fallback CLI mode was used.
+
+## Transparent image requests
+
+Ask built-in `image_gen` for a genuinely transparent background and preserve its alpha.
+
+## Prompt augmentation
+
+Reformat user prompts into a structured, production-oriented spec. Make the user's goal clearer and more actionable, but do not blindly add detail.
+
+Treat this as prompt-shaping guidance, not a closed schema. Use only the lines that help, and add a short extra labeled line when it materially improves clarity.
+
+### Specificity policy
+
+Use the user's prompt specificity to decide how much augmentation is appropriate:
+
+- If the prompt is already specific and detailed, preserve that specificity and only normalize/structure it.
+- If the prompt is generic, you may add tasteful augmentation when it will materially improve the result.
+
+Allowed augmentations:
+- composition or framing hints
+- polish level or intended-use hints
+- practical layout guidance
+- reasonable scene concreteness that supports the stated request
+
+Not allowed augmentations:
+- extra characters or objects that are not implied by the request
+- brand names, slogans, palettes, or narrative beats that are not implied
+- arbitrary side-specific placement unless the surrounding layout supports it
+
+## Use-case taxonomy (exact slugs)
+
+Classify each request into one of these buckets and keep the slug consistent across prompts and references.
+
+Generate:
+- photorealistic-natural — candid/editorial lifestyle scenes with real texture and natural lighting.
+- product-mockup — product/packaging shots, catalog imagery, merch concepts.
+- ui-mockup — app/web interface mockups and wireframes; specify the desired fidelity.
+- infographic-diagram — diagrams/infographics with structured layout and text.
+- scientific-educational — classroom explainers, scientific diagrams, and learning visuals with required labels and accuracy constraints.
+- ads-marketing — campaign concepts and ad creatives with audience, brand position, scene, and exact tagline/copy.
+- productivity-visual — slide, chart, workflow, and data-heavy business visuals.
+- logo-brand — logo/mark exploration, vector-friendly.
+- illustration-story — comics, children’s book art, narrative scenes.
+- stylized-concept — style-driven concept art, 3D/stylized renders.
+- historical-scene — period-accurate/world-knowledge scenes.
+
+Edit:
+- text-localization — translate/replace in-image text, preserve layout.
+- identity-preserve — try-on, person-in-scene; lock face/body/pose.
+- precise-object-edit — remove/replace a specific element (including interior swaps).
+- lighting-weather — time-of-day/season/atmosphere changes only.
+- background-extraction — transparent background / clean cutout. Ask built-in `image_gen` for actual transparency.
+- style-transfer — apply reference style while changing subject/scene.
+- compositing — multi-image insert/merge with matched lighting/perspective.
+- sketch-to-render — drawing/line art to photoreal render.
+
+## Shared prompt schema
+
+Use the following labeled spec as shared prompt scaffolding for both top-level modes:
+
+```text
+Use case: <taxonomy slug>
+Asset type: <where the asset will be used>
+Primary request: <user's main prompt>
+Input images: <Image 1: role; Image 2: role> (optional)
+Scene/backdrop: <environment>
+Subject: <main subject>
+Style/medium: <photo/illustration/3D/etc>
+Composition/framing: <wide/close/top-down; placement>
+Lighting/mood: <lighting + mood>
+Color palette: <palette notes>
+Materials/textures: <surface details>
+Text (verbatim): "<exact text>"
+Constraints: <must keep/must avoid>
+Avoid: <negative constraints>
+```
+
+Notes:
+- `Asset type` and `Input images` are prompt scaffolding, not dedicated CLI flags.
+- `Scene/backdrop` refers to the visual setting. It is not the same as the fallback CLI `background` parameter, which controls output transparency behavior.
+- Fallback-only execution notes such as `Quality:`, `Input fidelity:`, masks, output format, and output paths belong in the CLI path only. Do not treat them as built-in `image_gen` tool arguments.
+
+Augmentation rules:
+- Keep it short.
+- Add only the details needed to improve the prompt materially.
+- For edits, explicitly list invariants (`change only X; keep Y unchanged`).
+- If any critical detail is missing and blocks success, ask a question; otherwise proceed.
+
+## Examples
+
+### Generation example (hero image)
+```text
+Use case: product-mockup
+Asset type: landing page hero
+Primary request: a minimal hero image of a ceramic coffee mug
+Style/medium: clean product photography
+Composition/framing: wide composition with usable negative space for page copy if needed
+Lighting/mood: soft studio lighting
+Constraints: no logos, no text, no watermark
+```
+
+### Edit example (invariants)
+```text
+Use case: precise-object-edit
+Asset type: product photo background replacement
+Primary request: replace only the background with a warm sunset gradient
+Constraints: change only the background; keep the product and its edges unchanged; no text; no watermark
+```
+
+## Prompting best practices
+- Structure prompt as scene/backdrop -> subject -> details -> constraints.
+- Include intended use (ad, UI mock, infographic) to set the mode and polish level.
+- Use camera/composition language for photorealism.
+- Only use SVG/vector stand-ins when the user explicitly asked for vector output or a non-image placeholder.
+- Quote exact text and specify typography + placement.
+- For tricky words, spell them letter-by-letter and require verbatim rendering.
+- For multi-image inputs, reference images by index and describe how they should be used.
+- For edits, repeat invariants every iteration to reduce drift.
+- Iterate with single-change follow-ups.
+- If the prompt is generic, add only the extra detail that will materially help.
+- If the prompt is already detailed, normalize it instead of expanding it.
+- For CLI fallback only, see `references/cli.md` and `references/image-api.md` for model, `quality`, `input_fidelity`, masks, output format, and output-path guidance.
+- For transparent images, ask built-in `image_gen` for actual transparency and preserve its alpha.
+
+More principles shared by both modes: `references/prompting.md`.
+Copy/paste specs shared by both modes: `references/sample-prompts.md`.
+
+## Guidance by asset type
+Asset-type templates (website assets, game assets, wireframes, logo) are consolidated in `references/sample-prompts.md`.
+
+## gpt-image-2 guidance for CLI fallback
+
+The fallback CLI defaults to `gpt-image-2`.
+
+- Use `gpt-image-2` for new CLI/API workflows unless the user confirms a different model.
+- CLI `gpt-image-2` does not support `background=transparent`; ask before using `gpt-image-1.5` unless the user explicitly requested that model.
+- `gpt-image-2` always uses high fidelity for image inputs; do not set `input_fidelity` with this model.
+- `gpt-image-2` supports `quality` values `low`, `medium`, `high`, and `auto`.
+- Use `quality low` for fast drafts, thumbnails, and quick iterations. Use `medium`, `high`, or `auto` for final assets, dense text, diagrams, identity-sensitive edits, or high-resolution outputs.
+- Square images are typically fastest to generate. Use `1024x1024` for fast square drafts.
+- If the user asks for 4K-style output, use `3840x2160` for landscape or `2160x3840` for portrait.
+- `gpt-image-2` size may be `auto` or `WIDTHxHEIGHT` if all constraints hold: max edge `<= 3840px`, both edges multiples of `16px`, long-to-short ratio `<= 3:1`, total pixels between `655,360` and `8,294,400`.
+
+Popular `gpt-image-2` sizes:
+- `1024x1024` square
+- `1536x1024` landscape
+- `1024x1536` portrait
+- `2048x2048` 2K square
+- `2048x1152` 2K landscape
+- `3840x2160` 4K landscape
+- `2160x3840` 4K portrait
+- `auto`
+
+## Fallback CLI mode only
+
+### Temp and output conventions
+These conventions apply only to the CLI fallback. They do not describe built-in `image_gen` output behavior.
+- Use `tmp/imagegen/` for intermediate files (for example JSONL batches); delete them when done.
+- Write final artifacts under `output/imagegen/`.
+- Use `--out` or `--out-dir` to control output paths; keep filenames stable and descriptive.
+
+### Dependencies
+Prefer `uv` for dependency management in this repo.
+
+Required Python package:
+```bash
+uv pip install openai
+```
+
+Optional for image inspection and downscaling:
+```bash
+uv pip install pillow
+```
+
+Portability note:
+- If you are using the installed skill outside this repo, install dependencies into that environment with its package manager.
+- In uv-managed environments, `uv pip install ...` remains the preferred path.
+
+### Environment
+- `OPENAI_API_KEY` must be set for live API calls.
+- Do not ask the user for `OPENAI_API_KEY` when using the built-in `image_gen` tool.
+- Never ask the user to paste the full key in chat. Ask them to set it locally and confirm when ready.
+
+If the key is missing, give the user these steps:
+1. Create an API key in the OpenAI platform UI: https://platform.openai.com/api-keys
+2. Set `OPENAI_API_KEY` as an environment variable in their system.
+3. Offer to guide them through setting the environment variable for their OS/shell if needed.
+
+If installation is not possible in this environment, tell the user which dependency is missing and how to install it into their active environment.
+
+### Script-mode notes
+- CLI commands + examples: `references/cli.md`
+- API parameter quick reference: `references/image-api.md`
+- Network approvals / sandbox settings for CLI mode: `references/codex-network.md`
+
+## Reference map
+- `references/prompting.md`: shared prompting principles for both modes.
+- `references/sample-prompts.md`: shared copy/paste prompt recipes for both modes.
+- `references/cli.md`: fallback-only CLI usage via `scripts/image_gen.py`.
+- `references/image-api.md`: fallback-only API/CLI parameter reference.
+- `references/codex-network.md`: fallback-only network/sandbox troubleshooting for CLI mode.
+- `scripts/image_gen.py`: fallback-only CLI implementation. Use only when the user explicitly chooses or confirms CLI mode.
+
+
+---STYLE---
+# Nova Vanguard — art brief (shared by every sprite)
+
+Game: original vertical-scrolling space shooter for mobile (portrait). Sprites are drawn on a canvas over a dark navy starfield (#0e1433).
+
+Style for EVERY image (keep identical across the set):
+- Strict top-down view (camera looking straight down), centered, symmetric left/right.
+- Glossy semi-realistic 3D render, like premium mobile shooter art: clean hard-surface panels, bevels, soft studio light from top-left, subtle rim light, emissive glowing parts.
+- Fully TRANSPARENT background (PNG with alpha). No floor, no shadow plane, no stars, no frame, no text, no watermark.
+- Object fills ~90% of the canvas, nothing cropped.
+- Original designs only: do not copy any existing game, film or franchise.
+- Player ships and drones point UP (nose at top). Enemies and bosses point DOWN (facing the player).
+
+
+codex
+The shared brief is strict and clear: identical glossy top-down rendering, centered symmetry, upward orientation, roughly 90% canvas occupancy, no shadows/scenery/text except the requested “P,” and genuine alpha transparency. I’ll keep that invariant in every prompt.
+codex
+All ten sprites are now rendering as separate assets so each subject keeps its own silhouette and details. Once generation finishes, I’ll copy the outputs into `art/` and run an alpha/dimension audit.
+codex
+Rendering is still in progress; there’s no failure output so far. I’m continuing to wait on the existing jobs rather than starting duplicates.
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command '$src='"'C:\\Users\\Admin\\.codex\\generated_images\\01a17b73-8271-7f31-b072-de7018208425'; "'$maps=@(@{s='"'exec-a26b720b-351d-4ba7-8aee-bcf215e2b099.png';d='ship_kestrel.png'},@{s='exec-9e4143f6-4a46-42ec-bc20-6d39dfd2b206.png';d='ship_viper.png'},@{s='exec-a7a16a18-036c-4517-9802-31713ccc1084.png';d='ship_halo.png'},@{s='exec-efc51580-72db-43df-8065-1fc196c088a0.png';d='ship_seraph.png'},@{s='exec-2000f0d7-958c-46a0-b186-43ef8ec13faf.png';d='drone_sparrow.png'},@{s='exec-a0fa03e5-99cb-49b3-9a12-f4965f6c3137.png';d='drone_hornet.png'},@{s='exec-481c8fc0-dea1-4774-bf2c-d108410baee7.png';d='drone_aegis.png'},@{s='exec-1583a7cc-fdca-45e9-8e8c-9375ea451df0.png';d='item_power.png'},@{s='exec-ac8a3d93-ba3d-442b-861c-810256b20583.png';d='item_coin.png'},@{s='exec-a8e387d5-73d2-48dc-bb9b-b9256c42e3bd.png';d='item_gem.png'}); foreach("'$m in $maps){ Copy-Item -LiteralPath (Join-Path $src $m.s) -Destination (Join-Path '"'art' "'$m.d) -Force }; Get-ChildItem -LiteralPath '"'art' -File | Where-Object { "'$_.Name -in $maps.d } | Sort-Object Name | Select-Object Name,Length' in D:\Node\games\nova_vanguard
+ succeeded in 511ms:
+
+Name               Length
+----               ------
+drone_aegis.png   1276781
+drone_hornet.png  1304246
+drone_sparrow.png 1294219
+item_coin.png     1845383
+item_gem.png      1380740
+item_power.png    1119221
+ship_halo.png     1952366
+ship_kestrel.png  1471142
+ship_seraph.png   1621414
+ship_viper.png    1300962
+
+
+
+codex
+The generated files have been copied to the requested names. I’m checking the actual PNG headers, pixel dimensions, and alpha-channel presence now; this catches cases where an image merely looks transparent but was flattened.
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command 'Add-Type -AssemblyName System.Drawing; $names=@('"'ship_kestrel.png','ship_viper.png','ship_halo.png','ship_seraph.png','drone_sparrow.png','drone_hornet.png','drone_aegis.png','item_power.png','item_coin.png','item_gem.png'); foreach("'$name in $names){ $p=Join-Path (Resolve-Path '"'art').Path "'$name; $img=[System.Drawing.Bitmap]::new($p); $hasAlpha=($img.PixelFormat.ToString() -match '"'Alpha'); [pscustomobject]@{Name="'$name; Width=$img.Width; Height=$img.Height; PixelFormat=$img.PixelFormat; AlphaCapable=$hasAlpha; Bytes=(Get-Item -LiteralPath $p).Length}; $img.Dispose() } | Format-Table -AutoSize' in D:\Node\games\nova_vanguard
+ exited 1 in 253ms:
+At line:2 char:574
++ ...  Bytes=(Get-Item -LiteralPath $p).Length}; $img.Dispose() } | Format- ...
++                                                                 ~
+An empty pipe element is not allowed.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : EmptyPipeElement
+ 
+
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command 'Add-Type -AssemblyName System.Drawing; $names=@('"'ship_kestrel.png','ship_viper.png','ship_halo.png','ship_seraph.png','drone_sparrow.png','drone_hornet.png','drone_aegis.png','item_power.png','item_coin.png','item_gem.png'); "'$rows = foreach($name in $names){ $p=Join-Path (Resolve-Path '"'art').Path "'$name; $img=[System.Drawing.Bitmap]::new($p); $hasAlpha=($img.PixelFormat.ToString() -match '"'Alpha'); [pscustomobject]@{Name="'$name; Width=$img.Width; Height=$img.Height; PixelFormat=$img.PixelFormat; AlphaCapable=$hasAlpha; Bytes=(Get-Item -LiteralPath $p).Length}; $img.Dispose() }; $rows | Format-Table -AutoSize' in D:\Node\games\nova_vanguard
+ succeeded in 713ms:
+Add-Type : Cannot add type. Definition of new types is not supported in this language mode.
+At line:2 char:1
++ Add-Type -AssemblyName System.Drawing; $names=@('ship_kestrel.png','s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : PermissionDenied: (:) [Add-Type], PSNotSupportedException
+    + FullyQualifiedErrorId : CannotDefineNewType,Microsoft.PowerShell.Commands.AddTypeCommand
+ 
+Unable to find type [System.Drawing.Bitmap].
+At line:2 char:311
++ ... (Resolve-Path 'art').Path $name; $img=[System.Drawing.Bitmap]::new($p ...
++                                           ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Drawing.Bitmap:TypeName) [], RuntimeException
+    + FullyQualifiedErrorId : TypeNotFound
+ 
+You cannot call a method on a null-valued expression.
+At line:2 char:345
++ ... ]::new($p); $hasAlpha=($img.PixelFormat.ToString() -match 'Alpha'); [ ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+Cannot convert value to type "System.Management.Automation.LanguagePrimitives+InternalPSCustomObject". Only core types 
+are supported in this language mode.
+At line:2 char:401
++ ... h 'Alpha'); [pscustomobject]@{Name=$name; Width=$img.Width; Height=$i ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidArgument: (:) [], RuntimeException
+    + FullyQualifiedErrorId : ConversionSupportedOnlyToCoreTypes
+ 
+You cannot call a method on a null-valued expression.
+At line:2 char:565
++ ... pha; Bytes=(Get-Item -LiteralPath $p).Length}; $img.Dispose() }; $row ...
++                                                    ~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+Unable to find type [System.Drawing.Bitmap].
+At line:2 char:311
++ ... (Resolve-Path 'art').Path $name; $img=[System.Drawing.Bitmap]::new($p ...
++                                           ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Drawing.Bitmap:TypeName) [], RuntimeException
+    + FullyQualifiedErrorId : TypeNotFound
+ 
+You cannot call a method on a null-valued expression.
+At line:2 char:345
++ ... ]::new($p); $hasAlpha=($img.PixelFormat.ToString() -match 'Alpha'); [ ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+Cannot convert value to type "System.Management.Automation.LanguagePrimitives+InternalPSCustomObject". Only core types 
+are supported in this language mode.
+At line:2 char:401
++ ... h 'Alpha'); [pscustomobject]@{Name=$name; Width=$img.Width; Height=$i ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidArgument: (:) [], RuntimeException
+    + FullyQualifiedErrorId : ConversionSupportedOnlyToCoreTypes
+ 
+You cannot call a method on a null-valued expression.
+At line:2 char:565
++ ... pha; Bytes=(Get-Item -LiteralPath $p).Length}; $img.Dispose() }; $row ...
++                                                    ~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+Unable to find type [System.Drawing.Bitmap].
+At line:2 char:311
++ ... (Resolve-Path 'art').Path $name; $img=[System.Drawing.Bitmap]::new($p ...
++                                           ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Drawing.Bitmap:TypeName) [], RuntimeException
+    + FullyQualifiedErrorId : TypeNotFound
+ 
+You cannot call a method on a null-valued expression.
+At line:2 char:345
++ ... ]::new($p); $hasAlpha=($img.PixelFormat.ToString() -match 'Alpha'); [ ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+Cannot convert value to type "System.Management.Automation.LanguagePrimitives+InternalPSCustomObject". Only core types 
+are supported in this language mode.
+At line:2 char:401
++ ... h 'Alpha'); [pscustomobject]@{Name=$name; Width=$img.Width; Height=$i ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidArgument: (:) [], RuntimeException
+    + FullyQualifiedErrorId : ConversionSupportedOnlyToCoreTypes
+ 
+You cannot call a method on a null-valued expression.
+At line:2 char:565
++ ... pha; Bytes=(Get-Item -LiteralPath $p).Length}; $img.Dispose() }; $row ...
++                                                    ~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+Unable to find type [System.Drawing.Bitmap].
+At line:2 char:311
++ ... (Resolve-Path 'art').Path $name; $img=[System.Drawing.Bitmap]::new($p ...
++                                           ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Drawing.Bitmap:TypeName) [], RuntimeException
+    + FullyQualifiedErrorId : TypeNotFound
+ 
+You cannot call a method on a null-valued expression.
+At line:2 char:345
++ ... ]::new($p); $hasAlpha=($img.PixelFormat.ToString() -match 'Alpha'); [ ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+Cannot convert value to type "System.Management.Automation.LanguagePrimitives+InternalPSCustomObject". Only core types 
+are supported in this language mode.
+At line:2 char:401
++ ... h 'Alpha'); [pscustomobject]@{Name=$name; Width=$img.Width; Height=$i ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidArgument: (:) [], RuntimeException
+    + FullyQualifiedErrorId : ConversionSupportedOnlyToCoreTypes
+ 
+You cannot call a method on a null-valued expression.
+At line:2 char:565
++ ... pha; Bytes=(Get-Item -LiteralPath $p).Length}; $img.Dispose() }; $row ...
++                                                    ~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+Unable to find type [System.Drawing.Bitmap].
+At line:2 char:311
++ ... (Resolve-Path 'art').Path $name; $img=[System.Drawing.Bitmap]::new($p ...
++                                           ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Drawing.Bitmap:TypeName) [], RuntimeException
+    + FullyQualifiedErrorId : TypeNotFound
+ 
+You cannot call a method on a null-valued expression.
+At line:2 char:345
++ ... ]::new($p); $hasAlpha=($img.PixelFormat.ToString() -match 'Alpha'); [ ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+Cannot convert value to type "System.Management.Automation.LanguagePrimitives+InternalPSCustomObject". Only core types 
+are supported in this language mode.
+At line:2 char:401
++ ... h 'Alpha'); [pscustomobject]@{Name=$name; Width=$img.Width; Height=$i ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidArgument: (:) [], RuntimeException
+    + FullyQualifiedErrorId : ConversionSupportedOnlyToCoreTypes
+ 
+You cannot call a method on a null-valued expression.
+At line:2 char:565
++ ... pha; Bytes=(Get-Item -LiteralPath $p).Length}; $img.Dispose() }; $row ...
++                                                    ~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+Unable to find type [System.Drawing.Bitmap].
+At line:2 char:311
++ ... (Resolve-Path 'art').Path $name; $img=[System.Drawing.Bitmap]::new($p ...
++                                           ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Drawing.Bitmap:TypeName) [], RuntimeException
+    + FullyQualifiedErrorId : TypeNotFound
+ 
+You cannot call a method on a null-valued expression.
+At line:2 char:345
++ ... ]::new($p); $hasAlpha=($img.PixelFormat.ToString() -match 'Alpha'); [ ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+Cannot convert value to type "System.Management.Automation.LanguagePrimitives+InternalPSCustomObject". Only core types 
+are supported in this language mode.
+At line:2 char:401
++ ... h 'Alpha'); [pscustomobject]@{Name=$name; Width=$img.Width; Height=$i ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidArgument: (:) [], RuntimeException
+    + FullyQualifiedErrorId : ConversionSupportedOnlyToCoreTypes
+ 
+You cannot call a method on a null-valued expression.
+At line:2 char:565
++ ... pha; Bytes=(Get-Item -LiteralPath $p).Length}; $img.Dispose() }; $row ...
++                                                    ~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+Unable to find type [System.Drawing.Bitmap].
+At line:2 char:311
++ ... (Resolve-Path 'art').Path $name; $img=[System.Drawing.Bitmap]::new($p ...
++                                           ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Drawing.Bitmap:TypeName) [], RuntimeException
+    + FullyQualifiedErrorId : TypeNotFound
+ 
+You cannot call a method on a null-valued expression.
+At line:2 char:345
++ ... ]::new($p); $hasAlpha=($img.PixelFormat.ToString() -match 'Alpha'); [ ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+Cannot convert value to type "System.Management.Automation.LanguagePrimitives+InternalPSCustomObject". Only core types 
+are supported in this language mode.
+At line:2 char:401
++ ... h 'Alpha'); [pscustomobject]@{Name=$name; Width=$img.Width; Height=$i ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidArgument: (:) [], RuntimeException
+    + FullyQualifiedErrorId : ConversionSupportedOnlyToCoreTypes
+ 
+You cannot call a method on a null-valued expression.
+At line:2 char:565
++ ... pha; Bytes=(Get-Item -LiteralPath $p).Length}; $img.Dispose() }; $row ...
++                                                    ~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+Unable to find type [System.Drawing.Bitmap].
+At line:2 char:311
++ ... (Resolve-Path 'art').Path $name; $img=[System.Drawing.Bitmap]::new($p ...
++                                           ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Drawing.Bitmap:TypeName) [], RuntimeException
+    + FullyQualifiedErrorId : TypeNotFound
+ 
+You cannot call a method on a null-valued expression.
+At line:2 char:345
++ ... ]::new($p); $hasAlpha=($img.PixelFormat.ToString() -match 'Alpha'); [ ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+Cannot convert value to type "System.Management.Automation.LanguagePrimitives+InternalPSCustomObject". Only core types 
+are supported in this language mode.
+At line:2 char:401
++ ... h 'Alpha'); [pscustomobject]@{Name=$name; Width=$img.Width; Height=$i ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidArgument: (:) [], RuntimeException
+    + FullyQualifiedErrorId : ConversionSupportedOnlyToCoreTypes
+ 
+You cannot call a method on a null-valued expression.
+At line:2 char:565
++ ... pha; Bytes=(Get-Item -LiteralPath $p).Length}; $img.Dispose() }; $row ...
++                                                    ~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+Unable to find type [System.Drawing.Bitmap].
+At line:2 char:311
++ ... (Resolve-Path 'art').Path $name; $img=[System.Drawing.Bitmap]::new($p ...
++                                           ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Drawing.Bitmap:TypeName) [], RuntimeException
+    + FullyQualifiedErrorId : TypeNotFound
+ 
+You cannot call a method on a null-valued expression.
+At line:2 char:345
++ ... ]::new($p); $hasAlpha=($img.PixelFormat.ToString() -match 'Alpha'); [ ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+Cannot convert value to type "System.Management.Automation.LanguagePrimitives+InternalPSCustomObject". Only core types 
+are supported in this language mode.
+At line:2 char:401
++ ... h 'Alpha'); [pscustomobject]@{Name=$name; Width=$img.Width; Height=$i ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidArgument: (:) [], RuntimeException
+    + FullyQualifiedErrorId : ConversionSupportedOnlyToCoreTypes
+ 
+You cannot call a method on a null-valued expression.
+At line:2 char:565
++ ... pha; Bytes=(Get-Item -LiteralPath $p).Length}; $img.Dispose() }; $row ...
++                                                    ~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+Unable to find type [System.Drawing.Bitmap].
+At line:2 char:311
++ ... (Resolve-Path 'art').Path $name; $img=[System.Drawing.Bitmap]::new($p ...
++                                           ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (System.Drawing.Bitmap:TypeName) [], RuntimeException
+    + FullyQualifiedErrorId : TypeNotFound
+ 
+You cannot call a method on a null-valued expression.
+At line:2 char:345
++ ... ]::new($p); $hasAlpha=($img.PixelFormat.ToString() -match 'Alpha'); [ ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+Cannot convert value to type "System.Management.Automation.LanguagePrimitives+InternalPSCustomObject". Only core types 
+are supported in this language mode.
+At line:2 char:401
++ ... h 'Alpha'); [pscustomobject]@{Name=$name; Width=$img.Width; Height=$i ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidArgument: (:) [], RuntimeException
+    + FullyQualifiedErrorId : ConversionSupportedOnlyToCoreTypes
+ 
+You cannot call a method on a null-valued expression.
+At line:2 char:565
++ ... pha; Bytes=(Get-Item -LiteralPath $p).Length}; $img.Dispose() }; $row ...
++                                                    ~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command 'Get-Command magick -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source; Get-Command identify -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source' in D:\Node\games\nova_vanguard
+ exited 1 in 3660ms:
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command '$names=@('"'ship_kestrel.png','ship_viper.png','ship_halo.png','ship_seraph.png','drone_sparrow.png','drone_hornet.png','drone_aegis.png','item_power.png','item_coin.png','item_gem.png'); foreach("'$name in $names){ $p=Join-Path '"'art' "'$name; $b=[System.IO.File]::ReadAllBytes((Resolve-Path $p)); $w=($b[16]*16777216)+($b[17]*65536)+($b[18]*256)+$b[19]; $h=($b[20]*16777216)+($b[21]*65536)+($b[22]*256)+$b[23]; $ct=$b[25]; $alpha=($ct -eq 4 -or $ct -eq 6); Write-Output ("{0}`t{1}x{2}`tPNGColorType={3}`tAlphaChannel={4}`t{5} bytes" -f $name,$w,$h,$ct,$alpha,(Get-Item -LiteralPath $p).Length) }' in D:\Node\games\nova_vanguard
+ succeeded in 666ms:
+Cannot invoke method. Method invocation is supported only on core types in this language mode.
+At line:2 char:239
++ ... art' $name; $b=[System.IO.File]::ReadAllBytes((Resolve-Path $p)); $w= ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : MethodInvocationNotSupportedInConstrainedLanguage
+ 
+Cannot index into a null array.
+At line:2 char:293
++ ... -Path $p)); $w=($b[16]*16777216)+($b[17]*65536)+($b[18]*256)+$b[19];  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : NullArray
+ 
+Cannot index into a null array.
+At line:2 char:350
++ ... 56)+$b[19]; $h=($b[20]*16777216)+($b[21]*65536)+($b[22]*256)+$b[23];  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : NullArray
+ 
+Cannot index into a null array.
+At line:2 char:407
++ ... [20]*16777216)+($b[21]*65536)+($b[22]*256)+$b[23]; $ct=$b[25]; $alpha ...
++                                                        ~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : NullArray
+ 
+ship_kestrel.png	x	PNGColorType=	AlphaChannel=False	1471142 bytes
+Cannot invoke method. Method invocation is supported only on core types in this language mode.
+At line:2 char:239
++ ... art' $name; $b=[System.IO.File]::ReadAllBytes((Resolve-Path $p)); $w= ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : MethodInvocationNotSupportedInConstrainedLanguage
+ 
+Cannot index into a null array.
+At line:2 char:293
++ ... -Path $p)); $w=($b[16]*16777216)+($b[17]*65536)+($b[18]*256)+$b[19];  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : NullArray
+ 
+Cannot index into a null array.
+At line:2 char:350
++ ... 56)+$b[19]; $h=($b[20]*16777216)+($b[21]*65536)+($b[22]*256)+$b[23];  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : NullArray
+ 
+Cannot index into a null array.
+At line:2 char:407
++ ... [20]*16777216)+($b[21]*65536)+($b[22]*256)+$b[23]; $ct=$b[25]; $alpha ...
++                                                        ~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : NullArray
+ 
+ship_viper.png	x	PNGColorType=	AlphaChannel=False	1300962 bytes
+Cannot invoke method. Method invocation is supported only on core types in this language mode.
+At line:2 char:239
++ ... art' $name; $b=[System.IO.File]::ReadAllBytes((Resolve-Path $p)); $w= ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : MethodInvocationNotSupportedInConstrainedLanguage
+ 
+Cannot index into a null array.
+At line:2 char:293
++ ... -Path $p)); $w=($b[16]*16777216)+($b[17]*65536)+($b[18]*256)+$b[19];  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : NullArray
+ 
+Cannot index into a null array.
+At line:2 char:350
++ ... 56)+$b[19]; $h=($b[20]*16777216)+($b[21]*65536)+($b[22]*256)+$b[23];  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : NullArray
+ 
+Cannot index into a null array.
+At line:2 char:407
++ ... [20]*16777216)+($b[21]*65536)+($b[22]*256)+$b[23]; $ct=$b[25]; $alpha ...
++                                                        ~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : NullArray
+ 
+ship_halo.png	x	PNGColorType=	AlphaChannel=False	1952366 bytes
+Cannot invoke method. Method invocation is supported only on core types in this language mode.
+At line:2 char:239
++ ... art' $name; $b=[System.IO.File]::ReadAllBytes((Resolve-Path $p)); $w= ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : MethodInvocationNotSupportedInConstrainedLanguage
+ 
+Cannot index into a null array.
+At line:2 char:293
++ ... -Path $p)); $w=($b[16]*16777216)+($b[17]*65536)+($b[18]*256)+$b[19];  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : NullArray
+ 
+Cannot index into a null array.
+At line:2 char:350
++ ... 56)+$b[19]; $h=($b[20]*16777216)+($b[21]*65536)+($b[22]*256)+$b[23];  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : NullArray
+ 
+Cannot index into a null array.
+At line:2 char:407
++ ... [20]*16777216)+($b[21]*65536)+($b[22]*256)+$b[23]; $ct=$b[25]; $alpha ...
++                                                        ~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : NullArray
+ 
+ship_seraph.png	x	PNGColorType=	AlphaChannel=False	1621414 bytes
+Cannot invoke method. Method invocation is supported only on core types in this language mode.
+At line:2 char:239
++ ... art' $name; $b=[System.IO.File]::ReadAllBytes((Resolve-Path $p)); $w= ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : MethodInvocationNotSupportedInConstrainedLanguage
+ 
+Cannot index into a null array.
+At line:2 char:293
++ ... -Path $p)); $w=($b[16]*16777216)+($b[17]*65536)+($b[18]*256)+$b[19];  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : NullArray
+ 
+Cannot index into a null array.
+At line:2 char:350
++ ... 56)+$b[19]; $h=($b[20]*16777216)+($b[21]*65536)+($b[22]*256)+$b[23];  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : NullArray
+ 
+Cannot index into a null array.
+At line:2 char:407
++ ... [20]*16777216)+($b[21]*65536)+($b[22]*256)+$b[23]; $ct=$b[25]; $alpha ...
++                                                        ~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : NullArray
+ 
+drone_sparrow.png	x	PNGColorType=	AlphaChannel=False	1294219 bytes
+Cannot invoke method. Method invocation is supported only on core types in this language mode.
+At line:2 char:239
++ ... art' $name; $b=[System.IO.File]::ReadAllBytes((Resolve-Path $p)); $w= ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : MethodInvocationNotSupportedInConstrainedLanguage
+ 
+Cannot index into a null array.
+At line:2 char:293
++ ... -Path $p)); $w=($b[16]*16777216)+($b[17]*65536)+($b[18]*256)+$b[19];  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : NullArray
+ 
+Cannot index into a null array.
+At line:2 char:350
++ ... 56)+$b[19]; $h=($b[20]*16777216)+($b[21]*65536)+($b[22]*256)+$b[23];  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : NullArray
+ 
+Cannot index into a null array.
+At line:2 char:407
++ ... [20]*16777216)+($b[21]*65536)+($b[22]*256)+$b[23]; $ct=$b[25]; $alpha ...
++                                                        ~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : NullArray
+ 
+drone_hornet.png	x	PNGColorType=	AlphaChannel=False	1304246 bytes
+Cannot invoke method. Method invocation is supported only on core types in this language mode.
+At line:2 char:239
++ ... art' $name; $b=[System.IO.File]::ReadAllBytes((Resolve-Path $p)); $w= ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : MethodInvocationNotSupportedInConstrainedLanguage
+ 
+Cannot index into a null array.
+At line:2 char:293
++ ... -Path $p)); $w=($b[16]*16777216)+($b[17]*65536)+($b[18]*256)+$b[19];  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : NullArray
+ 
+Cannot index into a null array.
+At line:2 char:350
++ ... 56)+$b[19]; $h=($b[20]*16777216)+($b[21]*65536)+($b[22]*256)+$b[23];  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : NullArray
+ 
+Cannot index into a null array.
+At line:2 char:407
++ ... [20]*16777216)+($b[21]*65536)+($b[22]*256)+$b[23]; $ct=$b[25]; $alpha ...
++                                                        ~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : NullArray
+ 
+drone_aegis.png	x	PNGColorType=	AlphaChannel=False	1276781 bytes
+Cannot invoke method. Method invocation is supported only on core types in this language mode.
+At line:2 char:239
++ ... art' $name; $b=[System.IO.File]::ReadAllBytes((Resolve-Path $p)); $w= ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : MethodInvocationNotSupportedInConstrainedLanguage
+ 
+Cannot index into a null array.
+At line:2 char:293
++ ... -Path $p)); $w=($b[16]*16777216)+($b[17]*65536)+($b[18]*256)+$b[19];  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : NullArray
+ 
+Cannot index into a null array.
+At line:2 char:350
++ ... 56)+$b[19]; $h=($b[20]*16777216)+($b[21]*65536)+($b[22]*256)+$b[23];  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : NullArray
+ 
+Cannot index into a null array.
+At line:2 char:407
++ ... [20]*16777216)+($b[21]*65536)+($b[22]*256)+$b[23]; $ct=$b[25]; $alpha ...
++                                                        ~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : NullArray
+ 
+item_power.png	x	PNGColorType=	AlphaChannel=False	1119221 bytes
+Cannot invoke method. Method invocation is supported only on core types in this language mode.
+At line:2 char:239
++ ... art' $name; $b=[System.IO.File]::ReadAllBytes((Resolve-Path $p)); $w= ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : MethodInvocationNotSupportedInConstrainedLanguage
+ 
+Cannot index into a null array.
+At line:2 char:293
++ ... -Path $p)); $w=($b[16]*16777216)+($b[17]*65536)+($b[18]*256)+$b[19];  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : NullArray
+ 
+Cannot index into a null array.
+At line:2 char:350
++ ... 56)+$b[19]; $h=($b[20]*16777216)+($b[21]*65536)+($b[22]*256)+$b[23];  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : NullArray
+ 
+Cannot index into a null array.
+At line:2 char:407
++ ... [20]*16777216)+($b[21]*65536)+($b[22]*256)+$b[23]; $ct=$b[25]; $alpha ...
++                                                        ~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : NullArray
+ 
+item_coin.png	x	PNGColorType=	AlphaChannel=False	1845383 bytes
+Cannot invoke method. Method invocation is supported only on core types in this language mode.
+At line:2 char:239
++ ... art' $name; $b=[System.IO.File]::ReadAllBytes((Resolve-Path $p)); $w= ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : MethodInvocationNotSupportedInConstrainedLanguage
+ 
+Cannot index into a null array.
+At line:2 char:293
++ ... -Path $p)); $w=($b[16]*16777216)+($b[17]*65536)+($b[18]*256)+$b[19];  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : NullArray
+ 
+Cannot index into a null array.
+At line:2 char:350
++ ... 56)+$b[19]; $h=($b[20]*16777216)+($b[21]*65536)+($b[22]*256)+$b[23];  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : NullArray
+ 
+Cannot index into a null array.
+At line:2 char:407
++ ... [20]*16777216)+($b[21]*65536)+($b[22]*256)+$b[23]; $ct=$b[25]; $alpha ...
++                                                        ~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : NullArray
+ 
+item_gem.png	x	PNGColorType=	AlphaChannel=False	1380740 bytes
+
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "node -e \"const fs=require('fs'),p=require('path'); const n=['ship_kestrel.png','ship_viper.png','ship_halo.png','ship_seraph.png','drone_sparrow.png','drone_hornet.png','drone_aegis.png','item_power.png','item_coin.png','item_gem.png']; for(const x of n){const f=p.join('art',x),b=fs.readFileSync(f),w=b.readUInt32BE(16),h=b.readUInt32BE(20),ct=b[25],a=ct===4||ct===6; console.log(x+'\\t'+w+'x'+h+'\\tPNGColorType='+ct+'\\tAlphaChannel='+a+'\\t'+fs.statSync(f).size+' bytes')}\"" in D:\Node\games\nova_vanguard
+ succeeded in 246ms:
+ship_kestrel.png	1254x1254	PNGColorType=6	AlphaChannel=true	1471142 bytes
+ship_viper.png	1254x1254	PNGColorType=6	AlphaChannel=true	1300962 bytes
+ship_halo.png	1254x1254	PNGColorType=6	AlphaChannel=true	1952366 bytes
+ship_seraph.png	1254x1254	PNGColorType=6	AlphaChannel=true	1621414 bytes
+drone_sparrow.png	1254x1254	PNGColorType=6	AlphaChannel=true	1294219 bytes
+drone_hornet.png	1254x1254	PNGColorType=6	AlphaChannel=true	1304246 bytes
+drone_aegis.png	1254x1254	PNGColorType=6	AlphaChannel=true	1276781 bytes
+item_power.png	1254x1254	PNGColorType=6	AlphaChannel=true	1119221 bytes
+item_coin.png	1254x1254	PNGColorType=6	AlphaChannel=true	1845383 bytes
+item_gem.png	1254x1254	PNGColorType=6	AlphaChannel=true	1380740 bytes
+
+codex
+The transparency check passed for all ten, but the generator returned 1254×1254 instead of the requested 1024×1024. I’m correcting the dimensions losslessly with alpha preserved before the final file listing.
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "node -e \"try{require('sharp'); console.log('sharp available')}catch(e){console.log('sharp unavailable')}\"" in D:\Node\games\nova_vanguard
+ succeeded in 233ms:
+sharp unavailable
+
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "node -e \"for(const m of ['pngjs','jimp','canvas']){try{require(m);console.log(m+' available')}catch(e){console.log(m+' unavailable')}}\"; Get-Command ffmpeg -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source" in D:\Node\games\nova_vanguard
+ exited 1 in 782ms:
+pngjs unavailable
+jimp unavailable
+canvas unavailable
+
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command 'python -c "import PIL; print(PIL.__version__)"' in D:\Node\games\nova_vanguard
+ exited 1 in 696ms:
+python : The term 'python' is not recognized as the name of a cmdlet, function, script file, or operable program. 
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+At line:2 char:1
++ python -c "import PIL; print(PIL.__version__)"
++ ~~~~~~
+    + CategoryInfo          : ObjectNotFound: (python:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command 'py -c "import PIL; print(PIL.__version__)"' in D:\Node\games\nova_vanguard
+ succeeded in 274ms:
+12.1.0
+
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "py -c \"from PIL import Image; from pathlib import Path; names=['ship_kestrel.png','ship_viper.png','ship_halo.png','ship_seraph.png','drone_sparrow.png','drone_hornet.png','drone_aegis.png','item_power.png','item_coin.png','item_gem.png']; root=Path('art'); [(lambda p: (lambda im: (im.resize((1024,1024),Image.Resampling.LANCZOS).save(p,format='PNG',optimize=True), im.close()))(Image.open(p)))(root/n) for n in names]\"; py -c \"from PIL import Image; from pathlib import Path; names=['ship_kestrel.png','ship_viper.png','ship_halo.png','ship_seraph.png','drone_sparrow.png','drone_hornet.png','drone_aegis.png','item_power.png','item_coin.png','item_gem.png']; root=Path('art');
+for n in names:
+ p=root/n; im=Image.open(p); a=im.getchannel('A') if 'A' in im.getbands() else None; lo,hi=a.getextrema() if a else (-1,-1); print(f'{n}\\t{im.size[0]}x{im.size[1]}\\tmode={im.mode}\\talpha_range={lo}-{hi}\\t{p.stat().st_size} bytes'); im.close()\"" in D:\Node\games\nova_vanguard
+ succeeded in 7017ms:
+ship_kestrel.png	1024x1024	mode=RGBA	alpha_range=0-255	995007 bytes
+ship_viper.png	1024x1024	mode=RGBA	alpha_range=0-255	892428 bytes
+ship_halo.png	1024x1024	mode=RGBA	alpha_range=0-255	1309714 bytes
+ship_seraph.png	1024x1024	mode=RGBA	alpha_range=0-255	1089090 bytes
+drone_sparrow.png	1024x1024	mode=RGBA	alpha_range=0-255	877562 bytes
+drone_hornet.png	1024x1024	mode=RGBA	alpha_range=0-255	888776 bytes
+drone_aegis.png	1024x1024	mode=RGBA	alpha_range=0-255	873689 bytes
+item_power.png	1024x1024	mode=RGBA	alpha_range=0-255	776112 bytes
+item_coin.png	1024x1024	mode=RGBA	alpha_range=0-255	1221984 bytes
+item_gem.png	1024x1024	mode=RGBA	alpha_range=0-255	946587 bytes
+
+codex
+All ten files are now exactly 1024×1024 RGBA PNGs. Their alpha ranges are 0–255, confirming each contains fully transparent pixels as well as opaque sprite pixels; none had to be flattened.
+exec
+"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command '$names=@('"'ship_kestrel.png','ship_viper.png','ship_halo.png','ship_seraph.png','drone_sparrow.png','drone_hornet.png','drone_aegis.png','item_power.png','item_coin.png','item_gem.png'); Get-ChildItem -LiteralPath 'art' -File | Where-Object Name -In "'$names | Sort-Object Name | Select-Object Name,Length,@{Name='"'SizeKiB';Expression={[math]::Round("'$_.Length/1KB,1)}} | Format-Table -AutoSize' in D:\Node\games\nova_vanguard
+ succeeded in 414ms:
+
+Name               Length SizeKiB
+----               ------ -------
+drone_aegis.png    873689        
+drone_hornet.png   888776        
+drone_sparrow.png  877562        
+item_coin.png     1221984        
+item_gem.png       946587        
+item_power.png     776112        
+ship_halo.png     1309714        
+ship_kestrel.png   995007        
+ship_seraph.png   1089090        
+ship_viper.png     892428        
+
+
+
+codex
+Created all 10 sprites in [art/](/D:/Node/games/nova_vanguard/art). Used the built-in image generator with the shared `STYLE.md` constraints and individual subject prompts.
+
+All files are verified as 1024×1024 RGBA PNGs with genuine transparency:
+
+| File | Size |
+|---|---:|
+| `drone_aegis.png` | 873,689 bytes |
+| `drone_hornet.png` | 888,776 bytes |
+| `drone_sparrow.png` | 877,562 bytes |
+| `item_coin.png` | 1,221,984 bytes |
+| `item_gem.png` | 946,587 bytes |
+| `item_power.png` | 776,112 bytes |
+| `ship_halo.png` | 1,309,714 bytes |
+| `ship_kestrel.png` | 995,007 bytes |
+| `ship_seraph.png` | 1,089,090 bytes |
+| `ship_viper.png` | 892,428 bytes |
+
+Transparency succeeded for every sprite; no exceptions.
+tokens used
+33,336
+Created all 10 sprites in [art/](/D:/Node/games/nova_vanguard/art). Used the built-in image generator with the shared `STYLE.md` constraints and individual subject prompts.
+
+All files are verified as 1024×1024 RGBA PNGs with genuine transparency:
+
+| File | Size |
+|---|---:|
+| `drone_aegis.png` | 873,689 bytes |
+| `drone_hornet.png` | 888,776 bytes |
+| `drone_sparrow.png` | 877,562 bytes |
+| `item_coin.png` | 1,221,984 bytes |
+| `item_gem.png` | 946,587 bytes |
+| `item_power.png` | 776,112 bytes |
+| `ship_halo.png` | 1,309,714 bytes |
+| `ship_kestrel.png` | 995,007 bytes |
+| `ship_seraph.png` | 1,089,090 bytes |
+| `ship_viper.png` | 892,428 bytes |
+
+Transparency succeeded for every sprite; no exceptions.

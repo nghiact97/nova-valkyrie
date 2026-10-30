@@ -1,0 +1,12 @@
+Read art/STYLE.md and follow it exactly. Use your image generation tool to create these PNG sprites with TRANSPARENT backgrounds, then save each one into the folder art/ with exactly these file names (copy the generated file there). Square 1024x1024.
+
+1. boss1.png — "Dreadnought VX-1": heavy armored crimson-red battle cruiser, wide wings with 4 gun turrets, glowing orange reactor core in the middle, faces DOWN.
+2. boss2.png — "Hive Mother": purple organic-mechanical alien mothership, carapace plates, glowing magenta eyes and pods, tentacle-like cannons, faces DOWN.
+3. boss3.png — "Solar Tyrant": golden-orange solar war machine, sun-like blazing core ring, spiked radiating fins, faces DOWN.
+4. enemy_grunt.png — small red alien fighter, arrowhead, faces DOWN.
+5. enemy_dart.png — slim fast orange interceptor, needle shape, faces DOWN.
+6. enemy_tank.png — chunky hexagonal violet armored gunship, faces DOWN.
+7. enemy_orb.png — green spherical drone mine with energy ring, faces DOWN.
+8. enemy_elite.png — pink elite alien fighter with swept wings, bigger and more detailed, faces DOWN.
+
+After saving all files, list art/ with sizes. If transparent background is not possible for one, still save it and say which one.

@@ -1,0 +1,6 @@
+Read art/anime/STYLE.md. Attached: the APPROVED standing art of four characters (Mika, Seraphina, Nyx, Suzu). Keep each character's face, hair, outfit, rig and colours exactly, and the same anime rendering.
+
+Use your image generation tool to create ONE image: art/anime/splash_keyart.jpg, PORTRAIT 1024x1536, opaque background.
+Key art for the game's loading screen: the four pilots flying together in a dynamic V formation over a glowing blue planet in deep space, rigs and wings spread, energy trails behind them. Seraphina (gold) in the centre front, Mika (cyan/white) and Nyx (black/violet) on the sides, Suzu (green) behind. Dramatic, heroic, bright highlights, nebula colours in pink and cyan.
+Composition: characters in the LOWER-MIDDLE (from 35% to 85% of the height). Keep the TOP 30% as calm starry sky (a logo goes there) and the bottom 12% darker and simple (a loading bar goes there). No text, no logo, no watermark. Tasteful, Teen rating.
+Generate it now, do not stop to ask for approval. When done, print the file size.

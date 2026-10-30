@@ -1,0 +1,14 @@
+Read art/STYLE.md and follow it exactly. Use your image generation tool to create these PNG sprites with TRANSPARENT backgrounds, then save each one into the folder art/ with exactly these file names (copy the generated file there). Square 1024x1024.
+
+1. ship_kestrel.png — "Kestrel" (common): balanced starter jet fighter, cyan and blue paint, glass cockpit, twin engines glowing cyan, points UP.
+2. ship_viper.png — "Viper" (rare): sleek aggressive fighter, emerald green with dark trim, long nose, twin laser cannons, points UP.
+3. ship_halo.png — "Halo" (epic): elegant fighter with a glowing violet ring/halo around the hull, purple and white, points UP.
+4. ship_seraph.png — "Seraph" (legendary): majestic gold-and-white angelic warship, 4 swept wing blades, glowing golden engines, points UP.
+5. drone_sparrow.png — small light-blue support drone, diamond shape, points UP.
+6. drone_hornet.png — small orange missile drone with two mini rocket pods, points UP.
+7. drone_aegis.png — small cyan beam drone with a lens emitter, points UP.
+8. item_power.png — glowing pink power-up capsule with a bold "P" emblem.
+9. item_coin.png — shiny gold coin with a star emblem, seen face-on.
+10. item_gem.png — faceted pink gem crystal.
+
+After saving all files, list art/ with sizes. If transparent background is not possible for one, still save it and say which one.

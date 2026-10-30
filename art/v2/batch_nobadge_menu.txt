@@ -1,0 +1,33 @@
+Redraw 11 mobile-game UI icons WITHOUT their badge background. Do not create any other images.
+
+Game: "Nova Vanguard", a vertical-scrolling space shooter for phones. The icons sit directly on a dark navy starfield, with no button plate behind them.
+
+Attached: the 11 APPROVED icons (icon_settings.png, icon_hangar.png, icon_home.png, icon_shop.png, icon_campaign.png, icon_rank.png, icon_daily.png, icon_quests.png, icon_spin.png, icon_offer.png, icon_mail.png). Each one is a subject on a rounded-square coloured badge.
+
+TASK: for each icon, keep the SAME subject, shape, colours, materials, outline and lighting, but REMOVE the rounded-square badge completely. Only the object remains, centred, on a fully transparent background.
+
+Rules (strict):
+- No badge, no rounded square, no circle, no plate, no frame, no glow box behind the object.
+- Keep the thick dark-navy outline (#0a0e2a) around the object, the same as in the originals, so it still reads on a dark starfield.
+- Add only a soft, tight drop shadow directly under the object (dark navy, low opacity). No wide outer glow and no glow spray.
+- The object fills about 85% of the canvas, centred, with the same front-on view as the original. Do not redesign it.
+- Same glossy toy-like game-UI rendering as the originals: smooth gradients, light from the top-left, one crisp highlight. No added details, sparkles or text.
+- Must stay instantly readable at 32x32 px.
+- Output per icon: PNG 1024x1024, background FULLY transparent with a clean, smooth edge (no speckles, no halo).
+
+Do Settings first, compare it with the original, then do the rest so that all 11 are consistent.
+
+Save as (keep the originals untouched):
+art/v2/free/icon_settings.png
+art/v2/free/icon_hangar.png
+art/v2/free/icon_home.png
+art/v2/free/icon_shop.png
+art/v2/free/icon_campaign.png
+art/v2/free/icon_rank.png
+art/v2/free/icon_daily.png
+art/v2/free/icon_quests.png
+art/v2/free/icon_spin.png
+art/v2/free/icon_offer.png
+art/v2/free/icon_mail.png
+
+When done, list the files with their sizes.

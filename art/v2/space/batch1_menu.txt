@@ -1,0 +1,25 @@
+Create 8 mobile-game UI icons for "Nova Vanguard", a vertical-scrolling space shooter for phones. The icons sit directly on a dark navy deep-space starfield. Do not create any other images.
+
+Attached: the APPROVED style samples icon_daily.png, icon_mail.png, icon_shop.png.
+
+STYLE (identical for every icon; match the attached APPROVED samples icon_daily.png, icon_mail.png, icon_shop.png exactly):
+- Space-hardware look: dark gunmetal hull (#2a3150 to #141a44) with a few clean white armour panels, thin neon light strips in the icon's accent colour, and one glass or hologram element. Real spaceship hardware, stylised for a game. No toy plastic, no everyday household objects.
+- Two families, as in the samples: HARDWARE (a solid object, like icon_shop.png) or HOLOGRAM (a low, wide gunmetal emitter base projecting a glowing symbol, like icon_daily.png and icon_mail.png). Each icon below says which family it belongs to.
+- Thick dark-navy outline (#0a0e2a) around the whole object; one soft light from the top-left; one crisp specular highlight; neon parts glow softly with a tight glow (no spray).
+- Bold silhouette, at most 3-4 large shapes. NO greebles, rivets, scratches, micro-text, letters, numbers or random sparkles.
+- No badge, plate, circle or frame behind the object. Front-on view, at most a very slight 3/4 tilt, centred, filling about 85% of the canvas, same visual size as the samples.
+- Must stay instantly readable at 32x32 px on a dark starfield.
+- Output per icon: PNG 1024x1024, FULLY transparent background with a clean, smooth edge (no halo, no speckles). No text, no watermark.
+- Make the first icon, compare it with the samples, then keep the rest of the batch consistent with it.
+
+ICONS (file - family - subject - accent colour):
+1. art/v2/space/icon_home.png - HARDWARE - a compact ring-shaped space station with a glowing docking-bay door in the centre - accent: cyan.
+2. art/v2/space/icon_hangar.png - HARDWARE - a jet fighter seen from above, nose up, gunmetal hull with white wing panels and twin glowing engines - accent: cyan.
+3. art/v2/space/icon_settings.png - HARDWARE - a chunky machined gear with 8 teeth and a glowing energy core in the centre - accent: cyan core, steel-blue rim light.
+4. art/v2/space/icon_campaign.png - HOLOGRAM - a planet with a curved flight-path arc and one gold target marker on the arc - accent: cyan planet, gold marker.
+5. art/v2/space/icon_rank.png - HARDWARE - a military insignia: a five-point star on a chevron with two short swept wings - accent: gold.
+6. art/v2/space/icon_quests.png - HARDWARE - a rugged mission tablet whose screen shows two glowing check marks - accent: green.
+7. art/v2/space/icon_spin.png - HARDWARE - an energy reactor wheel: gunmetal outer ring, 6 glowing segments alternating pink and gold, a gold pointer at the top - accent: pink + gold.
+8. art/v2/space/icon_offer.png - HOLOGRAM - a glowing gift box with a bow, plus a small round tag showing a bold percent sign (the % symbol is allowed here) - accent: gold box, pink tag.
+
+Save each file at exactly the path given. When done, list the files with their sizes.

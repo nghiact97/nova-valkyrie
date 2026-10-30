@@ -1,0 +1,14 @@
+Create ONE mobile-game UI icon as a sample for approval. Do not create any other images.
+
+The attached reference image is our current hand-made vector icon for "Hangar". Keep its layout: a jet fighter seen from above, pointing up, centred on a rounded-square badge tinted cyan. Your job is to render the same idea as a polished, professional mobile-game icon, with clearly better material and lighting than the vector reference.
+
+Style rules (strict; this is what separates a designed game icon from "AI art"):
+- Bold, simple, readable silhouette. Very few details: max 3-4 large shapes on the jet. No greebles, rivets, panel noise, scratches, micro-text, or random sparkles.
+- Clean glossy "toy-like" game-UI rendering: smooth gradients, one soft top-left light, one crisp specular highlight, a thick dark-navy outline (#0a0e2a) around the glyph.
+- Badge: rounded square (corner radius about 25% of the size), dark navy-to-cyan gradient (#38e1ff tint), soft inner glow, a subtle glossy band across the top, thin light rim. The badge fills the canvas edge to edge with about 3% margin.
+- Colors limited to: cyan #38e1ff, white, deep navy #0a0e2a/#141a44, plus one small gold #ffc83d accent (the canopy or engine glow).
+- Perfectly symmetric, centred, straight front-on to the badge (no 3/4 tilt, no perspective).
+- Must stay readable when shrunk to 32x32 px.
+- PNG 1024x1024 with TRANSPARENT background outside the rounded badge corners. No text, no watermark.
+
+Save it as art/v2/icon_hangar.png, then list the file with its size.

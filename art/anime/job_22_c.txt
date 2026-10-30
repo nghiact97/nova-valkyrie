@@ -1,0 +1,9 @@
+Read art/anime/STYLE.md. Attached: art/anime/nav_sheet.png and art/anime/style_a_mika.png show the APPROVED look of this game (glossy white porcelain mecha parts, glowing edge lights, anime cel shading, crisp dark outline).
+
+Use your image generation tool to create 3 images, each its OWN separate PNG 1024x1024, FULLY TRANSPARENT background, no text, no watermark. Each is a cute anime-style ROBOT PET that flies next to the pilot in battle as a support drone: chibi proportions (big head, big shiny eyes, small body), white porcelain armour with coloured glowing parts in the given colour, a tiny thruster or wings so it can fly, its weapon clearly visible. 3/4 front view, centred, filling about 80% of the canvas, nothing cropped. Original designs, kawaii but cool. All 3 must look like one set.
+
+1. art/anime/pet/guardian.png - GUARDIAN (cyan #38e1ff): a mecha turtle with a glowing hexagon energy-shield shell.
+2. art/anime/pet/phantom.png - PHANTOM (violet #b36bff): a ghostly mecha fox (kitsune) with three translucent tails and a floating void orb.
+3. art/anime/pet/solaris.png - SOLARIS (gold #ffc83d): a golden mecha baby dragon with small sun-ray wings, holding a mini sun orb.
+
+Generate all 3 now, do not stop to ask for approval. When done, list the files with their sizes.

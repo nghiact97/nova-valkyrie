@@ -1,0 +1,18 @@
+Create 7 separate icon images for the Home screen of our mobile space shooter "Nova Vanguard". Save EACH icon as its own PNG file (no sprite sheet, no grid). Do not create any other images.
+
+Attached: ref_sign.png is the STYLE reference the user likes (a white daily sign-in icon). Copy ONLY its style, not its content:
+- one single colour: pure white (#FFFFFF) shapes on a pure black (#000000) flat background (we key out the black later), no gradients, no grey, no shading, no glow, no 3D, no outline colour
+- a thin white diamond (rotated square) frame; the main glyph sits inside and slightly breaks out of the frame
+- bold solid filled silhouette with clean cut-out gaps (negative space) for the details, crisp sharp edges, readable at 40 px
+- decorative accents are SCI-FI (circuit lines, small star sparks, orbit arcs, comet trails), NOT Chinese cloud swirls
+
+All icons: 512x512 PNG, glyph centred, about 8% empty margin, same frame size and same stroke weight across the whole set so they look like one family. No text, no letters, no numbers.
+
+Files (folder art/mono/):
+1. art/mono/mono_daily.png  - daily login: a calendar page / data tablet with a big check mark, a small star spark on the corner
+2. art/mono/mono_quests.png - quests: a mission scroll-like data tablet with a list of three short lines and a check, an orbit arc behind
+3. art/mono/mono_spin.png   - lucky spin: a prize wheel with 6 segments seen from the front, a pointer on top, small sparks
+4. art/mono/mono_rank.png   - ranking: a trophy cup with wings / a star on it
+5. art/mono/mono_offer.png  - special offer: a gift box with a ribbon bow and a small comet trail
+6. art/mono/mono_onlinegift.png - online gift: a gift box with a clock / timer dial on its front
+7. art/mono/mono_event.png  - event: a rocket launching with a star burst behind it

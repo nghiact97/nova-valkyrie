@@ -1,0 +1,7 @@
+{
+  "appId": "com.novavanguard.valkyrie",
+  "appName": "Nova Valkyrie",
+  "webDir": "www",
+  "backgroundColor": "#070a1c",
+  "android": { "allowMixedContent": false }
+}

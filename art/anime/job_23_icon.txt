@@ -1,0 +1,5 @@
+Read art/anime/STYLE.md. Attached: art/anime/style_a_mika.png (approved character style) and art/anime/logo_valkyrie.png (game logo colours).
+
+Use your image generation tool to create ONE image: art/anime/app_icon.png, 1024x1024, opaque, square (the store will round the corners), no text, no letters, no watermark.
+Mobile game app icon for "Nova Valkyrie", an anime mecha-girl space shooter. Close-up bust of an ORIGINAL anime pilot girl (silver-white hair with a pink streak, bright pink-cyan eyes, confident smile, white-and-pink sci-fi flight headset), with sleek white mecha wings spreading behind her shoulders, a glowing pink-to-cyan energy halo ring behind her head, deep navy space background with a few stars. Face large and centred, clean bold silhouette that reads at 48 px, strong rim light, vibrant. Do NOT copy any existing game character. Tasteful.
+Generate it now, do not stop to ask for approval. When done, print the file size.

@@ -1,0 +1,12 @@
+Create ONE mobile-game UI icon as the approved-style SAMPLE. Do not create any other images.
+
+Attached: styles_compare.png. The user chose style "B - HOLOGRAM PROJECTION" (middle column). Match that style closely: a semi-transparent glowing hologram object with soft bloom and faint horizontal scan lines, floating above a tiny slim projector emitter that casts a light cone up into it.
+
+The icon is shown at 54 px on a dark navy starfield on the Home screen, so make it READABLE when small:
+- Bold, simple silhouette; the hologram body is fairly bright and solid-looking (about 70% opacity), with brighter edges.
+- Scan lines very subtle (thin, low contrast); only 2-3 small glitch slivers at the sides, kept close to the object.
+- The projector is a small dark gunmetal disc with a glowing ring, at the bottom centre, about 45% of the canvas width.
+
+Subject: "Special Offer" - a gold (#ffc83d) hologram gift box with a ribbon bow on top and a large bold "%" symbol on its front face (the % is the only allowed symbol). Projector ring glows cyan.
+
+Output: PNG 1024x1024, FULLY transparent background with a clean edge (no dark background, no halo spray beyond a soft glow), centred, at least 6% empty margin on every side, one single image (no sheet). No text, no watermark. Save as art/v3/icon_offer.png and list the file.

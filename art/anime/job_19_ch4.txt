@@ -1,0 +1,6 @@
+Read art/anime/STYLE.md. Attached: the APPROVED standing art of the character and the background of her world. Keep her face, hair, outfit, rig and colours exactly, same anime rendering.
+
+Use your image generation tool to create ONE image: art/anime/chapter_4.jpg, LANDSCAPE 1536x1024, opaque background, no text, no logo, no watermark.
+Chapter key art for a mobile game campaign banner: Nyx (black/violet, hime-cut black hair, obsidian blade wings, violet void core) floating in the violet Abyssal Rift with a swirling dark rift behind her, violet lightning, menacing calm.
+Composition: the character is on the RIGHT 55% of the image, full body from head to feet inside the frame (nothing cropped), dynamic flying action pose, facing left toward the viewer. The LEFT 45% is calmer background (title text goes there). Bottom 20% a bit darker. Tasteful, Teen rating.
+Generate it now, do not stop to ask for approval. When done, print the file size.

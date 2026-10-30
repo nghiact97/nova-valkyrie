@@ -1,0 +1,19 @@
+Read art/anime/STYLE.md. Attached: art/anime/nav_sheet.png is the APPROVED icon set (bottom navigation). The new icons MUST look like the same set: same sculpted glossy WHITE PORCELAIN + polished SILVER material, soft anime cel shading, thin glowing cyan (#5ee7ff) edge lights, ONE small hot-pink (#ff6fae) accent per icon, crisp dark navy outline, 3/4 front view, light from top-left, same level of detail.
+
+Use your image generation tool to create ONE icon sheet: art/anime/feat_sheet.png, 1536x1024, FULLY TRANSPARENT background. Exactly 10 icons in a grid of 2 rows x 5 columns, each icon about 220x220 px centred in its 307x512 cell, at least 60 px of empty transparent space between neighbours. No text, no numbers, no labels, no frames, no button plates, no circles behind them. Simple bold silhouettes that still read at 36 px.
+
+Row 1, left to right:
+1. LOGIN REWARD - a slim white sci-fi calendar tablet with a glowing cyan grid and a pink star stamp on it.
+2. QUESTS - a porcelain mission medal with a cyan target reticle in the centre and a pink ribbon tail.
+3. LUCKY SPIN - a prize wheel with white and cyan segments, silver rim and a pink pointer on top.
+4. RANKING - a silver trophy cup with two small white mecha wings and a pink gem.
+5. SPECIAL OFFER - a big faceted cyan diamond gem held by a white-and-gold mecha clasp, with a pink sparkle.
+
+Row 2, left to right:
+6. ONLINE GIFT - a white gift box with a cyan mecha ribbon and a small clock dial on the front, pink bow.
+7. EVENT - a pink-cored crystal star with small white wings and sparkles.
+8. SETTINGS - a porcelain gear with a glowing cyan core and a pink bolt.
+9. NOTICES - a sleek white holo megaphone with cyan sound rings and a pink tip.
+10. MAIL - a white sci-fi envelope sealed with a small winged pink badge, cyan edge lights.
+
+When done, print the file size.
