@@ -1,0 +1,15 @@
+Image generation job. Reference image 1 (art/anime/ships/kestrel_blueprint.png) is the APPROVED STYLE: clean black line art on pure white, light grey tone only, top view plus side view, small round mount-point circles. Reference image 2 (art/anime/ships/mod/hull_kestrel.png) is the coloured Kestrel hull, use it for SCALE only.
+
+Make ONE new image and save it as art/anime/ships/hulls_b_blueprint.png, exactly 2048x1365 px, white background, NO colour, NO text, NO labels, NO numbers.
+
+Layout: 4 fighter hulls side by side in 4 equal columns. Each column has a large TOP view (nose pointing up) and a small SIDE view (nose pointing right) below it. All 4 hulls drawn at the SAME scale as the Kestrel hull, same line weight and grey tone as the Kestrel blueprint.
+
+Every hull has the SAME mount points, drawn as small circles in the same relative places: nose, spine (centre top), left wingtip, right wingtip, and a tail pair (two circles side by side at the rear). This lets the same weapon/engine/armour modules attach to every hull.
+
+Each hull must have a clearly different silhouette:
+1. RAPTOR (rocket pods, aggressive): heavy hull with forward-swept wings, rocket pod bays (rows of small round tubes) on both sides of the fuselage.
+2. TEMPEST (arc/lightning gun): X-shaped wing layout (four wings in an X), thin lightning-rod antennae sticking out at the wing tips.
+3. NEBULA (rapid pulse beam, graceful): slim hull with long ribbon-like trailing fins and butterfly-shaped curved wings.
+4. OBLIVION (void orbs, legendary): menacing heavy hull with wide bat-like scalloped wings and a large round void emitter ring in the centre of the hull (shade with darker grey hatching, still no colour).
+
+Generate all now, do not stop to ask for approval. When done, print the file size.
