@@ -1122,6 +1122,8 @@ patch(`if(S.stats.played>0&&!S.ships.seraph)q.push(()=>POPS.offer());`, `if(S.st
 
 
 const js = `
+/* pet idle animation: 6 Codex-drawn frames per pet (pet_<id>_0..5), ~9 fps, faster while the pet is moving */
+function petFrame(id,t,vx){if(!spr("pet_"+id+"_0"))return null;const f=Math.floor(t*(9+Math.min(6,Math.abs(vx||0)/60)))%6;return spr("pet_"+id+"_"+f);}
 /* Modular ship composer: hull + mount-centred parts placed on the hull's own mount points (SHIP_MOUNTS, 1024 grid).
    Draw order engines(tail) -> armour(wings, x wingScale) -> hull -> wing guns -> nose gun -> core(spine). Parts are drawn
    for the right side; the left side is mirrored. Rarity: Rare blue line glow, Epic purple rim, Legendary orange rim + sparkle.
@@ -1592,7 +1594,7 @@ if(S.tutV===1){S.tutV=2;if(vkCleared()<5&&!(S.tut&&S.tut.t10)){S.gear.eq={cannon
 /* Robot pets: lively motion (hover figure-8, breathing squash, bank, fire recoil) + a signature effect per kind */
 const PET_FX={shot:"#9fdcff",missile:"#ff9d1c",laser:"#38e1ff",flak:"#ff9d1c",medic:"#52f19a",tesla:"#5aa8ff",guardian:"#38e1ff",phantom:"#b36bff",solaris:"#ffc83d"};
 function petSpark(x,y,col,n,sp,life,r){for(let i=0;i<n;i++){const a=rnd(0,7),v=rnd(sp*.4,sp);B.fx.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,life:rnd(life*.6,life),max:life,col,r:rnd(r*.6,r)});}}
-drawDroneBody=function(c,dd,x,y,t,o={}){const s=(o.size||13)*1.3,col=dd.col,im=spr("drone_"+dd.id),k=dd.kind;
+drawDroneBody=function(c,dd,x,y,t,o={}){const s=(o.size||13)*1.3,col=dd.col,im=petFrame(dd.id,t,o.vx)||spr("drone_"+dd.id),k=dd.kind;
   const pm=o.pet?0:1,hx=Math.sin(t*1.7)*5*pm,hy=Math.sin(t*3.4)*3.5*pm-(o.hop||0),br=1+Math.sin(t*5)*.035*pm,rec=0;   // no fire recoil: it made the pets jitter on every shot
   const tilt=Math.max(-.5,Math.min(.5,(o.vx||0)/700))+Math.sin(t*1.7)*.08;
   c.save();

@@ -175,6 +175,17 @@ with open(os.path.join(root, "build/anime_girls.js"), "w") as f:
         if p.endswith("_sheet.png"): continue
         im = Image.open(p).convert("RGBA"); im = im.crop(im.getchannel("A").point(lambda v: 255 if v > 20 else 0).getbbox())
         f.write(f'SPR_SRC.drone_{os.path.basename(p)[:-4]}="{enc(im, 200)}";\n')
+    # pet idle animations: 6-frame strips (art/anime/pet/anim/<id>_idle.png, 256x384 slots) -> pet_<id>_<n>;
+    # every frame is re-centred on its bounding box and scaled to the strip's median height so the loop does not wobble
+    for p in sorted(glob.glob(os.path.join(root, "art/anime/pet/anim/*_idle.png"))):
+        k = os.path.basename(p)[:-9]; sh = Image.open(p).convert("RGBA"); n = sh.width // 256
+        frames = [sh.crop((i * 256, 0, (i + 1) * 256, sh.height)) for i in range(n)]
+        frames = [fr.crop(fr.getchannel("A").point(lambda v: 255 if v > 30 else 0).getbbox()) for fr in frames]
+        hs = sorted(fr.height for fr in frames); H = hs[len(hs) // 2]; S = int(H * 1.15)
+        for i, fr in enumerate(frames):
+            fr = fr.resize((max(1, round(fr.width * H / fr.height)), H), Image.LANCZOS)
+            o = Image.new("RGBA", (S, S)); o.paste(fr, ((S - fr.width) // 2, (S - H) // 2), fr)
+            f.write(f'SPR_SRC.pet_{k}_{i}="{enc(o, 200)}";\n')
     p = os.path.join(root, "art/anime/escort.png")  # small mechanical drone for the "Escort Drones" run skill (not a pet)
     if os.path.exists(p):
         im = Image.open(p).convert("RGBA"); im = im.crop(im.getchannel("A").getbbox())

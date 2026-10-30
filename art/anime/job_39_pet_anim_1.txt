@@ -1,0 +1,11 @@
+Attached: the approved chibi pets art/anime/pet/tesla.png, art/anime/pet/guardian.png, art/anime/pet/phantom.png, art/anime/pet/solaris.png.
+
+For EACH of these pets use your image generation tool to create art/anime/pet/anim/<name>_idle.png, 1536x384, FULLY TRANSPARENT background (alpha 0, no glow or halo), a horizontal strip of exactly 6 frames, each frame in its own 256x384 slot, the character centred in every slot at the SAME size, SAME position and IDENTICAL design to its attached image (same colours, face, proportions, outline; only the pose changes).
+It is a seamless looping IDLE / HOVER animation: frames 1-6 flow smoothly back into frame 1; frame 5 has the eyes CLOSED (blink); the body rises slightly on frames 2-3 and lowers on 5-6. Anime chibi cel shading, crisp dark outline, no text, no borders.
+
+- tesla: blue electric kitten: lightning tail swishes side to side, ears twitch, small sparks
+- guardian: cyan baby turtle-spirit: flippers paddle like swimming in air, shell glows, head bobs
+- phantom: violet ghost fox: wispy smoky tail flows in waves, ears twitch, body sways
+- solaris: golden sun-lion cub: radiant petal mane breathes/flutters, tail flicks, paws wave
+
+Generate all now, do not stop to ask for approval. When done, print the file sizes.
