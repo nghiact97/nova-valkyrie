@@ -1110,6 +1110,8 @@ patch('B._crit=b.crit;hitBoss(b.dmg);B._crit=0;spark(b);', 'B._crit=b.crit;hitBo
 patch('p.inv=skVal("armor").inv;', 'p.inv=skVal("armor").inv+gfInv();');
 patch('(e.clientX-drag.x)*S.set.sens', '(e.clientX-drag.x)*S.set.sens*gfMove()');
 patch('(e.clientY-drag.y)*S.set.sens', '(e.clientY-drag.y)*S.set.sens*gfMove()');
+// no recoil jitter on every shot: keep the ship still and drop the old generic muzzle (typed muzzle flash is drawn by the ship FX)
+patch('drawShip(c,B.ship,p.x,p.y+(B.mf>0?2:0),26,B.t,S.ships[S.ship].star);if(B.mf>0)muzzle(c,p.x,p.y-30,B.ship.col);', 'drawShip(c,B.ship,p.x,p.y,26,B.t,S.ships[S.ship].star);');
 // first three normal stages are free: say so on the button, and Restart from pause is free too
 patch('START <span style="font-size:14px">· ⚡${ENERGY_COST}</span>', 'START <span style="font-size:14px">· ${i<3&&diff==="normal"?L("FREE","MIỄN PHÍ"):"⚡"+ENERGY_COST}</span>');
 patch('id="pRe">Restart <small>⚡${ENERGY_COST}</small>', 'id="pRe">Restart <small>⚡${B.cfg.mode==="stage"&&B.cfg.idx<3&&B.cfg.diff==="normal"?0:ENERGY_COST}</small>');
