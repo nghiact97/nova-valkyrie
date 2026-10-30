@@ -1,0 +1,13 @@
+We will animate chibi pets as cut-out puppets, so each must be split into separate layer images.
+For EACH pet below (its approved art is attached as art/anime/pet/<name>.png) use your image generation tool to create these images in art/anime/pet/parts/, every one 1024x1024 with a FULLY TRANSPARENT background (alpha 0, no glow), drawn at the SAME scale and SAME position on the canvas as layers of ONE picture (stacked they recreate the attached pet exactly; identical colours, face, outline):
+- <name>_body.png: the pet WITHOUT the moving parts listed for it (fill in what they covered), eyes OPEN
+- <name>_blink.png: identical to _body but eyes CLOSED happily (^ ^)
+- one image per moving part listed, named <name>_<part>.png, containing ONLY that part in its place.
+
+* tesla (blue electric kitten): tail: the lightning-shaped tail alone, root where it joins the body; also earL / earR: the two cat ears, each alone.
+* guardian (cyan baby turtle-spirit): finL / finR: the two front flippers, each alone, root at the shell edge.
+* phantom (violet ghost fox): tail: the big wispy smoke tail alone, root where it joins the body.
+* solaris (golden sun-lion cub): mane: the radiant petal mane alone (a ring behind the head); tail: the tail alone, root where it joins the body.
+
+Anime chibi cel shading, crisp dark outline, no text, no borders.
+Generate all now, do not stop to ask for approval. When done, list the files and sizes.

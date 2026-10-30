@@ -204,7 +204,7 @@ with open(os.path.join(root, "build/anime_girls.js"), "w") as f:
     for k, ps in puppets.items():
         for i, p in enumerate(ps):
             im = Image.open(p).convert("RGBA"); im = im.crop(im.getchannel("A").getbbox())
-            f.write(f'SPR_SRC.pet_{k}_{i}="{enc(im, 200)}";\n')
+            f.write(f'SPR_SRC.pet_{k}_{i}="{enc(im, 160)}";\n')
     f.write("const PET_N={" + ",".join(f'{k}:{len(v)}' for k, v in puppets.items()) + "};\n")
     # pet idle animations: 6-frame strips (art/anime/pet/anim/<id>_idle.png, 256x384 slots) -> pet_<id>_<n>;
     # every frame is re-centred on its bounding box and scaled to the strip's median height so the loop does not wobble

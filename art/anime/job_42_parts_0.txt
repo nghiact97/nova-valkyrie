@@ -1,0 +1,13 @@
+We will animate chibi pets as cut-out puppets, so each must be split into separate layer images.
+For EACH pet below (its approved art is attached as art/anime/pet/<name>.png) use your image generation tool to create these images in art/anime/pet/parts/, every one 1024x1024 with a FULLY TRANSPARENT background (alpha 0, no glow), drawn at the SAME scale and SAME position on the canvas as layers of ONE picture (stacked they recreate the attached pet exactly; identical colours, face, outline):
+- <name>_body.png: the pet WITHOUT the moving parts listed for it (fill in what they covered), eyes OPEN
+- <name>_blink.png: identical to _body but eyes CLOSED happily (^ ^)
+- one image per moving part listed, named <name>_<part>.png, containing ONLY that part in its place.
+
+* hornet (orange fluffy bee-fox): wingL / wingR: the two translucent bee wings (viewer left / right), each alone, root at the shoulder.
+* aegis (cyan baby dragon): wingL / wingR: the two bat-like dragon wings, each alone, root at the shoulder.
+* flak (orange hamster with tiny cannon backpack): armL / armR: the two small front paws/arms, each alone, root at the shoulder.
+* medic (mint-green bunny with heart badge): earL / earR: the two long bunny ears, each alone, root at the top of the head.
+
+Anime chibi cel shading, crisp dark outline, no text, no borders.
+Generate all now, do not stop to ask for approval. When done, list the files and sizes.
