@@ -1,0 +1,16 @@
+Reference images: (1) art/anime/ships/kestrel_blueprint.png = approved line-art blueprint of the Kestrel ship (hull top view top-left; rows of cannon sets x3, engines x3, wing armour x2, cores x3; assembled example bottom-right). (2) art/anime/ships/dirB_kestrel_384.png = approved COLOUR look (white panels, cyan glow lines, pink star on nose).
+
+Produce COLOURED, separately-cut ship modules on ONE shared grid so game code can stack them. Every image: 1024x1024 PNG, PURE transparent background (alpha 0, no halo, no fringe), top view, nose pointing UP, anime cel shading, crisp dark outline, same scale and the SAME centre as the hull.
+
+THE MOST IMPORTANT REQUIREMENT IS ALIGNMENT: all 13 images must line up exactly when drawn on top of each other at the same position. First create the hull. Then draw each module by tracing over the hull image as a guide (same canvas, same position, same scale), and then erase the hull so only the module remains.
+
+Files (write into art/anime/ships/mod/):
+- hull_kestrel.png: bare hull, white + light grey panels, cyan glow lines, pink star on the nose, cyan canopy. No guns, no engine pods, no wing armour, no core gem.
+For each set S in: vanguard (cyan #5ee7ff accents, long thin barrels/blades), aegis (green #52f19a accents, chunky twin/armoured with small shields), solar (gold #ffc83d accents, round emitter rings):
+- cannon_S.png: nose gun + 2 guns mounted at the WINGTIPS, drawn exactly where they sit on the hull; everything else transparent.
+- engine_S.png: pair of tail thruster pods in place at the tail.
+- armor_S.png: left + right wing armour plates in place on the wings.
+- core_S.png: a SMALL reactor gem on the spine, about 1/10 of hull length.
+Total 13 images: hull_kestrel, cannon_vanguard, cannon_aegis, cannon_solar, engine_vanguard, engine_aegis, engine_solar, armor_vanguard, armor_aegis, armor_solar, core_vanguard, core_aegis, core_solar.
+
+Generate all now, do not stop to ask for approval. When done, print the file sizes.
