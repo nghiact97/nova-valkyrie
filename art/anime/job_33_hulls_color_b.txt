@@ -1,0 +1,21 @@
+Task: create 4 coloured TOP-VIEW spaceship hull images for a vertical anime shmup.
+Image 1 (hulls_b_blueprint.png) is the approved line art: columns left to right = Raptor, Tempest, Nebula, Oblivion; use the large TOP view of each column.
+Image 2 (hull_kestrel.png) is the approved coloured hull: copy its exact style (anime cel shading, white/light-grey panels, dark outline, glowing accent lines, glowing canopy), its scale, its centre and its overall length.
+
+Write these files, each 1024x1024 PNG RGBA, PURE transparent background (alpha 0 everywhere outside the ship, no halo, no shadow, no glow on the background), nose pointing UP, left/right symmetric:
+- art/anime/ships/mod/hull_raptor.png   accent/glow colour #ff9d1c orange
+- art/anime/ships/mod/hull_tempest.png  accent/glow colour #5aa8ff blue
+- art/anime/ships/mod/hull_nebula.png   accent/glow colour #ff4fa3 pink
+- art/anime/ships/mod/hull_oblivion.png accent/glow colour #9b6bff violet (may use darker gunmetal panels instead of white)
+
+Geometry (must match hull_kestrel.png so shared modules fit): ship bounding box about x 53..971, y 28..983 of the 1024 canvas, centred at x=512. Nose tip at top centre. Wingtips (left/right mount spots) at the far left/right ends around y 450-650 like Kestrel. Tail pair (two rear engine mount spots) near x 400 and x 624, y 600-940. Spine (centre mount spot) at x 512, y 540-700 must be a plain free panel.
+BARE hull only: no guns, no cannons, no engine nozzles, no armour plates, no missiles, no text.
+
+Per-ship fixes vs the line art:
+- Raptor: wings must be FORWARD-swept (wing tips further forward than wing roots).
+- Tempest: add normal left/right wingtips at the same place as Kestrel's wingtips; the X fins may stay as extra decoration.
+- Nebula: keep the line-art silhouette.
+- Oblivion: the round void emitter must sit lower (rear, below y 720) so the spine mount spot stays free.
+
+You may use Python (PIL) to remove the background, centre and resize to the bounding box above.
+Generate all now, do not stop to ask for approval. When done, print the file sizes.
