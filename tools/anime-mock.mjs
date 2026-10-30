@@ -1593,7 +1593,7 @@ if(S.tutV===1){S.tutV=2;if(vkCleared()<5&&!(S.tut&&S.tut.t10)){S.gear.eq={cannon
 const PET_FX={shot:"#9fdcff",missile:"#ff9d1c",laser:"#38e1ff",flak:"#ff9d1c",medic:"#52f19a",tesla:"#5aa8ff",guardian:"#38e1ff",phantom:"#b36bff",solaris:"#ffc83d"};
 function petSpark(x,y,col,n,sp,life,r){for(let i=0;i<n;i++){const a=rnd(0,7),v=rnd(sp*.4,sp);B.fx.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,life:rnd(life*.6,life),max:life,col,r:rnd(r*.6,r)});}}
 drawDroneBody=function(c,dd,x,y,t,o={}){const s=(o.size||13)*1.3,col=dd.col,im=spr("drone_"+dd.id),k=dd.kind;
-  const hx=Math.sin(t*1.7)*5,hy=Math.sin(t*3.4)*3.5,br=1+Math.sin(t*5)*.035,rec=o.f>0?o.f/.09:0;
+  const hx=Math.sin(t*1.7)*5,hy=Math.sin(t*3.4)*3.5,br=1+Math.sin(t*5)*.035,rec=0;   // no fire recoil: it made the pets jitter on every shot
   const tilt=Math.max(-.5,Math.min(.5,(o.vx||0)/700))+Math.sin(t*1.7)*.08;
   c.save();
   // phantom afterimages (violet ghosts)
