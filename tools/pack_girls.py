@@ -197,10 +197,20 @@ with open(os.path.join(root, "build/anime_girls.js"), "w") as f:
         col = [sum(1 for y in range(0, sh.height, 2) if px[x, y]) for x in range(sh.width)]
         cuts = [0] + [min(range(max(1, b - 70), min(sh.width - 1, b + 70)), key=lambda x: (col[x], abs(x - b))) for b in range(256, sh.width, 256)][:n - 1] + [sh.width]
         return [biggest_blob(sh.crop((cuts[i], 0, cuts[i + 1], sh.height))) for i in range(n)]
+    # Blender puppet loops (tools/blender/pet_puppet.py) override the Codex frames: pet_<id>_<n> + frame count PET_N
+    puppets = {}
+    for p in sorted(glob.glob(os.path.join(root, "art/anime/pet/puppet/*_[0-9][0-9].png"))):
+        k, n = os.path.basename(p)[:-4].rsplit("_", 1); puppets.setdefault(k, []).append(p)
+    for k, ps in puppets.items():
+        for i, p in enumerate(ps):
+            im = Image.open(p).convert("RGBA"); im = im.crop(im.getchannel("A").getbbox())
+            f.write(f'SPR_SRC.pet_{k}_{i}="{enc(im, 200)}";\n')
+    f.write("const PET_N={" + ",".join(f'{k}:{len(v)}' for k, v in puppets.items()) + "};\n")
     # pet idle animations: 6-frame strips (art/anime/pet/anim/<id>_idle.png, 256x384 slots) -> pet_<id>_<n>;
     # every frame is re-centred on its bounding box and scaled to the strip's median height so the loop does not wobble
     for p in sorted(glob.glob(os.path.join(root, "art/anime/pet/anim/*_idle.png"))):
         k = os.path.basename(p)[:-9]; g = p.replace("_idle.png", "_grid.png")
+        if k in puppets: continue
         if os.path.exists(g):  # preferred: 3x2 grid of 512 px cells with clear gaps (no touching frames)
             gs = Image.open(g).convert("RGBA"); frames = [biggest_blob(gs.crop(((i % 3) * 512, (i // 3) * 512, (i % 3 + 1) * 512, (i // 3 + 1) * 512))) for i in range(6)]
         else:
@@ -211,6 +221,13 @@ with open(os.path.join(root, "build/anime_girls.js"), "w") as f:
             fr = fr.resize((max(1, round(fr.width * H / fr.height)), H), Image.LANCZOS)
             o = Image.new("RGBA", (S, S)); o.paste(fr, ((S - fr.width) // 2, (S - H) // 2), fr)
             f.write(f'SPR_SRC.pet_{k}_{i}="{enc(o, 200)}";\n')
+    # full-set magic circle: Blender frames (tools/blender/magic_circle.py) with a soft glow baked in -> magic_<set>_<n>
+    for p in sorted(glob.glob(os.path.join(root, "art/anime/fx/magic/magic_*_*.png"))):
+        k = os.path.basename(p)[:-4]
+        if int(k.rsplit("_", 1)[1]) % 2: continue   # 12 of the 24 frames is smooth enough at game size and halves the size
+        im = Image.open(p).convert("RGBA")
+        g = im.filter(ImageFilter.GaussianBlur(6)); out = Image.new("RGBA", im.size); out.alpha_composite(g); out.alpha_composite(g); out.alpha_composite(im)
+        f.write(f'SPR_SRC.{k}="{enc(out, 192)}";\n')
     p = os.path.join(root, "art/anime/escort.png")  # small mechanical drone for the "Escort Drones" run skill (not a pet)
     if os.path.exists(p):
         im = Image.open(p).convert("RGBA"); im = im.crop(im.getchannel("A").getbbox())

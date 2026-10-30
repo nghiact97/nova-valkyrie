@@ -1,0 +1,10 @@
+Attached: art/anime/pet/sparrow.png (the approved chibi pet SPARROW, light-blue fluffy baby bird, front view).
+
+We will animate it as a cut-out puppet, so it must be split into separate parts. Use your image generation tool to create FOUR images, each 1024x1024 with a FULLY TRANSPARENT background (alpha 0, no glow), all drawn at the SAME scale and in the SAME position on the canvas as if they were layers of one picture (when stacked on top of each other they must recreate the attached pet exactly, front view, same design, colours and outline):
+1. art/anime/pet/parts/sparrow_body.png — the body + head + feet + face (eyes OPEN), WITHOUT the wings; fill in the fur where the wings used to cover it.
+2. art/anime/pet/parts/sparrow_blink.png — the same body + head but with the eyes CLOSED happily (^ ^), everything else identical to image 1.
+3. art/anime/pet/parts/sparrow_wingL.png — ONLY the wing on the viewer's LEFT, fully spread, in its place next to the body, with its root (shoulder joint) where it attaches to the body.
+4. art/anime/pet/parts/sparrow_wingR.png — ONLY the wing on the viewer's RIGHT, mirror of the left wing, in its place.
+Anime chibi cel shading, crisp dark outline, no text, no borders.
+
+Generate all now, do not stop to ask for approval. When done, print the file sizes.

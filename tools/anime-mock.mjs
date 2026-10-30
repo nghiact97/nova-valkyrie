@@ -1125,9 +1125,10 @@ const js = `
 /* pet idle animation: 6 Codex-drawn frames per pet (pet_<id>_0..5), ~9 fps, faster while the pet is moving */
 const PET_MIX={};
 // cross-fade between neighbouring frames (4 in-betweens per step, cached) so 6 drawn frames read as a smooth loop
-function petFrame(id,t,vx){const f0=spr("pet_"+id+"_0");if(!f0)return null;const p=t*(7+Math.min(5,Math.abs(vx||0)/70)),i=Math.floor(p)%6,q=Math.floor((p%1)*4)/4;
+function petFrame(id,t,vx){const f0=spr("pet_"+id+"_0");if(!f0)return null;const n=(typeof PET_N!=="undefined"&&PET_N[id])||6,
+  p=t*(n>6?n*.75:7)*(1+Math.min(.7,Math.abs(vx||0)/500)),i=Math.floor(p)%n,q=n>6?0:Math.floor((p%1)*4)/4;   // Blender loops: play frames as-is
   if(q===0)return spr("pet_"+id+"_"+i)||f0;const k=id+i+"_"+q;if(PET_MIX[k])return PET_MIX[k];
-  const A=spr("pet_"+id+"_"+i),Bm=spr("pet_"+id+"_"+((i+1)%6));if(!A||!Bm)return A||f0;
+  const A=spr("pet_"+id+"_"+i),Bm=spr("pet_"+id+"_"+((i+1)%n));if(!A||!Bm)return A||f0;
   const cv=document.createElement("canvas");cv.width=cv.naturalWidth=A.naturalWidth;cv.height=cv.naturalHeight=A.naturalHeight;cv.complete=true;const c=cv.getContext("2d");
   c.globalAlpha=1-q;c.drawImage(A,0,0);c.globalAlpha=q;c.drawImage(Bm,0,0,cv.width,cv.height);return PET_MIX[k]=cv;}
 /* Modular ship composer: hull + mount-centred parts placed on the hull's own mount points (SHIP_MOUNTS, 1024 grid).
@@ -1251,8 +1252,10 @@ drawShip=function(c,def,x,y,s,t=0,star=1){
   // full 4/4 set: soft ring
   const sets=gearSets(),full=Object.keys(sets).find(k=>sets[k]>=4);
   if(full){const col=GSETS[full].col,R=s*1.5,bt=.5+.5*Math.sin(t*2.4);
-    c.globalAlpha=.55+.15*bt;c.drawImage(sfxMagic(col,2),x-R,y-R,R*2,R*2);
-    [[0,.35],[1,-.55]].forEach(([pp,sp])=>{c.save();c.translate(x,y);c.rotate(t*sp);c.globalAlpha=pp?.8:.75;c.drawImage(sfxMagic(col,pp),-R,-R,R*2,R*2);c.restore();});
+    const mf=spr("magic_"+full+"_"+String(Math.floor(t*6)%12*2).padStart(2,"0"));   // Blender-rendered 24-frame loop
+    if(mf){c.globalAlpha=.7+.15*bt;c.drawImage(mf,x-R,y-R,R*2,R*2);}
+    else{c.globalAlpha=.55+.15*bt;c.drawImage(sfxMagic(col,2),x-R,y-R,R*2,R*2);
+    [[0,.35],[1,-.55]].forEach(([pp,sp])=>{c.save();c.translate(x,y);c.rotate(t*sp);c.globalAlpha=pp?.8:.75;c.drawImage(sfxMagic(col,pp),-R,-R,R*2,R*2);c.restore();});}
     const g=sfxGlow(col),st=sfxStar();for(let i=0;i<6;i++){const an=t*.9+i*Math.PI/3,ox=x+Math.cos(an)*R*.74,oy=y+Math.sin(an)*R*.74,tw=.6+.4*Math.sin(t*5+i*1.7),r=s*.13*tw;
       c.globalAlpha=.85*tw;c.drawImage(g,ox-r,oy-r,r*2,r*2);c.drawImage(st,ox-r*1.3,oy-r*1.3,r*2.6,r*2.6);}
     c.globalAlpha=1;}
