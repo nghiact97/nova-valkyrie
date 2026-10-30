@@ -1102,6 +1102,14 @@ patch('let pool=RUNSK.filter(s=>rs(s.id)<s.max&&(rs(s.id)>0||owned<MAX_SLOTS));'
 // bullet FX hooks: styled draw per pilot, and an impact burst when a bullet is used up on a hit
 patch('if(b.rocket){drawMissile(c,b,a);continue;}', 'if(b.rocket){drawMissile(c,b,a);continue;}if(vkBulletFx(c,b))continue;');
 patch('B.pb=B.pb.filter(b=>!b.dead);', 'for(const b of B.pb)if(b.dead&&b.y>-20&&b.x>-20&&b.x<W+20)vkBulletHit(b);B.pb=B.pb.filter(b=>!b.dead);');
+// gear fire hooks (G4, helpers in the "Gear fire" block of js): cannon fire rate, burn tick, on-hit traits, ion safe time, jet drag speed
+patch('p.fireT=1/(B.ship.rate*', 'p.fireT=1/(B.ship.rate*gfRate()*');
+patch('for(const b of B.pb){if(b.homing){', 'gfTick(dt);for(const b of B.pb){if(b.homing){');
+patch('B._crit=b.crit;hitEnemy(e,b.dmg);B._crit=0;spark(b);', 'B._crit=b.crit;hitEnemy(e,b.dmg);B._crit=0;if(b.gt)gfHit(b,e);spark(b);');
+patch('B._crit=b.crit;hitBoss(b.dmg);B._crit=0;spark(b);', 'B._crit=b.crit;hitBoss(b.dmg);B._crit=0;if(b.gt)gfHit(b,bs);spark(b);');
+patch('p.inv=skVal("armor").inv;', 'p.inv=skVal("armor").inv+gfInv();');
+patch('(e.clientX-drag.x)*S.set.sens', '(e.clientX-drag.x)*S.set.sens*gfMove()');
+patch('(e.clientY-drag.y)*S.set.sens', '(e.clientY-drag.y)*S.set.sens*gfMove()');
 // first three normal stages are free: say so on the button, and Restart from pause is free too
 patch('START <span style="font-size:14px">· ⚡${ENERGY_COST}</span>', 'START <span style="font-size:14px">· ${i<3&&diff==="normal"?L("FREE","MIỄN PHÍ"):"⚡"+ENERGY_COST}</span>');
 patch('id="pRe">Restart <small>⚡${ENERGY_COST}</small>', 'id="pRe">Restart <small>⚡${B.cfg.mode==="stage"&&B.cfg.idx<3&&B.cfg.diff==="normal"?0:ENERGY_COST}</small>');
@@ -1154,10 +1162,11 @@ function bfxTrail(c,h,w,col,alpha){const n=h.length;if(n<2)return;const L=[],R=[
     L.push(h[k][0]-dy/d*hw,h[k][1]+dx/d*hw);R.push(h[k][0]+dy/d*hw,h[k][1]-dx/d*hw);}
   const g=c.createLinearGradient(h[0][0],h[0][1],h[n-1][0],h[n-1][1]);g.addColorStop(0,col+"00");g.addColorStop(1,col);
   c.globalAlpha=alpha;c.fillStyle=g;c.beginPath();c.moveTo(L[0],L[1]);for(let k=2;k<L.length;k+=2)c.lineTo(L[k],L[k+1]);for(let k=R.length-2;k>=0;k-=2)c.lineTo(R[k],R[k+1]);c.closePath();c.fill();c.globalAlpha=1;}
-function bfxStyle(b){if(b.wave||b.rocket||b.kind==="beam")return null;const m=bfxPick!=null&&b.kind===S.ship?[bfxPick]:BFX_SHIP[b.kind];if(!m)return null;
+// style: mockup chip pick > equipped cannon type (b.gt, set in fire) > pilot default
+function bfxStyle(b){if(b.wave||b.rocket||b.kind==="beam")return null;const m=bfxPick!=null&&b.kind===S.ship?[bfxPick]:b.gt&&GTYPE_FIRE[b.gt]&&GTYPE_FIRE[b.gt].fx||BFX_SHIP[b.kind];if(!m)return null;
   const st=BFX[m[0]];return {i:m[0],col:m[1]||st.col,hot:st.hot,tl:st.tl,tw:st.tw};}
 function vkBulletFx(c,b){const s=bfxStyle(b);if(!s)return false;const h=b.fh||(b.fh=[]);h.push([b.x,b.y]);if(h.length>s.tl)h.shift();
-  const x=b.x,y=b.y,ang=Math.atan2(b.vy,b.vx),bx=-Math.cos(ang),by=-Math.sin(ang),t=B.t+(b.ph??(b.ph=Math.random()*6)),col=s.col,hot=s.hot,sc=b.crit?1.25:1;
+  const x=b.x,y=b.y,ang=Math.atan2(b.vy,b.vx),bx=-Math.cos(ang),by=-Math.sin(ang),t=B.t+(b.ph??(b.ph=Math.random()*6)),col=s.col,hot=s.hot,sc=(b.crit?1.25:1)*(b.gs||1);
   c.globalCompositeOperation="lighter";
   switch(s.i){
    case 0:bfxTrail(c,h,s.tw*2*sc,col,.45);bfxTrail(c,h,s.tw*.45,hot,.9);bfxG(c,x,y,22*sc,col);c.save();c.translate(x,y);c.rotate(t*3);c.strokeStyle=col;c.lineWidth=1.4;c.beginPath();c.arc(0,0,9*sc,0,7);c.stroke();
@@ -1183,8 +1192,51 @@ function vkBulletHit(b){const s=bfxStyle(b);if(!s||B.fx.length>600)return;for(le
 function vkBfxChip(){if(window.Capacitor)return;let ch=$("#vkBfx");if(!ch){ch=document.createElement("button");ch.id="vkBfx";$("#battle").append(ch);
     ch.onclick=e=>{e.stopPropagation();bfxPick=bfxPick==null?0:bfxPick>=BFX.length-1?null:bfxPick+1;vkBfxChip();};
     ["pointerdown","touchstart","mousedown"].forEach(ev=>ch.addEventListener(ev,e=>e.stopPropagation()));}
-  ch.innerHTML=\`<small>\${L("BULLET","ĐẠN")} ▸</small><b>\${bfxPick==null?L("Pilot's own","Theo phi công"):L(BFX[bfxPick].n[0],BFX[bfxPick].n[1])}</b>\`;}
+  ch.innerHTML=\`<small>\${L("BULLET","ĐẠN")} ▸</small><b>\${bfxPick==null?(gfKey("cannon")?L("Cannon's own","Theo súng"):L("Pilot's own","Theo phi công")):L(BFX[bfxPick].n[0],BFX[bfxPick].n[1])}</b>\`;}
 {const _sbf=startBattle;startBattle=function(cfg){_sbf(cfg);vkBfxChip();};}
+/* Gear fire (G4): the equipped Cannon's type changes the main gun (look + trait), the Engine's type adds a perk.
+   No cannon equipped -> main gun unchanged. Applies to main-gun bullets only (kind === ship id), never wing/beam/drone/skill shots.
+   One table to tune (G5):
+   rate = fire-rate x · dmg = damage x per bullet · r = hit radius x · gs = draw scale · spd = bullet speed x · pl = extra pierce
+   homing · splash [radius, share of the hit] · burn [share of the hit, seconds] · slow [move speed x, seconds] · fx = BFX style [index]
+   move = drag speed x (engine) · inv = extra safe seconds after a hit (engine) */
+const GTYPE_FIRE={
+  mg:     {rate:1.4,dmg:.75,gs:.7,fx:[1]},
+  laser:  {dmg:.85,pl:1,spd:1.3,fx:[3]},
+  missile:{dmg:.58,homing:1,spd:.8,splash:[40,.5],fx:[7]},
+  plasma: {rate:.8,dmg:1.25,r:1.6,gs:1.35,fx:[0]},
+  solar:  {dmg:.85,burn:[.3,2],fx:[2]},
+  frost:  {dmg:1,slow:[.6,1],fx:[6]},
+  jet:    {move:1.1},
+  ion:    {inv:.4}};
+// equipped type per slot, read once per battle (cached on B)
+function gfKey(slot){if(typeof B==="undefined"||!B)return null;const c=B.gfk||(B.gfk={});
+  if(!(slot in c)){const it=S.gear&&gEq(slot),t=it&&gType(it);c[slot]=t&&GTYPE_FIRE[t]?t:null;}return c[slot];}
+const gfG=slot=>{const k=gfKey(slot);return k?GTYPE_FIRE[k]:null;};
+const gfRate=()=>{const g=gfG("cannon");return g&&g.rate||1;};
+const gfMove=()=>{const g=gfG("engine");return g&&g.move||1;};
+const gfInv=()=>{const g=gfG("engine");return g&&g.inv||0;};
+// main gun: stamp the cannon type on the bullets this volley added
+{const _fire=fire;fire=function(){const k=gfKey("cannon"),n=B.pb.length;_fire();if(!k)return;const g=GTYPE_FIRE[k],id=B.ship.id;
+  for(let i=n;i<B.pb.length;i++){const b=B.pb[i];if(b.kind!==id)continue;b.gt=k;
+    if(g.dmg)b.dmg*=g.dmg;if(g.r)b.r*=g.r;if(g.gs)b.gs=g.gs;if(g.spd){b.vx*=g.spd;b.vy*=g.spd;}if(g.pl)b.pl=(b.pl||0)+g.pl;if(g.homing)b.homing=1;}};}
+// on hit (enemy or boss): splash, burn, slow
+function gfHit(b,e){const g=GTYPE_FIRE[b.gt];if(!g||!e)return;
+  if(g.splash){const R=g.splash[0];for(const o of B.en)if(o!==e&&!o.dead&&!o.ghost&&o.age>0&&Math.hypot(o.x-b.x,o.y-b.y)<R+o.r*.5)hitEnemy(o,b.dmg*g.splash[1]);
+    if(B.fx.length<600)B.fx.push({fire:1,x:b.x,y:b.y,vx:0,vy:0,R:R*.75,life:.3,max:.3});}
+  if(g.burn){e.gfB=(e.gfB||0)+b.dmg*g.burn[0];e.gfBt=g.burn[1];}
+  if(g.slow&&e!==B.boss){e.gfS=g.slow[1];e.gfSm=g.slow[0];}}
+// per frame: burn ticks every .25s (no hit flash), flame / frost particles on affected enemies
+function gfTick(dt){const T=.25,lim=B.fx.length<500;
+  const burn=(o,boss)=>{o.gfBk=(o.gfBk||0)+dt;if(o.gfBk<T)return;const st=o.gfBk;o.gfBk=0;const d=o.gfB*Math.min(1,st/Math.max(st,o.gfBt));o.gfB-=d;o.gfBt-=st;
+    const fl=o.flash;if(boss)hitBoss(d);else hitEnemy(o,d);o.flash=fl;};
+  for(const e of B.en){if(e.dead)continue;
+    if(e.gfBt>0){burn(e,0);if(lim&&Math.random()<dt*14)B.fx.push({x:e.x+rnd(-.5,.5)*e.r,y:e.y+rnd(-.3,.3)*e.r,vx:rnd(-15,15),vy:-rnd(40,90),life:.4,max:.4,col:Math.random()<.5?"#ffb04a":"#ff5a1a",r:3});}
+    if(e.gfS>0&&lim&&Math.random()<dt*10)B.fx.push({x:e.x+rnd(-.6,.6)*e.r,y:e.y+rnd(-.4,.4)*e.r,vx:rnd(-20,20),vy:rnd(10,40),life:.45,max:.45,col:Math.random()<.5?"#bfe9ff":"#ffffff",r:2.5});}
+  const bs=B.boss;if(bs&&bs.gfBt>0){burn(bs,1);if(lim&&Math.random()<dt*14)B.fx.push({x:bs.x+rnd(-.5,.5)*bs.r,y:bs.y+rnd(-.2,.3)*bs.r,vx:rnd(-15,15),vy:-rnd(40,90),life:.4,max:.4,col:Math.random()<.5?"#ffb04a":"#ff5a1a",r:3.5});}}
+// frost: a slowed enemy runs its movement at gfSm speed until the slow wears off
+{const _mv=moveEnemy;moveEnemy=function(e,dt){if(e.gfS>0){e.gfS-=dt;dt*=e.gfSm;}return _mv(e,dt);};}
+{const _mu=miniUpdate;miniUpdate=function(e,dt){if(e.gfS>0){e.gfS-=dt;dt*=e.gfSm;}return _mu(e,dt);};}
 /* Sparse popups dressed up: banner art, reward chips and icons on top of the original content and handlers */
 const vkPopEl=()=>$("#veil .pop");
 function vkChip(ic,t){return \`<span class="vkp-chip">\${ic==="gem"||ic==="coin"||ic==="energy"?sprImg("ui_cur_"+ic):\`<i>\${ic}</i>\`}<b>\${t}</b></span>\`;}
