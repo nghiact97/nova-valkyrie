@@ -1249,9 +1249,9 @@ drawShip=function(c,def,x,y,s,t=0,star=1){
   // rarity rim under the ship
   const rar=eq.reduce((m,i)=>Math.max(m,i.rar||0),0);
   if(rar>=1){const A=sfxAura(im,SFX_RIM[rar]),f=W/SFX_AN,o=SFX_AP*f,Z=A.wide.width*f,pu=.5+.5*Math.sin(t*3),X=x-W/2-o,Y=y-W/2-o;
-    c.globalAlpha=(rar>=3?.95:.8)+.05*pu;c.drawImage(A.wide,X,Y,Z,Z);
-    c.globalAlpha=.8+.2*pu;c.drawImage(A.nar,X,Y,Z,Z);
-    const ph=(t%2)/2*1.4;if(ph<1){c.globalAlpha=Math.sin(ph*Math.PI);c.drawImage(A.sh[Math.min(SFX_SHN-1,ph*SFX_SHN|0)],X,Y,Z,Z);}
+    c.globalAlpha=(rar>=3?.4:.3)+.05*pu;c.drawImage(A.wide,X,Y,Z,Z);
+    c.globalAlpha=.55+.15*pu;c.drawImage(A.nar,X,Y,Z,Z);
+    const ph=(t%2)/2*1.4;if(ph<1){c.globalAlpha=.6*Math.sin(ph*Math.PI);c.drawImage(A.sh[Math.min(SFX_SHN-1,ph*SFX_SHN|0)],X,Y,Z,Z);}
     c.globalAlpha=1;}
   // engine flames
   if(en){const ion=gType(en)==="ion",col=ion?SFX_ION:SFX_ECOL[en.set]||"#5ee7ff",fs=sfxFlame(col),g=sfxGlow(col);
@@ -1264,14 +1264,14 @@ drawShip=function(c,def,x,y,s,t=0,star=1){
   c.save();c.globalCompositeOperation="lighter";
   // core pulse
   if(co){const ful=B.ult>=100,per=ful?.6:1.2,col=(GSETS[co.set]||{}).col||"#9ff0ff",[cx,cy]=P(M.spine),ph=(t%per)/per,b=Math.pow(1-ph,3),
-      g=sfxGlow(col),wg=sfxGlow("#ffffff"),R=W*(ful?.4:.33)*(.92+.1*b);
-    if(ful){const ry=sfxRay(col),L=W*.62;for(let i=0;i<7;i++){c.save();c.translate(cx,cy);c.rotate(t*.6+i*Math.PI*2/7);c.globalAlpha=.55+.25*Math.sin(t*3+i*2.1);
+      g=sfxGlow(col),wg=sfxGlow("#ffffff"),R=W*(ful?.22:.16)*(.92+.1*b);
+    if(ful){const ry=sfxRay(col),L=W*.45;for(let i=0;i<7;i++){c.save();c.translate(cx,cy);c.rotate(t*.6+i*Math.PI*2/7);c.globalAlpha=.22+.1*Math.sin(t*3+i*2.1);
       c.drawImage(ry,-L*.13,-L,L*.26,L);c.restore();}}
-    c.globalAlpha=(ful?.6:.42)+.15*b;c.drawImage(g,cx-R,cy-R,R*2,R*2);
-    const hr=s*(ful?.36:.28)*(1+.25*b);c.globalAlpha=1;c.drawImage(wg,cx-hr,cy-hr,hr*2,hr*2);c.drawImage(wg,cx-hr*.6,cy-hr*.6,hr*1.2,hr*1.2);
-    const rr=s*(.2+1.1*ph);c.globalAlpha=(1-ph)*(ful?.95:.8);c.drawImage(sfxRing(col),cx-rr*1.28,cy-rr*1.28,rr*2.56,rr*2.56);
-    const sl=W*(ful?.95:.75)*(.9+.1*b);c.save();c.translate(cx,cy);c.rotate(t*(ful?.9:.4));c.globalAlpha=ful?1:.85;c.drawImage(sfxStar(),-sl/2,-sl/2,sl,sl);
-    c.rotate(Math.PI/4);c.globalAlpha=.35;c.drawImage(sfxStar(),-sl*.3,-sl*.3,sl*.6,sl*.6);c.restore();c.globalAlpha=1;}
+    c.globalAlpha=(ful?.32:.2)+.08*b;c.drawImage(g,cx-R,cy-R,R*2,R*2);
+    const hr=s*(ful?.14:.1)*(1+.2*b);c.globalAlpha=ful?.75:.55;c.drawImage(wg,cx-hr,cy-hr,hr*2,hr*2);
+    const rr=s*(.2+1.1*ph);c.globalAlpha=(1-ph)*(ful?.5:.35);c.drawImage(sfxRing(col),cx-rr*1.28,cy-rr*1.28,rr*2.56,rr*2.56);
+    const sl=W*(ful?.5:.36)*(.9+.1*b);c.save();c.translate(cx,cy);c.rotate(t*(ful?.9:.4));c.globalAlpha=ful?.6:.4;c.drawImage(sfxStar(),-sl/2,-sl/2,sl,sl);
+    c.rotate(Math.PI/4);c.globalAlpha=.18;c.drawImage(sfxStar(),-sl*.3,-sl*.3,sl*.6,sl*.6);c.restore();c.globalAlpha=1;}
   // legendary sparkles drifting off the wings
   if(rar>=3&&SFX.em.length<30&&Math.random()<.45){const L=Math.random()<.5,pt=L?M.wingL:M.wingR,[wx,wy]=P(pt||M.spine),sd=L?-1:1;
     SFX.em.push({x:wx+(Math.random()-.5)*s*.3,y:wy,vx:sd*(10+Math.random()*25),vy:-(15+Math.random()*25),ay:90,l:1.1,m:1.1,ph:Math.random()*6,r:s*(.1+Math.random()*.08)});}
