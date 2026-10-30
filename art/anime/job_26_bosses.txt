@@ -1,0 +1,9 @@
+Read art/anime/STYLE.md for the shared anime art style. Attached images: art/anime/chapter_1.jpg (chapter 1 banner showing the rival girl Vesper - copy her look: hair, face, outfit colours), art/anime/style_a_mika.png (our heroine - match this overall anime style), art/boss1.png (current plain sci-fi boss - for role only, do not copy its style).
+
+Use the image generation tool to create TWO images. Both: fully TRANSPARENT background, viewed from ABOVE/front (top-down 3/4 view), facing DOWNWARD toward the player at the bottom of the screen, anime cel shading, crisp dark outline, enemy palette (crimson, dark violet, gunmetal, magenta glow). No text, no frames, no ground shadow, no background.
+
+a) art/anime/bosses/miniboss_carrier.png, 1024x1024: CARRIER mini-boss. A medium mecha mothership drone with an open hangar bay in its belly that launches small drones (2-3 small drones emerging), two side wing pods, a glowing magenta core. Bold simple silhouette, must read clearly at 70 px.
+
+b) art/anime/bosses/boss_vesper.png, 1024x1024: chapter-1 boss. The rival girl Vesper (exactly as in the chapter_1 banner) seated in / fused with a GIANT dark mecha armour frame much bigger than her: huge armoured shoulders, four weapon arms or cannon pods, large dark wings, glowing magenta core at the chest. She is visible at the centre top of the frame (upper body, looking down toward the player). Menacing and symmetric. Teen rating. Must read clearly at 180 px.
+
+Create the folder art/anime/bosses if missing. Generate all now, do not stop to ask for approval. When done, print the file sizes.
