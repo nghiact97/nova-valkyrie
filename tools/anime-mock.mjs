@@ -1112,6 +1112,23 @@ patch(`if(S.stats.played>0&&!S.ships.seraph)q.push(()=>POPS.offer());`, `if(S.st
 
 
 const js = `
+/* Modular ship: the equipped gear shows on the plane. Hull + one part per gear slot, all on one shared grid,
+   stacked engine -> armor -> hull -> cannon -> core. Rarity adds a rim glow. Pilots without a modular hull keep their sprite. */
+const MOD_ORDER=[["engine","engine"],["plating","armor"],[null,"hull"],["cannon","cannon"],["core","core"]];
+const MOD_RCOL=["",  "#38a8ff","#b36bff","#ffb02e"];
+let modKey="",modBusy=false;
+function modHas(ship){return SPR_HAS("mod_hull_"+ship);}
+function modParts(){return MOD_ORDER.map(([slot,part])=>{if(!slot)return {k:"mod_hull_"+S.ship};const it=gEq(slot);return it?{k:\`mod_\${part}_\${it.set}\`,rar:it.rar}:null;}).filter(p=>p&&SPR_HAS(p.k));}
+function modBuild(force){if(!modHas(S.ship)||modBusy)return;const parts=modParts(),key=S.ship+"|"+parts.map(p=>p.k+(p.rar||0)).join(",");if(key===modKey&&!force)return;
+  modBusy=true;const ims=parts.map(p=>{const im=new Image();im.src=SPR_SRC[p.k];return im;});
+  Promise.all(ims.map(im=>im.decode().catch(()=>{}))).then(()=>{const N=320,cv=document.createElement("canvas");cv.width=cv.height=N;const c=cv.getContext("2d");
+    ims.forEach((im,i)=>{const r=parts[i].rar||0;
+      if(r>=2){c.save();c.shadowColor=MOD_RCOL[r];c.shadowBlur=r>=3?14:9;c.drawImage(im,0,0,N,N);c.restore();}   // epic / legendary rim glow
+      c.drawImage(im,0,0,N,N);});
+    const url=cv.toDataURL("image/png"),k="ship_"+S.ship,im=new Image();im.onload=()=>{IMG[k]=im;SPR_SRC[k]=url;modKey=key;modBusy=false;
+      if(cur==="hangar"&&typeof renderHangar==="function")renderHangar();};im.src=url;}).catch(()=>{modBusy=false;});}
+setInterval(()=>{if(cur!=="battle")modBuild();},400);
+{const _sbm=startBattle;startBattle=function(cfg){modBuild();_sbm(cfg);};}
 /* Bullet FX: every Valkyrie fires her own projectile style (core + glow + tapered trail + sparks + impact).
    Mockup only: a "ĐẠN" chip in battle cycles all 9 styles on any pilot (hidden in the app build). */
 const BFX=[

@@ -43,6 +43,13 @@ with open(os.path.join(root, "build/anime_girls.js"), "w") as f:
         k = os.path.basename(p)[:-4]; im = Image.open(p).convert("RGB"); im.thumbnail((640, 640))
         bb = io.BytesIO(); im.save(bb, "WEBP", quality=80)
         f.write(f'SPR_SRC.{k}="data:image/webp;base64,' + base64.b64encode(bb.getvalue()).decode() + '";\n')
+    # modular ship parts (hull + per-set cannon/engine/armor/core), all on one shared 1024 grid -> 320 px
+    for p in sorted(glob.glob(os.path.join(root, "art/anime/ships/mod/*_*.png"))):
+        k = os.path.basename(p)[:-4]
+        if k.startswith("assembled"): continue
+        im = Image.open(p).convert("RGBA").resize((320, 320), Image.LANCZOS)
+        bb = io.BytesIO(); im.save(bb, "WEBP", quality=90)
+        f.write(f'SPR_SRC.mod_{k}="data:image/webp;base64,' + base64.b64encode(bb.getvalue()).decode() + '";\n')
     for k in ["shop", "hangar", "battle", "questnav", "gear"]:
         p = os.path.join(root, f"art/anime/nav_{k}.png")
         if not os.path.exists(p): continue
