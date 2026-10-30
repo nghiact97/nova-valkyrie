@@ -1,0 +1,19 @@
+Image 1 = approved line art art/anime/ships/hulls_a_blueprint.png (4 columns: Kestrel, Viper, Halo, Seraph; large top view, small side view).
+Image 2 = approved coloured hull art/anime/ships/mod/hull_kestrel.png (1024x1024 transparent PNG; hull spans about x 53-971, y 28-983, centred at x=512, nose up).
+
+Make 3 coloured TOP-VIEW hulls, each its own file:
+- art/anime/ships/mod/hull_viper.png  (Viper column silhouette), accent glow #52f19a green
+- art/anime/ships/mod/hull_halo.png   (Halo column silhouette), accent glow #b36bff purple
+- art/anime/ships/mod/hull_seraph.png (Seraph column silhouette), accent glow #ffc83d gold
+
+Rules for each:
+- 1024x1024 PNG, PURE transparent background (alpha 0 everywhere outside the hull, no glow halo, no shadow, no backdrop).
+- Nose up, top view only (ignore the side views). Same scale, centre (x=512) and overall length as hull_kestrel.png (nose tip near y=28, tail near y=983).
+- Same anime cel style as hull_kestrel: white/light-grey armour panels, crisp dark outline, glowing accent lines in the pilot colour, canopy tinted in the pilot colour, small star on the nose in the accent colour.
+- Bare hull only: NO guns, engines, armour plates or extra modules.
+- Keep each silhouette from the line art.
+- Module mount points must match Kestrel: nose tip on centreline at top, wingtip mounts at the same x/y as Kestrel's wingtips (about x 60-130 and 890-965, y about 450-600), tail pair at the same place as Kestrel's tail pods (around x 330-690, y 600-940), spine along the centreline (x=512, y about 530-710).
+- Halo: the wingtip mounts go on the left/right sides of the ring (at Kestrel's wingtip height), not higher.
+
+Write PNGs with Python PIL if needed to ensure exact size and transparency.
+Generate all now, do not stop to ask for approval. When done, print the file sizes.
