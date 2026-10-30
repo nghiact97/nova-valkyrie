@@ -1593,7 +1593,7 @@ if(S.tutV===1){S.tutV=2;if(vkCleared()<5&&!(S.tut&&S.tut.t10)){S.gear.eq={cannon
 const PET_FX={shot:"#9fdcff",missile:"#ff9d1c",laser:"#38e1ff",flak:"#ff9d1c",medic:"#52f19a",tesla:"#5aa8ff",guardian:"#38e1ff",phantom:"#b36bff",solaris:"#ffc83d"};
 function petSpark(x,y,col,n,sp,life,r){for(let i=0;i<n;i++){const a=rnd(0,7),v=rnd(sp*.4,sp);B.fx.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,life:rnd(life*.6,life),max:life,col,r:rnd(r*.6,r)});}}
 drawDroneBody=function(c,dd,x,y,t,o={}){const s=(o.size||13)*1.3,col=dd.col,im=spr("drone_"+dd.id),k=dd.kind;
-  const hx=Math.sin(t*1.7)*5,hy=Math.sin(t*3.4)*3.5,br=1+Math.sin(t*5)*.035,rec=0;   // no fire recoil: it made the pets jitter on every shot
+  const pm=o.pet?0:1,hx=Math.sin(t*1.7)*5*pm,hy=Math.sin(t*3.4)*3.5*pm-(o.hop||0),br=1+Math.sin(t*5)*.035*pm,rec=0;   // no fire recoil: it made the pets jitter on every shot
   const tilt=Math.max(-.5,Math.min(.5,(o.vx||0)/700))+Math.sin(t*1.7)*.08;
   c.save();
   // phantom afterimages (violet ghosts)
@@ -1602,7 +1602,8 @@ drawDroneBody=function(c,dd,x,y,t,o={}){const s=(o.size||13)*1.3,col=dd.col,im=s
   c.globalCompositeOperation="lighter";
   // soft aura + hover ring under the pet
   const pu=.7+.3*Math.sin(t*6);let g=c.createRadialGradient(0,0,2,0,0,s*2.2);g.addColorStop(0,col+"55");g.addColorStop(1,col+"00");c.globalAlpha=pu;c.fillStyle=g;c.fillRect(-s*2.2,-s*2.2,s*4.4,s*4.4);c.globalAlpha=1;
-  c.save();c.translate(0,s*1.25);c.scale(1,.32);c.strokeStyle=col;c.globalAlpha=.55+.25*Math.sin(t*4);c.lineWidth=2.5;c.beginPath();c.arc(0,0,s*(.9+.08*Math.sin(t*4)),0,7);c.stroke();c.restore();c.globalAlpha=1;
+  if(!o.pet){c.save();c.translate(0,s*1.25);c.scale(1,.32);c.strokeStyle=col;c.globalAlpha=.55+.25*Math.sin(t*4);c.lineWidth=2.5;c.beginPath();c.arc(0,0,s*(.9+.08*Math.sin(t*4)),0,7);c.stroke();c.restore();c.globalAlpha=1;}
+  if(o.pet)petVipUnder(c,s,t,o.vip||0);
   // kind effects behind the body
   if(k==="solaris"){c.save();c.rotate(t*1.1);for(let q=0;q<10;q++){c.rotate(Math.PI/5);const rg=c.createLinearGradient(0,0,0,-s*2.6);rg.addColorStop(0,"#ffd36b88");rg.addColorStop(1,"#ffd36b00");c.fillStyle=rg;c.beginPath();c.moveTo(-2,0);c.lineTo(2,0);c.lineTo(4,-s*2.6);c.lineTo(-4,-s*2.6);c.closePath();c.fill();}c.restore();}
   if(k==="guardian"||o.guard){const a=.35+(o.g>0?.55:0);c.save();c.rotate(t*.9);c.strokeStyle=\`rgba(94,231,255,\${a})\`;c.lineWidth=o.g>0?3:1.6;c.beginPath();
@@ -1612,18 +1613,84 @@ drawDroneBody=function(c,dd,x,y,t,o={}){const s=(o.size||13)*1.3,col=dd.col,im=s
   if(k==="laser"&&o.f>0){c.strokeStyle="#bff6ffcc";c.lineWidth=2;c.beginPath();c.arc(0,-s*.2,s*(1.6-rec),0,7);c.stroke();}
   c.globalCompositeOperation="source-over";
   // body: bank, breathe, squash on recoil
-  c.rotate(tilt);c.scale(br*(1+rec*.08),br*(1-rec*.1));
+  c.rotate(tilt);c.scale(br*(o.sx||1),br*(o.sy||1));
   if(im)blit(c,im,0,0,s*2.3);else drawDrone(c,dd,0,0,s*.8,t);
   c.globalCompositeOperation="lighter";
   if(k==="tesla"&&Math.random()<.55){c.strokeStyle="rgba(170,215,255,.9)";c.lineWidth=1.6;c.beginPath();let a=rnd(0,7),r=s*.5;c.moveTo(Math.cos(a)*r,Math.sin(a)*r);for(let q=0;q<5;q++){a+=rnd(-.7,.7);r+=s*.32;c.lineTo(Math.cos(a)*r+rnd(-3,3),Math.sin(a)*r+rnd(-3,3));}c.stroke();}
   // muzzle flash: soft round glow in the pet colour
   if(o.f>0){const R=s*(.55+rec*.5),m=c.createRadialGradient(0,-s*1.15,0,0,-s*1.15,R);m.addColorStop(0,"#ffffffee");m.addColorStop(.35,col+"cc");m.addColorStop(1,col+"00");
     c.globalAlpha=rec;c.fillStyle=m;c.beginPath();c.arc(0,-s*1.15,R,0,7);c.fill();c.globalAlpha=1;}
+  c.globalCompositeOperation="source-over";
+  if(o.pet&&o.vip>=3){c.rotate(-tilt);petVipOver(c,s,t);}
   c.restore();};
+/* ===== Battle pet: ONE companion instead of the left/right pair. Same total output (PET_MUL), spring follow, idle loop, VIP tiers ===== */
+function vipLevel(){const v=S.vipLv??(S.vip?1:0);return Math.max(0,Math.min(3,+v||0));}
+const PET_MUL=2;   // one pet deals what the old pair dealt
+const PET_GX={};   // pre-rendered additive glow sprites
+function petGlow(key,R,stops,sy=1){if(PET_GX[key])return PET_GX[key];const cv=document.createElement("canvas"),z=Math.ceil(R*2+4);cv.width=z;cv.height=Math.ceil(z*sy);const g=cv.getContext("2d");
+  g.translate(z/2,cv.height/2);g.scale(1,sy);const rg=g.createRadialGradient(0,0,0,0,0,R);stops.forEach(([a,c])=>rg.addColorStop(a,c));g.fillStyle=rg;g.beginPath();g.arc(0,0,R,0,7);g.fill();return PET_GX[key]=cv;}
+function petVipUnder(c,s,t,v){if(v<2)return;c.save();c.globalCompositeOperation="lighter";
+  if(v>=3){const a=petGlow("aura",64,[[0,"rgba(255,214,110,.26)"],[.45,"rgba(255,190,70,.1)"],[1,"rgba(255,170,40,0)"]]),k=s*2.6/64;c.globalAlpha=.5+.1*Math.sin(t*2.2);c.drawImage(a,-a.width*k/2,-a.height*k/2,a.width*k,a.height*k);}
+  const h=petGlow("halo",64,[[0,"rgba(255,240,200,0)"],[.68,"rgba(255,240,200,0)"],[.82,"rgba(255,226,150,.75)"],[1,"rgba(255,210,120,0)"]],.34),w=s*2.1*(1+.04*Math.sin(t*3));
+  c.globalAlpha=.5+.15*Math.sin(t*3);c.drawImage(h,-w/2,s*1.2-w*.17,w,w*.34);c.restore();}
+function petVipOver(c,s,t){c.save();c.globalCompositeOperation="lighter";const y=-s*1.55+Math.sin(t*2.4)*1.5,tw=.6+.4*Math.max(0,Math.sin(t*3.1));
+  const g=petGlow("glint",20,[[0,"rgba(255,250,220,.9)"],[.3,"rgba(255,220,120,.45)"],[1,"rgba(255,200,80,0)"]]);c.globalAlpha=.55*tw;c.drawImage(g,-9,y-9,18,18);
+  c.globalAlpha=.9*tw;c.fillStyle="#fff3c4";c.beginPath();const r=4.5+tw*1.5;for(let q=0;q<8;q++){const a=q*Math.PI/4,rr=q%2?r*.28:r;q?c.lineTo(Math.sin(a)*rr,y-Math.cos(a)*rr):c.moveTo(0,y-rr);}c.closePath();c.fill();
+  // tiny crown dots under the star
+  c.globalCompositeOperation="source-over";c.globalAlpha=.9;c.fillStyle="#ffd36b";c.beginPath();c.moveTo(-5,y+7);c.lineTo(-5,y+3);c.lineTo(-2.5,y+5);c.lineTo(0,y+2);c.lineTo(2.5,y+5);c.lineTo(5,y+3);c.lineTo(5,y+7);c.closePath();c.fill();c.restore();}
+function petMove(d,dt){const p=B.p,M=W-20;dt=Math.min(dt,.05);
+  const pvx=(p.x-(d.lpx??p.x))/Math.max(dt,1e-3);d.lpx=p.x;
+  const slot=sd=>p.x+sd*54,out=sd=>slot(sd)>M||slot(sd)<20;
+  // ship keeps running toward the pet's side (or the slot leaves the screen) -> glide over to the other side
+  if(pvx*d.side>240)d.push+=dt;else d.push=Math.max(0,d.push-dt*2);
+  if((d.push>.4||out(d.side))&&!out(-d.side)&&!(d.swap>0)){d.side=-d.side;d.push=0;d.swap=.7;}
+  if(d.swap>0)d.swap-=dt;
+  d.wt+=dt;const wx=Math.sin(d.wt*.9)*6+Math.sin(d.wt*.37)*4,wy=Math.sin(d.wt*1.3)*4;
+  const dip=d.swap>0?40*Math.sin(Math.PI*(1-d.swap/.7)):0;   // swaps pass BELOW the ship, never through the bullet lane
+  const tx=slot(d.side)+wx,ty=p.y+18+wy+dip,w=6.5;          // critically damped spring
+  d.vx+=(w*w*(tx-d.x)-2*w*d.vx)*dt;d.vy+=(w*w*(ty-d.y)-2*w*d.vy)*dt;d.x+=d.vx*dt;d.y+=d.vy*dt;
+  const need=p.y+8+Math.max(0,38-Math.abs(d.x-p.x))*1.2;if(d.y<need){d.y=need;if(d.vy<0)d.vy=0;}
+  d.x=Math.max(14,Math.min(W-14,d.x));
+  // idle loop timers: hop every ~3.6 s, blink every ~4.3 s
+  d.ht=(d.ht??rnd(1,3))-dt;if(d.ht<=0)d.ht=3.6+rnd(-.6,.6);d.bt=(d.bt??rnd(1,4))-dt;if(d.bt<=0)d.bt=4.3+rnd(-1,1);}
+function petAct(d,dt){const p=B.p,dd=droneDef(S.drone),lv=(S.drones[S.drone]||{lv:1}).lv,dmg=.5*(1+lv*.1)*runDmg()*(1+pk().drone);
+  if(d.f>0)d.f-=dt;if(d.g>0)d.g-=dt;d.h.push(d.x,d.y);if(d.h.length>12)d.h.splice(0,2);
+  if(!p.alive||B.over)return;
+  if(dd.kind==="guardian"){const n0=B.eb.length;B.eb=B.eb.filter(q=>Math.hypot(q.x-d.x,q.y-d.y)>72);if(B.eb.length<n0){d.g=.3;B.fx.push({x:d.x,y:d.y-20,vx:0,vy:-40,life:.3,max:.3,col:"#9ff3ff",r:6});}}
+  if(dd.kind==="medic"){B.mhT+=dt;if(B.mhT>=18){B.mhT=0;B.mhP=.8;if(p.hp<p.maxHp){p.hp++;floatTxt(p.x,p.y-34,"+1 HP","#52f19a");updHud();}}}
+  if(B.mhP>0)B.mhP-=dt;
+  if(dd.kind==="solaris"){B.solT+=dt;if(B.solT>=3){B.solT=0;B.fx.push({nova:1,x:d.x,y:d.y,R:125,life:.45,max:.45,col:"255,200,61"});for(const e of B.en)if(!e.dead&&e.age>0&&Math.hypot(e.x-d.x,e.y-d.y)<125)for(let q=0;q<PET_MUL;q++)hitEnemy(e,dmg*6);}}
+  B.dT-=dt;if(B.dT>0)return;B.dT=DKIND[dd.kind][1];
+  d.f=.09;for(const s of [-1,1]){const x=d.x+s*12,y=d.y;   // one pet fires the whole old pair volley from two muzzles
+  if(dd.kind==="shot")B.pb.push({x,y:y-12,vx:s*70,vy:-700,dmg,r:3,kind:"drone"});
+  else if(dd.kind==="missile")B.pb.push({x,y,vx:s*60,vy:-300,dmg:dmg*4,r:4,homing:1,rocket:1,kind:"drone"});
+  else if(dd.kind==="laser")B.pb.push({x,y:y-12,vx:s*200,vy:-1100,dmg:dmg*.7,r:2,len:26,pierce:1,kind:"beam"});
+  else if(dd.kind==="flak")for(let k=-2;k<=2;k++){const a=k*.16;B.pb.push({x,y:y-10,vx:Math.sin(a)*620,vy:-Math.cos(a)*620,dmg:dmg*.55,r:3,kind:"raptor"});}
+  else if(dd.kind==="medic")B.pb.push({x,y:y-12,vx:s*100,vy:-720,dmg:dmg*.7,r:3,kind:"wing"});
+  else if(dd.kind==="guardian")B.pb.push({x,y:y-12,vx:s*70,vy:-700,dmg:dmg*.6,r:3,kind:"drone"});
+  else if(dd.kind==="tesla"){let from={x,y:y-8},pts=[[x,y-8]],pool=B.en.filter(e=>!e.dead&&e.age>0&&e.y>0&&e.y<H);
+    for(let n=0;n<2&&pool.length;n++){pool.sort((a,b)=>Math.hypot(a.x-from.x,a.y-from.y)-Math.hypot(b.x-from.x,b.y-from.y));const e=pool.shift();if(Math.hypot(e.x-from.x,e.y-from.y)>320)break;pts.push([e.x,e.y]);hitEnemy(e,dmg*3);from=e;}
+    if(pts.length===1&&B.boss&&B.boss.y>40&&Math.hypot(B.boss.x-x,B.boss.y-y)<420){pts.push([B.boss.x,B.boss.y+20]);hitBoss(dmg*3);}
+    if(pts.length>1)B.fx.push({bolt:boltPath(pts),nodes:pts.slice(1),life:.2,max:.2});}
+  else if(dd.kind==="phantom")B.pb.push({x,y:y-10,vx:s*50,vy:-380,r:6,homing:1,pierce:1,dmg:dmg*3,kind:"phantom"});
+  else if(dd.kind==="solaris")for(let k=-1;k<=1;k++){const a=k*.14;B.pb.push({x,y:y-12,vx:Math.sin(a)*760,vy:-Math.cos(a)*760,dmg:dmg*.6,r:3,kind:"seraph"});}}}
+droneUpdate=function(dt){if(!B||!B.dp||!B.dp.length||!vkOpen("drones"))return;const d=B.dp[0];petMove(d,dt);petAct(d,dt);};
+drawDronePair=function(c){if(!B||!B.dp)return;const dd=droneDef(S.drone);B.dp.forEach(d=>{
+  const hp=d.ht<.4?Math.sin(Math.PI*d.ht/.4):0,bl=d.bt<.12?Math.sin(Math.PI*d.bt/.12):0,br=Math.sin(B.t*2.6)*.035;
+  drawDroneBody(c,dd,d.x,d.y,B.t,{pet:1,vip:vipLevel(),vx:d.vx,f:d.f,g:d.g,hist:d.h,pulse:B.mhP,hop:hp*6,sx:1+br+bl*.06+hp*.03,sy:1-br-bl*.22-hp*.04});});};
+{const _sbp=startBattle;startBattle=function(cfg){_sbp(cfg);if(B&&B.dp)B.dp=[{x:W/2+54,y:H*.8+18,vx:0,vy:0,f:0,g:0,h:[],side:1,push:0,swap:0,ms:1,wt:rnd(0,9)}];};}
+/* run skill "Escort Drones": small mechanical drones in tight formation behind/beside the ship (not the pet) */
+function escortPos(k,s){const p=B.p;return {x:p.x+s*(16+k*12),y:p.y+34+k*14+Math.sin(B.t*3+k+s)*1.5};}
+function drawEscort(c,x,y,t){const im=spr("drone_escort");if(im){blit(c,im,x,y,22);return;}
+  c.save();c.translate(x,y);c.fillStyle="#9aa6b8";c.fillRect(-9,-1.5,18,3);
+  c.fillStyle="#f4f7fb";c.strokeStyle="#5b6b82";c.lineWidth=1;c.beginPath();c.ellipse(0,0,6,5,0,0,7);c.fill();c.stroke();
+  c.fillStyle="#dfe6ef";c.beginPath();c.arc(-9,0,2.4,0,7);c.arc(9,0,2.4,0,7);c.fill();
+  c.globalCompositeOperation="lighter";const g=petGlow("esc",8,[[0,"rgba(120,240,255,.95)"],[.4,"rgba(56,225,255,.5)"],[1,"rgba(56,225,255,0)"]]),a=.7+.3*Math.sin(t*8);c.globalAlpha=a;c.drawImage(g,-8,-9,16,16);
+  c.globalCompositeOperation="source-over";c.globalAlpha=1;c.fillStyle="#38e1ff";c.beginPath();c.arc(0,-1,2.2,0,7);c.fill();c.fillStyle="#e8fdff";c.beginPath();c.arc(-.6,-1.6,.8,0,7);c.fill();c.restore();}
 {const _du=droneUpdate;droneUpdate=function(dt){_du(dt);if(!B||!B.dp)return;const dd=droneDef(S.drone),col=PET_FX[dd.kind]||dd.col;
   B.dp.forEach((d,i)=>{d.pt=(d.pt||0)-dt;
     // sparkle trail
-    if(d.pt<=0){d.pt=.06;B.fx.push({x:d.x+rnd(-6,6),y:d.y+16,vx:rnd(-15,15),vy:rnd(40,90),life:.45,max:.45,col,r:rnd(1.5,3)});}
+    const vl=vipLevel();if(vl>=1&&d.pt<=0){d.pt=.09;B.fx.push({x:d.x+rnd(-6,6),y:d.y+14,vx:rnd(-12,12),vy:rnd(30,70),life:.5,max:.5,col:vl>=3?"#ffe6a0":"#fff4dc",r:rnd(1.2,2.2)});}
     // signature burst on each shot (d.f is set to .09 when the pet fires)
     if(d.f>.085&&!d.fxDone){d.fxDone=1;const k=dd.kind;
       if(k==="shot")petSpark(d.x,d.y-20,"#dff4ff",4,140,.25,2.5);
@@ -2026,7 +2093,12 @@ $("#girlShow").onclick=()=>{const G=GIRL[S.ship];if(!G)return;agHop=1;agLine=(ag
   b.hidden=false;b.style.animation="none";b.offsetWidth;b.style.animation="";const hd=drawGirl.head||{x:200,y:60};b.style.left=Math.min(hd.x,(hd.w||400)-100)+"px";b.style.top=Math.max(70,hd.y)+"px";agBubT=3.2;try{sfx("coin");}catch(e){}};
 `;
 patch("refresh();})();", `refresh();if(typeof GIRL_FACE!=="undefined"&&GIRL_FACE.kestrel){const a=$("#home .h5prof .avatar");const im=a.querySelector("img")||a.appendChild(new Image());im.src=GIRL_FACE.kestrel;im.style.cssText="width:100%;height:100%;object-fit:cover;border-radius:inherit";}})();`);
-patch("/* ============ BOOT ============ */", js + "/* ============ BOOT ============ */");
+// Escort Drones run skill: own small mechanical drones in a tight formation (positions shared by fire + draw)
+patch(`[-1,1].forEach(s=>B.pb.push({x:p.x+s*(38+k*24),y:p.y+6,vx:0,vy:-700,dmg:dmg*.8,r:3,kind:"drone"}));`,
+  `[-1,1].forEach(s=>{const q=escortPos(k,s);B.pb.push({x:q.x,y:q.y-8,vx:0,vy:-700,dmg:dmg*.8,r:3,kind:"drone"});});`);
+patch(`const nd=rs("drone");if(nd){const dd=droneDef("sparrow");for(let k=1;k<=nd;k++)[-1,1].forEach(s=>drawDrone(c,dd,p.x+s*(38+k*24),p.y+18+k*6,9,B.t+k));}`,
+  `const nd=rs("drone");if(nd){for(let k=1;k<=nd;k++)[-1,1].forEach(s=>{const q=escortPos(k,s);drawEscort(c,q.x,q.y,B.t+k);});}`);
+patch("/* ============ BOOT ============ */", js +"/* ============ BOOT ============ */");
 patch(/<script>\r?\n/.exec(html)[0], /<script>\r?\n/.exec(html)[0] + sprites + girls);
 if (!/<meta charset/i.test(html)) html = '<meta charset="utf-8">\n' + html;
 writeFileSync(out, html);
