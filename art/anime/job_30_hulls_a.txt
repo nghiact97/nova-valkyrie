@@ -1,0 +1,16 @@
+Create ONE image file: art/anime/ships/hulls_a_blueprint.png, exactly 2048x1365 px, pure white background, no colour, no text, no labels, no numbers.
+
+Style: copy the attached approved reference art/anime/ships/kestrel_blueprint.png exactly - clean black line art on white, light grey flat tone only, technical blueprint feel, round mount-point circles. Use the attached coloured hull art/anime/ships/mod/hull_kestrel.png only for scale and proportions of the Kestrel.
+
+Layout: 4 fighter hulls side by side in 4 equal columns (each ~512 px wide). Each column: one LARGE TOP view (nose pointing up) in the upper part, and one SMALL SIDE view (nose pointing right) centred below it. All 4 hulls drawn at the SAME scale as the Kestrel (similar overall length and footprint), same line weight, same grey tone.
+
+Every hull must have the SAME mount points in the SAME relative positions, drawn as small hollow circles: 1 at the nose, 1 on the spine (centre), 1 at each wingtip (2), and a tail pair (2) at the rear. So the same weapon/engine/armour modules can attach to any hull. Show matching circles on the side views where visible.
+
+Hulls, left to right, each with a clearly different silhouette:
+1. KESTREL - balanced all-rounder: redraw the approved Kestrel hull from the reference cleanly, for consistency.
+2. VIPER - fast twin laser: slim needle hull, very long pointed nose, narrow sharply swept-back wings, two thin parallel side booms along the hull.
+3. HALO - homing orbs: rounded, soft egg-shaped hull with a full circular ring wing / halo encircling the rear of the ship.
+4. SERAPH - legendary solar wave: elegant, wide feathered wings like an angel (layered feather-shaped panels), a small crest/fin on the nose.
+
+No colour, no shading gradients, no background details, no text anywhere.
+Generate all now, do not stop to ask for approval. When done, print the file size.
