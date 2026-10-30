@@ -1151,7 +1151,7 @@ function modDrawPart(c,im,x,y,w,m,rar){const draw=()=>{c.save();c.translate(x,y)
   draw();}
 function modBuild(force){const ship=S.ship;if(!modHas(ship)||!mpReady||!MP_IMG["mod_hull_"+ship])return;
   const parts=modParts(ship),key=ship+"|"+parts.map(p=>p.k+(p.m?"L":"")+(p.rar||0)).join(",");if(key===modKey&&!force)return;
-  const N=512,u=N/1024,cv=document.createElement("canvas");cv.width=cv.height=N;const c=cv.getContext("2d");
+  const N=1024,u=N/1024,cv=document.createElement("canvas");cv.width=cv.height=N;const c=cv.getContext("2d");
   const spark=[];
   parts.forEach(p=>{const im=MP_IMG[p.k];if(p.hull){c.drawImage(im,0,0,N,N);return;}
     const w=256*p.s*u;modDrawPart(c,im,p.x*u,p.y*u,w,p.m,p.rar||0);if(p.rar>=3)spark.push([p.x*u+(p.m?-1:1)*w*0.18,p.y*u-w*0.18,w]);});
@@ -1162,7 +1162,7 @@ setInterval(()=>{if(cur!=="battle")modBuild();},400);
 {const _sbm=startBattle;startBattle=function(cfg){modBuild();_sbm(cfg);};}
 /* gear icon: part centred (by its visible bounds) on a diamond plate with rarity border, set badge, cannon type glyph */
 const GICON={},MP_BOX={};
-function mpBox(k){if(MP_BOX[k])return MP_BOX[k];const im=MP_IMG[k],n=128,cv=document.createElement("canvas");cv.width=cv.height=n;const c=cv.getContext("2d");
+function mpBox(k){if(MP_BOX[k])return MP_BOX[k];const im=MP_IMG[k],n=256,cv=document.createElement("canvas");cv.width=cv.height=n;const c=cv.getContext("2d");
   c.drawImage(im,0,0,n,n);const d=c.getImageData(0,0,n,n).data;let x0=n,y0=n,x1=-1,y1=-1;
   for(let y=0;y<n;y++)for(let x=0;x<n;x++)if(d[(y*n+x)*4+3]>24){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y;}
   return MP_BOX[k]=x1<0?[0,0,n,n]:[x0,y0,x1-x0+1,y1-y0+1];}
@@ -1170,11 +1170,12 @@ const GGLYPH={mg:"≡",laser:"│",missile:"➤",plasma:"●",solar:"☀",frost:
 function gIconURL(it){if(!it||!mpReady)return null;const t=it.slot==="cannon"?(gType(it)||"laser"):null;
   const k=it.slot==="cannon"?"mp_gun_nose_"+t:it.slot==="engine"?"mp_engine_"+it.set:it.slot==="plating"?"mp_armor_"+it.set+"_wide":"mp_core_"+it.set;
   if(!mpOk(k))return null;const ck=k+"|"+it.set+"|"+it.rar;if(GICON[ck])return GICON[ck];
-  const N=160,cv=document.createElement("canvas");cv.width=cv.height=N;const c=cv.getContext("2d"),rc=GRCOL[it.rar]||"#9fb0d0",sc=(GSETS[it.set]||{}).col||"#9ff0ff";
+  const N=160,cv=document.createElement("canvas");cv.width=cv.height=N*2;const c=cv.getContext("2d"),rc=GRCOL[it.rar]||"#9fb0d0",sc=(GSETS[it.set]||{}).col||"#9ff0ff";
+  c.scale(2,2);   // drawn in 160-unit coords at 2x pixels for sharp icons on high-DPI phones
   const dia=r=>{c.beginPath();c.moveTo(N/2,N/2-r);c.lineTo(N/2+r,N/2);c.lineTo(N/2,N/2+r);c.lineTo(N/2-r,N/2);c.closePath();};
   c.save();dia(74);const g=c.createLinearGradient(0,0,0,N);g.addColorStop(0,"#1b2f6e");g.addColorStop(1,"#0a1438");c.fillStyle=g;c.shadowColor=rc;c.shadowBlur=it.rar>=2?14:6;c.fill();c.restore();
   dia(74);c.lineWidth=4;c.strokeStyle=rc;c.stroke();dia(64);c.lineWidth=1.5;c.strokeStyle=rc+"88";c.stroke();
-  const b=mpBox(k),f=Math.min(104/b[2],104/b[3]),w=b[2]*f,h=b[3]*f;
+  const b=mpBox(k),f=Math.min(118/b[2],118/b[3]),w=b[2]*f,h=b[3]*f;
   c.save();if(it.rar>=1){c.shadowColor=rc;c.shadowBlur=it.rar>=3?16:it.rar>=2?12:6;}
   c.drawImage(MP_IMG[k],b[0],b[1],b[2],b[3],(N-w)/2,(N-h)/2,w,h);c.restore();
   if(it.rar>=3)modSparkle(c,N*0.7,N*0.3,9,"#ffd58a");

@@ -47,13 +47,13 @@ with open(os.path.join(root, "build/anime_girls.js"), "w") as f:
     # and the per-hull mount points as SHIP_MOUNTS (1024 coords + wingScale)
     for p in sorted(glob.glob(os.path.join(root, "art/anime/ships/mod/hull_*.png"))):
         k = os.path.basename(p)[:-4]
-        im = Image.open(p).convert("RGBA").resize((512, 512), Image.LANCZOS)
+        im = Image.open(p).convert("RGBA").resize((1024, 1024), Image.LANCZOS)
         bb = io.BytesIO(); im.save(bb, "WEBP", quality=90)
         f.write(f'SPR_SRC.mod_{k}="data:image/webp;base64,' + base64.b64encode(bb.getvalue()).decode() + '";\n')
     for p in sorted(glob.glob(os.path.join(root, "art/anime/ships/parts/*.png"))):
         k = os.path.basename(p)[:-4]
         if k.endswith("_check") or k.endswith("_sheet"): continue
-        im = Image.open(p).convert("RGBA").resize((128, 128), Image.LANCZOS)
+        im = Image.open(p).convert("RGBA").resize((256, 256), Image.LANCZOS)
         bb = io.BytesIO(); im.save(bb, "WEBP", quality=90)
         f.write(f'SPR_SRC.mp_{k}="data:image/webp;base64,' + base64.b64encode(bb.getvalue()).decode() + '";\n')
     mp = os.path.join(root, "art/anime/ships/mounts.json")
