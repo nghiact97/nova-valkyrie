@@ -1164,8 +1164,8 @@ setInterval(()=>{if(cur!=="battle")modBuild();},400);
    Everything is drawn from sprites pre-rendered once per colour (SFX_C cache); particles capped. SHIPFX=0 turns it off (FPS tests).
    Mount points are 1024-grid coords on the composed ship, which blit() draws as a square of side s*2.3 centred on (x,y). */
 var SHIPFX=1;
-const SFX_C={},SFX_ECOL={vanguard:"#5ee7ff",aegis:"#52f19a",solar:"#ffc83d"},SFX_ION="#9b8bff",SFX_RIM=["","#38a8ff","#b36bff","#ff9a2e"];
-const SFX={vx:0,lx:null,ly:0,lt:0,mz:-9,pt:[]};
+const SFX_C={},SFX_ECOL={vanguard:"#5ee7ff",aegis:"#52f19a",solar:"#ffc83d"},SFX_ION="#9b8bff",SFX_RIM=["","#38a8ff","#b36bff","#ffb02e"];
+const SFX={vx:0,lx:null,ly:0,lt:0,mz:-9,pt:[],em:[]};
 function sfxCv(n,m){const cv=document.createElement("canvas");cv.width=n;cv.height=m||n;return cv;}
 /* soft round glow, white core -> colour -> clear */
 function sfxGlow(col){const k="g"+col;if(SFX_C[k])return SFX_C[k];const cv=sfxCv(64),c=cv.getContext("2d"),g=c.createRadialGradient(32,32,0,32,32,32);
@@ -1174,8 +1174,30 @@ function sfxGlow(col){const k="g"+col;if(SFX_C[k])return SFX_C[k];const cv=sfxCv
 function sfxFlame(col){const k="f"+col;if(SFX_C[k])return SFX_C[k];const cv=sfxCv(32,128),c=cv.getContext("2d");c.filter="blur(2px)";
   const g=c.createLinearGradient(0,0,0,128);g.addColorStop(0,"#ffffff");g.addColorStop(.18,col);g.addColorStop(1,col+"00");c.fillStyle=g;
   c.beginPath();c.moveTo(4,6);c.quadraticCurveTo(16,-2,28,6);c.quadraticCurveTo(24,70,16,124);c.quadraticCurveTo(8,70,4,6);c.fill();return SFX_C[k]=cv;}
-function sfxRing(col){const k="r"+col;if(SFX_C[k])return SFX_C[k];const cv=sfxCv(128),c=cv.getContext("2d");c.filter="blur(3px)";
-  c.strokeStyle=col;c.lineWidth=5;c.beginPath();c.arc(64,64,54,0,7);c.stroke();c.filter="blur(10px)";c.globalAlpha=.6;c.lineWidth=10;c.stroke();return SFX_C[k]=cv;}
+/* 4-point star glint: thin long white rays (128px, centre 64) */
+function sfxStar(){if(SFX_C.st)return SFX_C.st;const cv=sfxCv(128),c=cv.getContext("2d");c.globalCompositeOperation="lighter";
+  for(let i=0;i<2;i++){c.save();c.translate(64,64);c.rotate(i*Math.PI/2);const g=c.createLinearGradient(-62,0,62,0);
+    g.addColorStop(0,"#fff0");g.addColorStop(.42,"#ffffff88");g.addColorStop(.5,"#fff");g.addColorStop(.58,"#ffffff88");g.addColorStop(1,"#fff0");c.fillStyle=g;
+    c.beginPath();c.moveTo(-62,0);c.quadraticCurveTo(0,-5,62,0);c.quadraticCurveTo(0,5,-62,0);c.fill();c.restore();}
+  return SFX_C.st=cv;}
+/* soft light ray for ULT (64x256, root at bottom centre) */
+function sfxRay(col){const k="y"+col;if(SFX_C[k])return SFX_C[k];const cv=sfxCv(64,256),c=cv.getContext("2d");c.filter="blur(5px)";
+  const g=c.createLinearGradient(0,256,0,0);g.addColorStop(0,col+"cc");g.addColorStop(.5,col+"55");g.addColorStop(1,col+"00");c.fillStyle=g;
+  c.beginPath();c.moveTo(26,250);c.lineTo(38,250);c.lineTo(44,16);c.lineTo(20,16);c.fill();return SFX_C[k]=cv;}
+/* thin beat ring (256px, radius 100) with wide padding so the blur never reaches the edge */
+function sfxRing(col){const k="r"+col;if(SFX_C[k])return SFX_C[k];const cv=sfxCv(256),c=cv.getContext("2d");
+  c.filter="blur(6px)";c.strokeStyle=col;c.lineWidth=6;c.beginPath();c.arc(128,128,100,0,7);c.stroke();
+  c.filter="blur(1px)";c.strokeStyle="#ffffff";c.lineWidth=3.5;c.globalAlpha=1;c.stroke();return SFX_C[k]=cv;}
+/* magic circle (512px, centre 256): part 0 = outer ring + diamonds, 1 = inner ring + rune ticks, 2 = floor glow */
+function sfxMagic(col,part){const k="mc"+part+col;if(SFX_C[k])return SFX_C[k];const cv=sfxCv(512),c=cv.getContext("2d");c.translate(256,256);
+  if(part===2){const g=c.createRadialGradient(0,0,0,0,0,240);g.addColorStop(0,col+"88");g.addColorStop(.55,col+"33");g.addColorStop(1,col+"00");c.fillStyle=g;c.beginPath();c.arc(0,0,240,0,7);c.fill();return SFX_C[k]=cv;}
+  const R=part?160:212;const ink=(w,a,bl)=>{c.filter="blur("+bl+"px)";c.globalAlpha=a;c.strokeStyle=col;c.fillStyle=col;c.lineWidth=w;
+    c.beginPath();c.arc(0,0,R,0,7);c.stroke();if(!part){c.beginPath();c.arc(0,0,R-14,0,7);c.lineWidth=w*.5;c.stroke();}
+    const n=part?24:8;for(let i=0;i<n;i++){c.save();c.rotate(i*Math.PI*2/n);
+      if(!part){c.beginPath();c.moveTo(0,-R-11);c.lineTo(7,-R);c.lineTo(0,-R+11);c.lineTo(-7,-R);c.closePath();c.fill();}
+      else if(i%3===0){c.beginPath();c.moveTo(-3,-R+4);c.lineTo(0,-R+16);c.lineTo(3,-R+4);c.fill();}
+      else{c.fillRect(-w*.4,-R-7,w*.8,i%3===1?10:6);}c.restore();}};
+  ink(10,.45,8);ink(3,1,.8);c.filter="none";c.globalAlpha=.9;c.strokeStyle="#ffffff";c.lineWidth=1;c.beginPath();c.arc(0,0,R,0,7);c.stroke();return SFX_C[k]=cv;}
 /* muzzle flash per cannon type */
 function sfxMuzzle(t){const k="m"+t;if(SFX_C[k])return SFX_C[k];const cv=sfxCv(64),c=cv.getContext("2d"),C=32;
   const col={mg:"#ffe066",laser:"#5ee7ff",missile:"#aab2c2",plasma:"#b36bff",solar:"#ffc83d",frost:"#bfeaff"}[t]||"#ffffff";
@@ -1187,12 +1209,23 @@ function sfxMuzzle(t){const k="m"+t;if(SFX_C[k])return SFX_C[k];const cv=sfxCv(6
   else if(t==="plasma"){c.drawImage(sfxGlow(col),0,0,64,64);c.drawImage(sfxGlow("#f3dcff"),16,16,32,32);}
   else{c.fillStyle=col;c.beginPath();for(let i=0;i<10;i++){const a=i*Math.PI/5-Math.PI/2,d=i%2?6:20;c.lineTo(C+Math.cos(a)*d,C+Math.sin(a)*d);}c.fill();c.drawImage(sfxGlow("#fff2a8"),20,20,24,24);}
   return SFX_C[k]=cv;}
-/* blurred colour silhouette of the composed ship (rarity rim); cached per image + colour */
-const SFX_RIMC=new WeakMap();
-function sfxRim(im,col,blur){let m=SFX_RIMC.get(im);if(!m)SFX_RIMC.set(im,m={});const k=col+blur;if(m[k])return m[k];
-  const n=192,p=24,a=sfxCv(n),ac=a.getContext("2d");ac.drawImage(im,0,0,n,n);{const d=ac.getImageData(0,0,n,n),q=d.data;for(let i=3;i<q.length;i+=4)q[i]=q[i]<60?0:255;ac.putImageData(d,0,0);}   // hard mask: faint specks across the canvas made a visible box
+/* rarity aura: energy outline hugging the composed ship. Hard alpha mask -> dilated -> two blurred layers (wide faint + narrow bright).
+   Shimmer = 16 pre-rendered frames of the narrow outline lit by a sweeping band. Cached per image + colour; canvases padded so no box edges. */
+const SFX_RIMC=new WeakMap(),SFX_AN=192,SFX_AP=40,SFX_SHN=16;
+function sfxAura(im,col){let m=SFX_RIMC.get(im);if(!m)SFX_RIMC.set(im,m={});if(m[col])return m[col];
+  const n=SFX_AN,p=SFX_AP,N=n+2*p,a=sfxCv(n),ac=a.getContext("2d");ac.drawImage(im,0,0,n,n);
+  {const d=ac.getImageData(0,0,n,n),q=d.data;for(let i=3;i<q.length;i+=4)q[i]=q[i]<60?0:255;ac.putImageData(d,0,0);}   // hard mask: faint specks made a visible box
   ac.globalCompositeOperation="source-in";ac.fillStyle=col;ac.fillRect(0,0,n,n);
-  const cv=sfxCv(n+2*p),c=cv.getContext("2d");c.filter="blur("+blur+"px)";c.drawImage(a,p,p);c.drawImage(a,p,p);return m[k]=cv;}
+  const dil=(r,bl,a2)=>{const cv=sfxCv(N),c=cv.getContext("2d");for(let i=0;i<12;i++){const an=i*Math.PI/6;c.drawImage(a,p+Math.cos(an)*r,p+Math.sin(an)*r);}c.drawImage(a,p,p);
+    const o=sfxCv(N),oc=o.getContext("2d");oc.filter="blur("+bl+"px)";oc.globalAlpha=a2;oc.drawImage(cv,0,0);return o;};
+  const wide=dil(5,11,.9),nar=dil(2,2.2,1);
+  {const w=sfxCv(N),wc=w.getContext("2d");wc.drawImage(nar,0,0);wc.globalCompositeOperation="source-in";wc.fillStyle="#ffffff";wc.fillRect(0,0,N,N);
+   const nc=nar.getContext("2d");nc.globalCompositeOperation="lighter";nc.globalAlpha=.35;nc.drawImage(w,0,0);}
+  const bg=a.getContext("2d").createLinearGradient(0,0,N,0);
+  bg.addColorStop(0,"#fff0");bg.addColorStop(.42,"#fff0");bg.addColorStop(.5,"#fff");bg.addColorStop(.58,"#fff0");bg.addColorStop(1,"#fff0");
+  const sh=[];for(let f=0;f<SFX_SHN;f++){const cv=sfxCv(N),c=cv.getContext("2d");c.drawImage(nar,0,0);c.globalCompositeOperation="source-in";
+    const off=(f/(SFX_SHN-1)*2-1)*N*.75;c.save();c.translate(N/2,N/2);c.rotate(-.6);c.translate(-N/2+off,-N/2);c.fillStyle=bg;c.fillRect(-N,-N,N*3,N*3);c.restore();sh.push(cv);}
+  return m[col]={wide,nar,sh};}
 function sfxAdd(o){if(SFX.pt.length<40)SFX.pt.push(o);}
 {const _ds=drawShip,_fl=flame;let noFlame=false;
 flame=function(c,col,x,y,s,t){if(!noFlame)_fl(c,col,x,y,s,t);};
@@ -1207,12 +1240,19 @@ drawShip=function(c,def,x,y,s,t=0,star=1){
   c.save();c.globalCompositeOperation="lighter";
   // full 4/4 set: soft ring
   const sets=gearSets(),full=Object.keys(sets).find(k=>sets[k]>=4);
-  if(full){const r=s*1.45*(1+.04*Math.sin(t*3)),col=GSETS[full].col;c.globalAlpha=.5+.15*Math.sin(t*3);c.strokeStyle=col;c.shadowColor=col;c.shadowBlur=12;c.lineWidth=2.5;
-    c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.stroke();c.shadowBlur=0;c.globalAlpha=1;}   // drawn directly: the blurred ring sprite left a visible square
+  if(full){const col=GSETS[full].col,R=s*1.5,bt=.5+.5*Math.sin(t*2.4);
+    c.globalAlpha=.55+.15*bt;c.drawImage(sfxMagic(col,2),x-R,y-R,R*2,R*2);
+    [[0,.35],[1,-.55]].forEach(([pp,sp])=>{c.save();c.translate(x,y);c.rotate(t*sp);c.globalAlpha=pp?.8:.75;c.drawImage(sfxMagic(col,pp),-R,-R,R*2,R*2);c.restore();});
+    const g=sfxGlow(col),st=sfxStar();for(let i=0;i<6;i++){const an=t*.9+i*Math.PI/3,ox=x+Math.cos(an)*R*.74,oy=y+Math.sin(an)*R*.74,tw=.6+.4*Math.sin(t*5+i*1.7),r=s*.13*tw;
+      c.globalAlpha=.85*tw;c.drawImage(g,ox-r,oy-r,r*2,r*2);c.drawImage(st,ox-r*1.3,oy-r*1.3,r*2.6,r*2.6);}
+    c.globalAlpha=1;}
   // rarity rim under the ship
   const rar=eq.reduce((m,i)=>Math.max(m,i.rar||0),0);
-  if(rar>=1){const rc=sfxRim(im,SFX_RIM[rar],rar>=3?7:rar>=2?5:2),f=W/192;c.globalAlpha=(rar>=2?.75:.55)+.2*Math.sin(t*4);
-    c.drawImage(rc,x-W/2-24*f,y-W/2-24*f,rc.width*f,rc.height*f);c.globalAlpha=1;}
+  if(rar>=1){const A=sfxAura(im,SFX_RIM[rar]),f=W/SFX_AN,o=SFX_AP*f,Z=A.wide.width*f,pu=.5+.5*Math.sin(t*3),X=x-W/2-o,Y=y-W/2-o;
+    c.globalAlpha=(rar>=3?.95:.8)+.05*pu;c.drawImage(A.wide,X,Y,Z,Z);
+    c.globalAlpha=.8+.2*pu;c.drawImage(A.nar,X,Y,Z,Z);
+    const ph=(t%2)/2*1.4;if(ph<1){c.globalAlpha=Math.sin(ph*Math.PI);c.drawImage(A.sh[Math.min(SFX_SHN-1,ph*SFX_SHN|0)],X,Y,Z,Z);}
+    c.globalAlpha=1;}
   // engine flames
   if(en){const ion=gType(en)==="ion",col=ion?SFX_ION:SFX_ECOL[en.set]||"#5ee7ff",fs=sfxFlame(col),g=sfxGlow(col);
     [M.tailL,M.tailR].forEach((pt,i)=>{const [fx,fy0]=P(pt),fy=fy0+W*.07,fl=.85+.15*Math.sin(t*41+i*2)+.1*Math.random();
@@ -1223,11 +1263,22 @@ drawShip=function(c,def,x,y,s,t=0,star=1){
   noFlame=!!en;try{_ds(c,def,x,y,s,t,star);}finally{noFlame=false;}
   c.save();c.globalCompositeOperation="lighter";
   // core pulse
-  if(co){const ful=B.ult>=100,sp=ful?9:3.2,b=.5+.5*Math.sin(t*sp),[cx,cy]=P(M.spine),r=s*(ful?.55:.38)*(.85+.25*b),g=sfxGlow((GSETS[co.set]||{}).col||"#9ff0ff");
-    c.globalAlpha=(ful?.75:.45)+(ful?.25:.3)*b;c.drawImage(g,cx-r,cy-r,r*2,r*2);c.globalAlpha=1;}
+  if(co){const ful=B.ult>=100,per=ful?.6:1.2,col=(GSETS[co.set]||{}).col||"#9ff0ff",[cx,cy]=P(M.spine),ph=(t%per)/per,b=Math.pow(1-ph,3),
+      g=sfxGlow(col),wg=sfxGlow("#ffffff"),R=W*(ful?.4:.33)*(.92+.1*b);
+    if(ful){const ry=sfxRay(col),L=W*.62;for(let i=0;i<7;i++){c.save();c.translate(cx,cy);c.rotate(t*.6+i*Math.PI*2/7);c.globalAlpha=.55+.25*Math.sin(t*3+i*2.1);
+      c.drawImage(ry,-L*.13,-L,L*.26,L);c.restore();}}
+    c.globalAlpha=(ful?.6:.42)+.15*b;c.drawImage(g,cx-R,cy-R,R*2,R*2);
+    const hr=s*(ful?.36:.28)*(1+.25*b);c.globalAlpha=1;c.drawImage(wg,cx-hr,cy-hr,hr*2,hr*2);c.drawImage(wg,cx-hr*.6,cy-hr*.6,hr*1.2,hr*1.2);
+    const rr=s*(.2+1.1*ph);c.globalAlpha=(1-ph)*(ful?.95:.8);c.drawImage(sfxRing(col),cx-rr*1.28,cy-rr*1.28,rr*2.56,rr*2.56);
+    const sl=W*(ful?.95:.75)*(.9+.1*b);c.save();c.translate(cx,cy);c.rotate(t*(ful?.9:.4));c.globalAlpha=ful?1:.85;c.drawImage(sfxStar(),-sl/2,-sl/2,sl,sl);
+    c.rotate(Math.PI/4);c.globalAlpha=.35;c.drawImage(sfxStar(),-sl*.3,-sl*.3,sl*.6,sl*.6);c.restore();c.globalAlpha=1;}
   // legendary sparkles drifting off the wings
-  if(rar>=3&&Math.random()<.25){const pt=Math.random()<.5?M.wingL:M.wingR,[wx,wy]=P(pt),sd=pt===M.wingL?-1:1;
-    sfxAdd({x:wx,y:wy,vx:sd*(20+Math.random()*30),vy:40+Math.random()*40,l:.6,m:.6,col:"#ffd58a",r:s*.12});}
+  if(rar>=3&&SFX.em.length<30&&Math.random()<.45){const L=Math.random()<.5,pt=L?M.wingL:M.wingR,[wx,wy]=P(pt||M.spine),sd=L?-1:1;
+    SFX.em.push({x:wx+(Math.random()-.5)*s*.3,y:wy,vx:sd*(10+Math.random()*25),vy:-(15+Math.random()*25),ay:90,l:1.1,m:1.1,ph:Math.random()*6,r:s*(.1+Math.random()*.08)});}
+  if(SFX.em.length){const pd=Math.max(0,Math.min(.05,dt)),g=sfxGlow("#ffb02e"),st=sfxStar();
+    for(let i=SFX.em.length-1;i>=0;i--){const q=SFX.em[i];q.l-=pd;if(q.l<=0||rar<3){SFX.em.splice(i,1);continue;}q.vy+=q.ay*pd;q.x+=q.vx*pd;q.y+=q.vy*pd;
+      const k=q.l/q.m,tw=.6+.4*Math.sin(t*14+q.ph),r=q.r*(.6+.6*k);c.globalAlpha=Math.min(1,k*1.6)*tw;c.drawImage(g,q.x-r,q.y-r,r*2,r*2);
+      if(tw>.85)c.drawImage(st,q.x-r*1.6,q.y-r*1.6,r*3.2,r*3.2);}c.globalAlpha=1;}
   // muzzle flash (~80 ms) at nose (+ wing guns)
   const ma=t-SFX.mz;if(ca&&ma>=0&&ma<.08){const ms=sfxMuzzle(gType(ca)||"laser"),k=1-ma/.08,a=[[M.nose,s*.9]];if(M.wingL)a.push([M.wingL,s*.55],[M.wingR,s*.55]);
     if(gType(ca)==="missile")c.globalCompositeOperation="source-over";
