@@ -1,0 +1,12 @@
+Create ONE image file: art/anime/ships/parts/guns_sheet.png, 1536x1024 pixels, fully TRANSPARENT background (real alpha, no checkerboard, no backdrop, no shadow, no glow halo outside parts).
+Style: exactly match the attached references cannon_vanguard.png and cannon_solar.png - anime cel shading, white/light-grey metal panels, crisp dark outline, top-down view, barrel pointing UP (nose up). The third reference hull_kestrel.png shows the ship these guns attach to.
+Layout: a 6 columns x 2 rows grid (each cell 256x512), at least 60 px empty gap between parts, each part centred in its cell. Row 1 = NOSE guns (about 300 px tall). Row 2 = single RIGHT-side WING guns (smaller, about 250 px tall). Each part has a clear mount/base block at its bottom end, barrel extending upward.
+Columns left to right:
+1 mg: short multi-barrel rotary gun, small glow accent #ffd36b
+2 laser: long slim barrel with emitter rings, small glow accent #5ee7ff
+3 missile: twin launch tubes with visible rocket tips, small glow accent #ff5164
+4 plasma: round barrel with a glowing orb core, accent #c77dff
+5 solar: barrel with gold emitter ring, accent #ffc83d
+6 frost: crystal barrel, icy blue, accent #9fd8ff
+Bodies neutral white/grey; type colour only as a SMALL glow accent. No text, no labels, no grid lines.
+Generate all now, do not stop to ask for approval. When done, print the file size.
