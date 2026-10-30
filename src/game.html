@@ -1575,13 +1575,46 @@ function skillPop(id){const sk=SKILLS.find(s=>s.id===id),lv=skLv(id),mx=lv>=sk.m
 const GSETS={vanguard:{name:"Vanguard",col:"#38e1ff",b2:"+8% damage",b4:"Every 10th volley fires a piercing beam"},
   aegis:{name:"Aegis",col:"#52f19a",b2:"+1 max HP",b4:"Shield lasts +2s and repairs 1 HP when it ends"},
   solar:{name:"Solar",col:"#ffc83d",b2:"+10% crit chance",b4:"Crits have a 15% chance to trigger a mini nova"}};
-const GSLOTS=[{id:"cannon",name:"Cannon"},{id:"engine",name:"Engine"},{id:"plating",name:"Plating"},{id:"core",name:"Core"}];
+const GSLOTS=[{id:"cannon",name:"Cannon",vi:"Pháo"},{id:"engine",name:"Engine",vi:"Động cơ"},{id:"plating",name:"Plating",vi:"Giáp"},{id:"core",name:"Core",vi:"Lõi"}];
 const GRAR=["Common","Rare","Epic","Legendary"],GRCOL=["#9fb0d0","#38a8ff","#b36bff","#ffb02e"],GMAX=10;
 const GBASE={cannon:[6,10,16,25],engine:[4,7,11,16],plating:[1,1,2,3],core:[5,8,12,18]};
+/* Item types: cannons carry a gun type, engines a drive type, plating/core none. Item = {uid,set,slot,type?,rar,lv}.
+   n=[EN,VI] name, t=[EN,VI] trait line, ch=first chapter that drops it. Always read an item's type through gType(it). */
+const GTYPES={
+  mg:{slot:"cannon",ch:1,n:["Machine Gun","Súng máy"],t:["+40% fire rate · small bullets","+40% tốc độ bắn · đạn nhỏ"]},
+  laser:{slot:"cannon",ch:1,n:["Laser","Laser"],t:["Pierces 1 target","Xuyên 1 mục tiêu"]},
+  missile:{slot:"cannon",ch:2,n:["Missile","Tên lửa"],t:["Homing · small blast","Đuổi mục tiêu · nổ lan nhỏ"]},
+  plasma:{slot:"cannon",ch:3,n:["Plasma","Plasma"],t:["Big shots · +25% damage per shot · slower fire","Viên to · +25% sát thương mỗi viên · bắn chậm hơn"]},
+  solar:{slot:"cannon",ch:4,n:["Sun Cannon","Pháo Mặt trời"],t:["Burn · extra damage over time","Cháy · gây thêm sát thương theo thời gian"]},
+  frost:{slot:"cannon",ch:3,n:["Frost Cannon","Pháo Băng"],t:["Slows enemies for 1s","Làm chậm địch 1 giây"]},
+  jet:{slot:"engine",ch:1,n:["Jet Engine","Động cơ Phản lực"],t:["+move speed","+tốc độ di chuyển"]},
+  ion:{slot:"engine",ch:1,n:["Ion Engine","Động cơ Ion"],t:["+safe time after a hit","+thời gian bất tử sau khi trúng đạn"]}};
+/* Legendary nickname, per type (plating/core per slot); an item keeps one by uid */
+const GNICK={mg:[["Hailstorm","Mưa Đá"],["Thunder Drum","Trống Sấm"],["Hornet","Ong Bắp Cày"]],
+  laser:[["Silver Lance","Thương Bạc"],["Dawn Needle","Kim Bình Minh"],["Starpiercer","Xuyên Tinh"]],
+  missile:[["Red Falcon","Chim Ưng Đỏ"],["Wolfpack","Bầy Sói"],["Huntress","Nữ Thợ Săn"]],
+  plasma:[["Star Forge","Lò Sao"],["Violet Storm","Bão Tím"],["Nova Heart","Tim Tân Tinh"]],
+  solar:[["Phoenix","Phượng Hoàng"],["Noon Blaze","Lửa Chính Ngọ"],["Sunspear","Giáo Mặt Trời"]],
+  frost:[["Winter Fang","Nanh Mùa Đông"],["Glacier","Băng Hà"],["Snow Queen","Nữ Hoàng Tuyết"]],
+  jet:[["Tailwind","Gió Xuôi"],["Comet","Sao Chổi"],["Swallow","Chim Én"]],
+  ion:[["Aurora","Cực Quang"],["Blue Halo","Vầng Sáng Xanh"],["Ghost Drive","Bóng Ma"]],
+  plating:[["Bastion","Thành Lũy"],["Iron Vow","Lời Thề Thép"],["Turtle Shell","Mai Rùa"]],
+  core:[["Heartstar","Tim Sao"],["Oracle","Tiên Tri"],["Eternity","Vĩnh Hằng"]]};
+const GTYPE_SET={vanguard:"laser",aegis:"mg",solar:"solar"}; // old saves: cannon type comes from its set
+const gType=it=>GTYPES[it.type]&&GTYPES[it.type].slot===it.slot?it.type:it.slot==="cannon"?GTYPE_SET[it.set]||"laser":it.slot==="engine"?"jet":null;
+/* chapter for drops: the stage being played, else the highest cleared stage (any difficulty) */
+const gChapter=()=>{const c=typeof B!=="undefined"&&B&&B.cfg;let i=-1;
+  if(c&&c.mode==="stage"&&c.idx>=0)i=c.idx;else Object.values(S.stars).forEach(a=>(a||[]).forEach((v,k)=>{if(v&&k>i)i=k;}));
+  return Math.max(1,Math.floor(i/LV_PER_WORLD)+1);};
+const gTypePool=(slot,ch=gChapter())=>Object.keys(GTYPES).filter(k=>GTYPES[k].slot===slot&&GTYPES[k].ch<=ch);
+const gRollType=(slot,ch)=>{const p=gTypePool(slot,ch);return p.length?p[Math.floor(Math.random()*p.length)]:null;};
+const gTraitTxt=it=>{const t=gType(it);return t?L(...GTYPES[t].t):it.slot==="plating"&&it.rar>=3?L("+1 shield at battle start","+1 khiên đầu trận"):it.slot==="core"&&it.rar>=2?L("Ultimate charges faster","Tuyệt chiêu nạp nhanh hơn"):"";};
 const gMain=it=>{const b=GBASE[it.slot][it.rar];return it.slot==="plating"?b+Math.floor((it.lv-1)/4):Math.round(b*(1+.08*(it.lv-1))*10)/10;};
 const gMainTxt=it=>{const v=gMain(it);return it.slot==="plating"?L(`+${v} max HP`,`+${v} máu tối đa`):it.slot==="core"?L(`-${v}% cooldown · +${v}% XP`,`-${v}% hồi chiêu · +${v}% XP`):it.slot==="cannon"?L(`+${v}% damage`,`+${v}% sát thương`):L(`+${v}% fire rate`,`+${v}% tốc độ bắn`);};
 const gPow=it=>Math.round((it.rar+1)*(it.rar+1)*12*(1+.12*(it.lv-1)));
-const gName=it=>`${GSETS[it.set].name} ${GSLOTS.find(s=>s.id===it.slot).name}`;
+/* "[Type] [Set]" / "[Loại] [Bộ]"; plating/core use the slot name; Legendary adds " · nickname" */
+const gName=it=>{const t=gType(it),sl=GSLOTS.find(s=>s.id===it.slot),n=t?GTYPES[t].n:[sl.name,sl.vi],nk=it.rar>=3&&GNICK[t||it.slot];
+  return L(n[0],n[1])+" "+GSETS[it.set].name+(nk?" · "+L(...nk[(it.uid||0)%nk.length]):"");};
 const gImg=it=>"gear_"+it.set+"_"+it.slot;
 const gById=uid=>S.gear.inv.find(i=>i.uid===uid);
 const gEq=slot=>gById(S.gear.eq[slot]);
@@ -1593,11 +1626,18 @@ function gearStats(){const o={dmg:0,rate:0,hp:0,cd:0,xp:0,crit:0};
   gearEquipped().forEach(i=>{const v=gMain(i);if(i.slot==="cannon")o.dmg+=v/100;if(i.slot==="engine")o.rate+=v/100;if(i.slot==="plating")o.hp+=v;if(i.slot==="core"){o.cd+=v/100;o.xp+=v/100;}});
   const c=gearSets();if(c.vanguard>=2)o.dmg+=.08;if(c.aegis>=2)o.hp+=1;if(c.solar>=2)o.crit+=.1;
   o.v4=c.vanguard>=4;o.a4=c.aegis>=4;o.s4=c.solar>=4;o.cd=Math.min(.5,o.cd);return o;}
-function newGear(set,slot,rar,lv=1){const it={uid:++S.gear.uid,set,slot,rar,lv};S.gear.inv.push(it);return it;}
+/* no (valid) type given -> roll one from the pool the current chapter has unlocked */
+function newGear(set,slot,rar,lv=1,type){const ty=GTYPES[type]&&GTYPES[type].slot===slot?type:gRollType(slot);
+  const it={uid:++S.gear.uid,set,slot,type:ty,rar,lv};if(!ty)delete it.type;S.gear.inv.push(it);return it;}
 function randGear(rar){const ks=Object.keys(GSETS);return newGear(ks[Math.floor(Math.random()*ks.length)],GSLOTS[Math.floor(Math.random()*4)].id,rar);}
 const gUpCost=it=>({c:150*(it.rar+1)*it.lv,a:(it.rar+1)*(it.lv+1)});
 const gSalvage=it=>(it.rar+1)*(it.rar+1)*5+it.lv*2;
-const gMates=it=>S.gear.inv.filter(o=>o!==it&&o.set===it.set&&o.slot===it.slot&&o.rar===it.rar&&!isEq(o));
+const gMates=it=>S.gear.inv.filter(o=>o!==it&&o.set===it.set&&o.slot===it.slot&&gType(o)===gType(it)&&o.rar===it.rar&&!isEq(o));
+/* save v2 (gearV): items from older saves get their type (cannon by set, engine jet), plating/core none. Idempotent. */
+function gearMigrate(){let ch=(S.gearV||1)<2;S.gearV=2;
+  ((S.gear&&S.gear.inv)||[]).forEach(it=>{const t=gType(it);if(t&&it.type!==t){it.type=t;ch=true;}else if(!t&&"type" in it){delete it.type;ch=true;}});
+  if(ch)save();return ch;}
+gearMigrate();
 const gb=()=>(typeof B!=="undefined"&&B&&B.gs)||{dmg:0,rate:0,hp:0,cd:0,xp:0,crit:0};
 
 let gFilter="all";
@@ -1622,7 +1662,7 @@ function gearPop(uid){const it=gById(uid);if(!it)return;const eq=isEq(it),cur=gE
   const p=pop(gName(it),`<div class="gd">
     <div class="gtile big r${it.rar}">${sprImg(gImg(it))}</div>
     <div class="gdr" style="color:${GRCOL[it.rar]}">${GRAR[it.rar]} · Lv ${it.lv}/${GMAX}</div>
-    <div class="gdmain">${gMainTxt(it)}</div>
+    <div class="gdmain">${gMainTxt(it)}</div>${gTraitTxt(it)?`<div class="gdtr">${gTraitTxt(it)}</div>`:""}
     <div class="gdpow">${L("POWER","LỰC CHIẾN")} ${fmt(gPow(it))}${d===null?"":`<span class="${d>=0?"up":"dn"}">${d>=0?"▲":"▼"} ${fmt(Math.abs(d))} ${L("vs equipped","so với đồ đang mặc")}</span>`}</div>
     <div class="gdset" style="--sc:${gs.col}"><b>${L(gs.name+" set","Bộ "+gs.name)} · ${n}/4 ${L("equipped","đang mặc")}</b><span class="${n>=2?"on":""}">${L("2 pcs","2 món")} · ${gs.b2}</span><span class="${n>=4?"on":""}">${L("4 pcs","4 món")} · ${gs.b4}</span></div></div>
    <div class="gdacts">
@@ -1633,7 +1673,7 @@ function gearPop(uid){const it=gById(uid);if(!it)return;const eq=isEq(it),cur=gE
   if(p.dataset.re)p.querySelectorAll(".gdr,.gdmain,.gdpow").forEach(e=>e.classList.add("bump"));
   p.querySelector("#gEq").onclick=()=>{S.gear.eq[it.slot]=eq?null:uid;save();sfx("tap");renderHangar();gearPop(uid);};
   p.querySelector("#gUp").onclick=()=>{if(mx)return;if(S.gear.alloy<cost.a)return toast("Not enough Alloy · dismantle gear or clear stages");if(!spend({coin:cost.c}))return;S.gear.alloy-=cost.a;it.lv++;save();sfx("up");renderHangar();gearPop(uid);};
-  p.querySelector("#gMg").onclick=()=>{if(it.rar>=3||mates.length<2)return;const m=mates.slice(0,2),nw=newGear(it.set,it.slot,it.rar+1,Math.max(1,Math.floor(Math.max(it.lv,...m.map(x=>x.lv))/2)));
+  p.querySelector("#gMg").onclick=()=>{if(it.rar>=3||mates.length<2)return;const m=mates.slice(0,2),nw=newGear(it.set,it.slot,it.rar+1,Math.max(1,Math.floor(Math.max(it.lv,...m.map(x=>x.lv))/2)),gType(it));
     S.gear.inv=S.gear.inv.filter(x=>x!==it&&!m.includes(x));if(eq)S.gear.eq[it.slot]=nw.uid;save();sfx("up");renderHangar();gearPop(nw.uid);toast(`Merged into ${GRAR[nw.rar]} ${gName(nw)}`);};
   p.querySelector("#gDs").onclick=()=>{if(eq)return;const a=gSalvage(it);S.gear.alloy+=a;S.gear.inv=S.gear.inv.filter(x=>x!==it);save();sfx("coin");closePop();renderHangar();toast(`+${a} Alloy`);};}
 
