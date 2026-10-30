@@ -1,0 +1,18 @@
+Use the image generation tool to create art/anime/ships/kestrel_blueprint.png, size 2048x1365 (landscape), based on the attached reference image (anime fighter "Kestrel", pilot Mika, approved direction B).
+
+STYLE: clean technical concept design sheet. Pure white background. Thin crisp black outlines, light grey shading/tone only. NO colour, NO text, NO labels, NO numbers, NO arrows. Orthographic views, no perspective.
+
+LAYOUT:
+- Top-left, large: the BARE Kestrel hull seen from directly above, nose pointing up. Same silhouette family as the reference but simplified, with no weapons, engines, wing armour or core attached. Mark 5 small empty circular mount points: one at the nose, two under the wings (left/right), two at the tail (left/right), plus an empty socket on the spine. Directly next to it: a small side view of the same bare hull.
+- Right of / below that: 4 rows of interchangeable modules, all drawn at the SAME scale as the hull, from above. Each row has 3 variants left to right:
+  VANGUARD = long sleek barrels and fins; AEGIS = chunky, twin, armoured, with small shield plates; SOLAR = rounded parts with circular emitter rings.
+  Row 1 CANNONS: for each variant a pair of under-wing guns + one nose gun.
+  Row 2 ENGINES: for each variant a pair of tail thruster pods.
+  Row 3 WING ARMOUR: for each variant a left+right pair of plates that clip onto the wings.
+  Row 4 CORES: for each variant a small central reactor piece for the spine.
+  Every part shows a small round connector matching the mount points.
+- Bottom-right: one fully assembled example from above: hull + Solar cannons + Aegis engines + Vanguard wing armour + Solar core, proving the parts fit the mounts.
+
+Keep generous white spacing between parts so each can be cropped separately.
+
+Generate all now, do not stop to ask for approval. When done, print the file size.
