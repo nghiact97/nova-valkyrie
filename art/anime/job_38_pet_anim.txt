@@ -1,0 +1,8 @@
+Attached: art/anime/pet/sparrow.png (the approved chibi pet SPARROW, a light-blue fluffy baby bird).
+
+Use your image generation tool to create art/anime/pet/anim/sparrow_idle.png, 1536x384, FULLY TRANSPARENT background (alpha 0, no glow or halo), a horizontal sprite strip of exactly 6 frames, each frame in its own 256x384 slot, the character centred in every slot at the SAME size, SAME position and SAME design as the attached image (identical colours, face, proportions, outline — only the pose changes).
+It is a seamless looping IDLE / HOVER animation of the pet flying in place:
+frame 1 wings up, body slightly low; frame 2 wings mid going down; frame 3 wings down (fully spread below), body slightly up, eyes open; frame 4 wings mid going up; frame 5 wings up again, eyes CLOSED (blink), little head tilt; frame 6 wings mid going down, eyes open, back to frame 1 pose.
+Smooth in-between motion so that playing 1-2-3-4-5-6-1 looks fluid. Anime chibi cel shading, crisp dark outline, no text, no frame borders.
+
+Generate all now, do not stop to ask for approval. When done, print the file size.
