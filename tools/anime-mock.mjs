@@ -2102,6 +2102,103 @@ function drawGirl(t){
   return true;}
 $("#girlShow").onclick=()=>{const G=GIRL[S.ship];if(!G)return;agHop=1;agLine=(agLine+1)%G.lines.length;const b=$("#agBub");b.textContent=G.lines[agLine];
   b.hidden=false;b.style.animation="none";b.offsetWidth;b.style.animation="";const hd=drawGirl.head||{x:200,y:60};b.style.left=Math.min(hd.x,(hd.w||400)-100)+"px";b.style.top=Math.max(70,hd.y)+"px";agBubT=3.2;try{sfx("coin");}catch(e){}};
+/* ===== Retention 2.1: concrete defeat hint (weakest lever + direct button) ===== */
+const vkRecPow=(i,diff)=>Math.round(100*(1+i*.12)*((DIFFS.find(x=>x.id===diff)||DIFFS[0]).mul)/10)*10;
+const vkShipPowAt=(id,lv)=>{const d=shipDef(id),o=S.ships[id]||{lv:1,star:1};return Math.round(d.pow*(1+0.12*(lv-1))*(1+0.25*(o.star-1)));};
+function vkLever(idx,diff){const sid=S.ship,o=S.ships[sid],nm=(typeof GIRL!=="undefined"&&GIRL[sid]&&GIRL[sid].name)||shipDef(sid).name;
+  const gp=gearPower(),pow=shipPow(sid)+gp,rec=vkRecPow(idx,diff),cap=10*(o.star||1);
+  // 1) free: an empty slot or a stronger unequipped item in the bag
+  let best=null;GSLOTS.forEach(s=>{const eq=gEq(s.id),ep=eq?gPow(eq):0;S.gear.inv.filter(it=>it.slot===s.id&&!isEq(it)).forEach(it=>{const d=gPow(it)-ep;if(d>0&&(!best||d>best.d))best={d,it,s,empty:!eq};});});
+  if(best){const r=best.it.rar;return{k:"gear",cost:0,txt:best.empty?L(\`Equip a \${GRAR[r]} \${best.s.name} in the empty slot (+\${best.d} power)\`,\`Lắp \${best.s.vi} \${["Thường","Hiếm","Sử thi","Huyền thoại"][r]} vào ô trống (+\${best.d} sức mạnh)\`)
+    :L(\`Equip the \${GRAR[r]} \${best.s.name} (+\${best.d} power)\`,\`Thay \${best.s.vi} \${["Thường","Hiếm","Sử thi","Huyền thoại"][r]} (+\${best.d} sức mạnh)\`),open:()=>{htab="gear";go("hangar");}};}
+  // 2) pilot level vs recommended power
+  if(pow<rec&&o.lv<cap){let t=o.lv,cost=0;while(t<cap&&vkShipPowAt(sid,t)+gp<rec){cost+=upCost(t);t++;}if(t===o.lv){cost=upCost(t);t++;}
+    return{k:"pilot",cost,lv:t,txt:L(\`Level \${nm} up to Lv \${t}\`,\`Nâng \${nm} lên Lv \${t}\`),open:()=>{htab="ships";hSel=sid;go("hangar");}};}
+  // 3) skills never upgraded (cheapest damage skill first)
+  const sk=SKILLS.filter(s=>["firepower","overclock","critmx","bosshunt"].includes(s.id)&&skLv(s.id)===0).sort((a,b)=>skCost(a)-skCost(b))[0];
+  if(sk)return{k:"skill",cost:skCost(sk),txt:L(\`Learn \${sk.name} (skill Lv 1)\`,\`Học kỹ năng \${sk.name} (Lv 1)\`),open:()=>{htab="skills";go("hangar");}};
+  // 4) pet low
+  const dr=S.drones[S.drone];if(dr&&dr.lv<Math.max(2,o.lv-2)){const dd=droneDef(S.drone);return{k:"pet",cost:upCost(dr.lv),txt:L(\`Level pet \${dd.name} up to Lv \${dr.lv+1}\`,\`Nâng thú cưng \${dd.name} lên Lv \${dr.lv+1}\`),open:()=>{htab="drones";dSel=S.drone;go("hangar");}};}
+  if(o.lv<cap)return{k:"pilot",cost:upCost(o.lv),lv:o.lv+1,txt:L(\`Level \${nm} up to Lv \${o.lv+1}\`,\`Nâng \${nm} lên Lv \${o.lv+1}\`),open:()=>{htab="ships";hSel=sid;go("hangar");}};
+  return{k:"gear",cost:0,txt:L("Enhance your gear in the Gear tab","Cường hoá trang bị ở tab Trang bị"),open:()=>{htab="gear";go("hangar");}};}
+function vkHintFill(p,c){const tip=p.querySelector(".vrtip");if(!tip)return;const lv=vkLever(c.idx,c.diff),miss=Math.max(0,lv.cost-S.coins);
+  const costTxt=!lv.cost?L("free","miễn phí"):miss?L(\`\${fmt(miss)} coins short\`,\`còn thiếu \${fmt(miss)} xu\`):L(\`costs \${fmt(lv.cost)} coins\`,\`cần \${fmt(lv.cost)} xu\`);
+  const adAmt=Math.min(miss,1500);
+  tip.classList.add("vk-hint");tip.dataset.lever=lv.k;
+  tip.innerHTML=\`<span class="vkh-t">💡 \${lv.txt} <em>(\${costTxt})</em></span><span class="vkh-b"><button class="btn sm green" id="vkHintGo">\${miss?L("Go","Đi tới"):L("Upgrade now","Nâng ngay")}</button>\${miss&&adAmt?\`<button class="btn sm blue" id="vkHintAd">▶ \${L("Ad","Xem QC")} +\${fmt(adAmt)} <i class="ic-coin"></i></button>\`:""}</span>\`;
+  tip.querySelector("#vkHintGo").onclick=()=>{const h=p.querySelector("#home2");h&&h.click();lv.open();};
+  const ad=tip.querySelector("#vkHintAd");ad&&(ad.onclick=()=>fakeAd(()=>{give({c:adAmt});toast("+"+fmt(adAmt)+L(" coins"," xu"));vkHintFill(p,c);}));}
+{const st=document.createElement("style");st.textContent=\`.vrtip.vk-hint{display:flex;flex-direction:column;gap:6px;align-items:center;text-align:center}
+.vrtip.vk-hint .vkh-t{font-weight:800;color:#ffe28f}.vrtip.vk-hint em{font-style:normal;color:#ff9fc8}.vrtip.vk-hint .vkh-b{display:flex;gap:6px}
+.vrtip.vk-hint .btn i.ic-coin{width:14px;height:14px;display:inline-block;vertical-align:-2px}
+#missions #qTabs{grid-template-columns:repeat(3,1fr)!important}
+.j7-days{flex:none;display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.j7-days button{height:44px;border:0;padding:0;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);background:#121c4a;color:#9fb3e6;font-family:var(--f-disp);font-style:italic;font-weight:800;font-size:12px;position:relative;line-height:1.1}
+.j7-days button small{display:block;font-size:9px;font-weight:700}
+.j7-days button.on{background:linear-gradient(180deg,#1f3a8a,#132657);color:#fff;box-shadow:inset 0 -3px 0 #ff6fae}
+.j7-days button.lock{opacity:.45}.j7-days button.done{color:#ffd36b}
+.j7-days button .dot{position:absolute;top:3px;right:7px;width:7px;height:7px;border-radius:50%;background:#ff6fae}\`;document.head.appendChild(st);}
+{const _ebH=endBattle;endBattle=function(win){const c=B&&B.cfg;if(c&&c.mode==="stage"&&win)j7Add("win",1);_ebH(win);
+  if(c&&c.mode==="stage"&&!win){const p=$$(".vrpop").pop();if(p)vkHintFill(p,c);}};}
+
+/* ===== Retention 2.4: 7-day journey (Hành trình 7 ngày) ===== */
+const J7=[
+  {g:[["win",2],["up",1],["skill",3]],rw:[{c:500},{c:500},{g:10}],chest:[{c:1000},{g:20}]},
+  {g:[["play",4],["kill",200],["up",2]],rw:[{c:700},{c:700},{g:15}],chest:[{c:1500},{g:30}]},
+  {g:[["win",3],["skill",8],["gear",1]],rw:[{c:900},{g:15},{c:900}],chest:[{c:2000},{g:40}]},
+  {g:[["boss",1],["up",3],["coin",3000]],rw:[{g:20},{c:1200},{c:1200}],chest:[{c:2500},{g:50}]},
+  {g:[["win",4],["kill",500],["skill",15]],rw:[{c:1500},{c:1500},{g:25}],chest:[{c:3000},{g:70}]},
+  {g:[["boss",2],["up",5],["gear",2]],rw:[{g:30},{c:2000},{c:2000}],chest:[{c:4000},{g:100}]},
+  {g:[["win",6],["kill",1000],["spin",1]],rw:[{g:40},{c:3000},{c:3000}],chest:[{g:300},{crate:3}]}];
+const J7T={win:["Clear %n stages","Qua %n màn"],play:["Play %n stages","Chơi %n màn"],kill:["Destroy %n enemies","Hạ %n địch"],up:["Upgrade %n times","Nâng cấp %n lần"],
+  skill:["Use skills %n times in battle","Dùng kỹ năng %n lần trong trận"],gear:["Collect %n gear","Nhặt %n trang bị"],boss:["Defeat %n bosses","Hạ %n boss"],coin:["Collect %n coins in battle","Nhặt %n xu trong trận"],spin:["Spin the lucky wheel %n time","Quay vòng may mắn %n lần"]};
+function j7(){if(!S.j7)S.j7={start:today(),n:{},b:{},c:{}};const J=S.j7;J.n.gear=S.gear.uid;
+  const day=Math.min(7,Math.max(1,Math.floor((Date.parse(today())-Date.parse(J.start))/864e5)+1));J.day=day;
+  for(let d=1;d<=day;d++)if(!J.b[d])J.b[d]=Object.assign({},J.n);return J;}
+function j7Add(k,n){const J=j7();J.n[k]=(J.n[k]||0)+n;}
+const j7Val=(d,i)=>{const J=j7(),[k,goal]=J7[d-1].g[i];return Math.min(goal,Math.max(0,(J.n[k]||0)-((J.b[d]||J.n)[k]||0)));};
+const j7GoalOk=(d,i)=>j7Val(d,i)>=J7[d-1].g[i][1];
+const j7ChestOk=d=>{const J=j7();return d<=J.day&&!J.c[d+"x"]&&[0,1,2].every(i=>J.c[d+"_"+i]);};
+const j7DayCan=d=>{const J=j7();return d<=J.day&&([0,1,2].some(i=>!J.c[d+"_"+i]&&j7GoalOk(d,i))||j7ChestOk(d));};
+const j7Can=()=>{const J=j7();if(J.c["7x"])return false;for(let d=1;d<=J.day;d++)if(j7DayCan(d))return true;return false;};
+{const _qa=qAdd;qAdd=function(id,n){_qa(id,n);const m={play3:"play",kill150:"kill",boss1:"boss",up1:"up",coin2k:"coin",spin1:"spin"}[id];if(m)j7Add(m,n);};}
+{const _tc=takeCharge;takeCharge=function(k){const r=_tc(k);if(r)j7Add("skill",1);return r;};}
+{const _uu=useUlt;useUlt=function(){const was=B&&B.ult>=100&&!B.paused&&!B.over;_uu();if(was&&B&&B.ult<100)j7Add("skill",1);};}
+{const _rf=refresh;refresh=function(){_rf();try{if(j7Can())$("#dQuest").hidden=false;}catch(e){}};}
+let j7Sel=0;
+{const qt=$("#qTabs");if(qt&&!qt.querySelector('[data-qt="j7"]')){qt.insertAdjacentHTML("afterbegin",'<button class="tab" data-qt="j7">7 days</button>');
+  const t=qt.querySelector('[data-qt="j7"]');t.onclick=()=>{qtab="j7";renderMissions();};}}
+{const _rm=renderMissions;renderMissions=function(){
+  if(qtab!=="j7"){_rm();const t=$('#qTabs [data-qt="j7"]');if(t){t.classList.remove("on");t.firstChild.textContent=L("7 days","7 ngày");t.querySelector(".dot")?.remove();if(j7Can())t.insertAdjacentHTML("beforeend",'<i class="dot"></i>');}return;}
+  const J=j7();if(!j7Sel||j7Sel>J.day)j7Sel=J.day;const d=j7Sel,D=J7[d-1];
+  if(SPR_HAS("bg_home"))$("#missions").style.setProperty("--shopbg",\`url(\${SPR_SRC.bg_home})\`);
+  $("#missions .hdr h2").textContent=L("7-day journey","Hành trình 7 ngày");
+  const qt=$$("#qTabs .tab");qt.forEach(t=>{t.classList.toggle("on",t.dataset.qt==="j7");t.querySelector(".dot")?.remove();});
+  qt.forEach(t=>{const k=t.dataset.qt;t.firstChild.textContent=k==="j7"?L("7 days","7 ngày"):k==="daily"?L("Daily","Hằng ngày"):L("Achievements","Thành tựu");
+    const can=k==="j7"?j7Can():k==="daily"?QUEST_DEF.some(q=>!S.qClaim[q.id]&&(S.q[q.id]||0)>=q.goal):ACH_DEF.some(q=>!S.achClaim[q.id]&&achVal(q.id)>=q.goal);if(can)t.insertAdjacentHTML("beforeend",'<i class="dot"></i>');});
+  const days=J7.map((x,i)=>{const n=i+1,lock=n>J.day,done=!!J.c[n+"x"];return \`<button class="\${n===d?"on":""} \${lock?"lock":""} \${done?"done":""}" data-j7d="\${n}">\${L("Day","Ngày")} \${n}<small>\${lock?"🔒":done?"✓":n===7?"★":""}</small>\${!lock&&j7DayCan(n)?'<i class="dot"></i>':""}</button>\`;}).join("");
+  const chOk=j7ChestOk(d),chDone=!!J.c[d+"x"],cl=[0,1,2].filter(i=>J.c[d+"_"+i]).length;
+  const chTxt=D.chest.map(r=>r.crate?L("Legendary crate","Rương Huyền thoại"):rwText(r).replace("coins",L("coins","xu"))).join(" + ");
+  const crateImg=SPR_HAS(d===7?"crate_legend":"crate_epic")?\`<img src="\${SPR_SRC[d===7?"crate_legend":"crate_epic"]}" alt="">\`:"";
+  const row=(g,i)=>{const [k,goal]=g,v=j7Val(d,i),ok=v>=goal,c=J.c[d+"_"+i],rw=D.rw[i];
+    return \`<div class="vq-row \${c?"cl":ok?"ok":""}"><span class="vq-rw"><i class="\${rewardIcon(rw)}"></i>\${fmt(rw.g||rw.c||0)}</span>
+      <span class="vq-mid"><b>\${L(J7T[k][0],J7T[k][1]).replace("%n",fmt(goal))}</b><span class="vq-bar"><i><i style="width:\${v/goal*100}%"></i></i><span>\${fmt(v)}/\${fmt(goal)}</span></span></span>
+      <button class="vq-btn \${c?"done":ok?"claim":""}" data-j7="\${i}" \${c?"disabled":""}>\${c?"✓":ok?L("Claim","Nhận"):L("Go","Đi")}</button></div>\`;};
+  const left=86400000-Date.now()%86400000;
+  $("#missionBody").innerHTML=\`<div class="j7-days">\${days}</div>
+    <div class="vq-chest \${chOk?"ready":""}">\${crateImg}<span class="vq-cm"><b>\${d===7?L("Grand prize","Quà lớn ngày 7"):L(\`Day \${d} chest\`,\`Rương ngày \${d}\`)}</b><small>\${chTxt}</small>
+      <span class="vq-pips" style="grid-template-columns:repeat(3,1fr)">\${[0,1,2].map(i=>\`<i class="\${i<cl?"on":""}"></i>\`).join("")}</span>
+      <small>\${J.day<7?L(\`Day \${J.day+1} unlocks in\`,\`Ngày \${J.day+1} mở sau\`)+\` \${Math.floor(left/36e5)}h \${Math.floor(left/6e4)%60}m\`:L("All days unlocked","Đã mở đủ 7 ngày")}</small></span>
+      <button class="vq-btn \${chDone?"done":chOk?"claim":""}" id="j7Chest" \${chOk?"":"disabled"}>\${chDone?"✓":chOk?L("Open","Mở"):\`\${cl}/3\`}</button></div>
+    <div class="vq-list">\${D.g.map(row).join("")}</div>\`;
+  $$("#missionBody [data-j7d]").forEach(b=>b.onclick=()=>{const n=+b.dataset.j7d;if(n>J.day){toast(L(\`Unlocks on day \${n}\`,\`Mở vào ngày \${n}\`));return;}j7Sel=n;renderMissions();});
+  $$("#missionBody [data-j7]").forEach(b=>b.onclick=()=>{const i=+b.dataset.j7,[k]=D.g[i];
+    if(!j7GoalOk(d,i)){if(k==="spin"){go("home");POPS.spin();}else if(k==="up"){go("hangar");}else go("map");return;}
+    J.c[d+"_"+i]=1;give(D.rw[i]);sfx("coin");toast("+"+rwText(D.rw[i]));renderMissions();});
+  $("#j7Chest").onclick=()=>{if(!j7ChestOk(d))return;J.c[d+"x"]=1;const list=[];D.chest.forEach(r=>{if(r.crate){const it=randGear(r.crate);toast(L("Legendary gear: ","Trang bị Huyền thoại: ")+GSLOTS.find(s=>s.id===it.slot).name);}else list.push(r);});
+    save();claimPop(d===7?L("Grand prize!","Quà lớn!"):L(\`Day \${d} chest\`,\`Rương ngày \${d}\`),list,renderMissions);};
+  refresh();};
+RENDER.missions=renderMissions;}
 `;
 patch("refresh();})();", `refresh();if(typeof GIRL_FACE!=="undefined"&&GIRL_FACE.kestrel){const a=$("#home .h5prof .avatar");const im=a.querySelector("img")||a.appendChild(new Image());im.src=GIRL_FACE.kestrel;im.style.cssText="width:100%;height:100%;object-fit:cover;border-radius:inherit";}})();`);
 // Escort Drones run skill: own small mechanical drones in a tight formation (positions shared by fire + draw)
