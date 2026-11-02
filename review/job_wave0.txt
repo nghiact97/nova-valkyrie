@@ -1,0 +1,7 @@
+Repo: Nova Valkyrie. Read CLAUDE.md and docs/FIX_PLAN.md (Wave 0). Only edit tools/playtest/newplayer.mjs (and its output folder). Do not change game code.
+Fix the new-player playtest bot:
+1. Keep the save between days: moving to Day 2/3 must only shift the clock (Date / timestamps the game reads) and reload the page WITHOUT clearing localStorage or the Chrome profile. Day 2 must continue from the stages already cleared and the pilot level already reached.
+2. Launch Chrome itself (C:/Program Files/Google/Chrome/Application/chrome.exe, --headless=new, --remote-debugging-port=9223, a user-data-dir under build/chrome-playtest) if nothing is listening on 9223, and close it at the end.
+3. Add to summary.md for each of the 3 days: time of the first loss, time when coins first could not pay the next upgrade ("coin wall"), number of sale offers/shop popups shown, number of rewarded-ad prompts and how many were watched, stages cleared, energy-out events and total wait.
+4. Keep at most 8 screenshots.
+You cannot launch Chrome inside your sandbox; do NOT try to run the script. Make sure it parses (`node --check tools/playtest/newplayer.mjs`). Commit "Playtest bot: keep save across days, self-launch Chrome, wave-0 metrics" with a blank line then "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>". Do it now without asking. Print a 5-line summary of the changes.
