@@ -1558,8 +1558,8 @@ const vkStep=id=>{S.tut=S.tut&&typeof S.tut==="object"?S.tut:{};if(S.tut[id]||S.
 
 /* unlock dialog after returning home; "Go" runs the matching tutorial */
 let vkUnlBusy=false;
-function vkUnlockCheck(){if(veil.hidden)vkUnlBusy=false;if(cur!=="home"||!veil.hidden||vkTutOn()||vkUnlBusy)return;const c=vkCleared();S.unlReq=S.unlReq||0;
-  const g=VK_GROUPS.find(g=>g.req<=c&&g.req>S.unlReq);if(!g)return;S.unlReq=g.req;save();vkUnlBusy=true;vkLocks();
+function vkUnlockCheck(){if(veil.hidden)vkUnlBusy=false;if(cur!=="home"||!veil.hidden||vkTutOn()||vkUnlBusy||popBudget<=0)return;const c=vkCleared();S.unlReq=S.unlReq||0;
+  const g=VK_GROUPS.find(g=>g.req<=c&&g.req>S.unlReq);if(!g){if(popQueue.length){popBudget--;popQueue.shift()();}return;}S.unlReq=g.req;save();vkUnlBusy=true;popBudget--;vkLocks();
   const p=pop(L("NEW UNLOCK!","MỞ KHOÁ MỚI!"),\`<div class="vk-unl"><div class="fs">\${g.f.map((f,i)=>\`<div class="f" style="animation-delay:\${i*.08}s">\${vkIc(VK_FEAT[f].ic)}<b>\${L(...VK_FEAT[f].n)}</b></div>\`).join("")}</div>
     <div class="say"><img src="\${vkBust()}" alt=""><span>\${L(...g.say)}</span></div></div><div class="acts"><button class="btn" id="vkGo">\${L("Go","Đi tới")}</button></div>\`,"vk-reward",()=>{closePop();vkUnlBusy=false;});
   p.querySelector("#vkGo").onclick=()=>{closePop();vkUnlBusy=false;vkRunTut(g);};}
@@ -1590,7 +1590,7 @@ const VK_EZ=[{less:2,only:1,fire:.5,bs:.7,noLose:1,rew:1.5},{less:1,only:2,fire:
 {const _rp=revivePop;revivePop=function(){if(B&&B.ez&&B.ez.freeRev&&!B.revived){B.revived=true;B.over=false;B.paused=false;B.p.alive=true;B.p.hp=B.p.maxHp;B.p.inv=2.5;B.eb=[];
     last=performance.now();updHud();toast(L("Free revive! Keep going!","Hồi sinh miễn phí! Cố lên!"));return;}_rp();};}
 {const _lu2=levelUp;levelUp=function(){_lu2();if(vkStep("t4")){vkTut("#lvup .lvcard:nth-child(2)",L("Pick a skill. Skills stack during the run!","Chọn 1 kỹ năng. Kỹ năng cộng dồn trong trận!"));}};}
-setInterval(()=>{vkLocks();if(cur==="home")vkUnlockCheck();
+setInterval(()=>{vkLocks();if(cur==="battle")popBudget=1;if(cur==="home")vkUnlockCheck();
   if(cur!=="battle"||!B||B.over||vkTutOn()||S.tutSkip)return;const t=S.tut||{};
   if(!t.t3&&B.drops&&B.drops.some(d=>d.kind==="xp")){vkStep("t3");toast(L("Collect the blue crystals to level up!","Nhặt tinh thể xanh để lên cấp!"));}
   if(!t.t5&&B.ult>=100&&!B.paused){vkStep("t5");B.paused=true;vkTut("#skUlt",L("Your <b>ULT</b> is ready! Tap it!","<b>Tuyệt chiêu</b> đã đầy! Bấm vào đi!")).then(()=>{if(B&&!B.picking){B.paused=false;last=performance.now();}});}
