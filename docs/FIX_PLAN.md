@@ -9,6 +9,8 @@ Cách làm theo `CLAUDE.md`: mỗi việc là một nhánh `task/<tên>`, phạm
 | 0.1 | Sửa `tools/playtest/newplayer.mjs`: giữ save khi chuyển ngày (chỉ dịch đồng hồ, không xoá localStorage); tự mở Chrome cổng 9223 | Codex | Ngày 2 chơi tiếp từ màn đã đạt, không nâng lại từ cấp 1 |
 | 0.2 | Playtest in thêm: lần đầu thua, thời gian tới "tường" xu, số chào bán hiện ra, số quảng cáo mời | Codex | `summary.md` có đủ 4 số này cho 3 ngày |
 
+> **Trạng thái Đợt 0 (02/11):** 0.1 xong (giữ save qua ngày, commit 963ae26). Kết quả: kẹt màn 1-4 cả 3 ngày. Bot còn chưa tiêu xu và dừng sau 1 lần thua → gộp việc nâng cấp bot vào **2.2**. Tiếp theo: **Đợt 1**.
+
 ## Đợt 1 — Chặn phát hành và đo được người thật (bắt buộc trước khi chạy thử)
 | # | Việc | Ai / mức | Xong khi |
 |---|---|---|---|
