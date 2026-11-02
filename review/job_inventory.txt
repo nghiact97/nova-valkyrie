@@ -1,0 +1,15 @@
+You are reviewing the mobile game in this repository (Nova Valkyrie: anime mecha-girl vertical shooter, HTML5 canvas wrapped with Capacitor for Android). Read CLAUDE.md, docs/*.md, src/game.html (base game) and tools/anime-mock.mjs (anime layer that patches it). Do NOT modify any code.
+
+Write review/inventory.md (Vietnamese) with these sections, concrete and with numbers taken from the code:
+1. Core loop and session length (stage length, waves, bosses, skills picked during a run).
+2. Progression: stages/chapters/difficulties count, pilots (Valkyries) and how they are unlocked, gear (slots, sets, gun types, rarities, merge/upgrade), pets, skills, boss cores, account level, feature unlock schedule.
+3. Economy: every currency (coins, gems, energy, alloy, shards...), main sources and sinks with amounts, energy cost/regeneration, price table of the shop (IAP packs with $ prices, gem packs, crates, spins, VIP, offers).
+4. Monetisation actually implemented: which purchases call real Google Play Billing (look at tools/native-pay.js, NvBillingPlugin.java) vs mock-only; rewarded ads / interstitials (real AdMob or fakeAd mock); VIP; battle pass (yes/no); gacha rates and pity.
+5. Retention features: daily login, quests, achievements, online gift, events, mail, notifications, leaderboard (real or fake/bots).
+6. Content volume: stages, enemy types, bosses, mini-bosses, pilots, pets, gear pieces, music/sfx.
+7. Missing vs genre standard for anime gacha shooters (e.g. real gacha banner for pilots, story, PvP/guild, battle pass, push notifications, cloud save, analytics, localisation, store page assets).
+8. Technical/store readiness: app id, version, release signing, privacy policy link status, analytics SDK presence, crash reporting, size of APK (~20.7 MB), offline play.
+9. Risks: IP similarity notes found in docs (e.g. Mika vs another game's character), placeholder content, fake leaderboard bots, policy issues.
+End with a 10-line summary of strengths and weaknesses.
+
+Generate the full report now, do not stop to ask for approval. When done, print the file path and line count.
