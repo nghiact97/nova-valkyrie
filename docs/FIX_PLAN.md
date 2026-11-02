@@ -14,8 +14,8 @@ Cách làm theo `CLAUDE.md`: mỗi việc là một nhánh `task/<tên>`, phạm
 |---|---|---|---|
 | 1.1 | Firebase Analytics + Crashlytics; sự kiện phễu: mở app, trận đầu, thắng/thua từng màn, mở khoá, xem quảng cáo, mở shop, mua | Agent, xhigh | Thấy sự kiện trong DebugView từ máy A13 |
 | 1.2 | AdMob ID thật + `app-ads.txt` + hộp đồng ý UMP | Agent, thường | Quảng cáo thưởng thật hiện trên A13, có doanh thu thử |
-| 1.3 | VIP: bỏ khỏi shop hoặc làm thuê bao thật qua Play Billing | Agent, thường | Không còn nút mua nào chỉ đặt cờ trên máy |
-| 1.4 | Trang chính sách/điều khoản riêng cho Nova Valkyrie; sửa link trong Cài đặt; khai lại An toàn dữ liệu | Em + anh (trang web) | Link mở đúng trang Nova Valkyrie |
+| 1.3 | VIP thành **gói thuê bao thật** qua Play Billing (mua, gia hạn, khôi phục, hết hạn thì tắt quyền lợi) | Agent, xhigh | Mua thử bằng tài khoản test; VIP tắt khi thuê bao hết hạn |
+| ~~1.4~~ | ~~Trang chính sách riêng~~ — anh chốt giữ nguyên | — | — |
 | 1.5 | Đồng bộ phiên bản (APP_VER = versionName), AAB đã ký, đưa lên kênh thử nghiệm nội bộ | Agent, thường | Cài được từ Play Console internal |
 | 1.6 | Vẽ lại Mika, tách Raika khỏi Mika (giữ bộ khung đã duyệt, chỉ đổi thiết kế mặt/tóc/giáp) | Codex | Anh duyệt; không còn giống Skysaber |
 
@@ -49,7 +49,10 @@ Cách làm theo `CLAUDE.md`: mỗi việc là một nhánh `task/<tên>`, phạm
 - Vẽ (1.6, art banner) → Codex trực tiếp. Code nhiều logic (1.1, 2.2, 3.2, 3.3) → agent xhigh. Còn lại → agent mức thường hoặc em.
 - Sau mỗi đợt: dựng lại Graphify, kiểm tra `affected`, chạy playtest, build APK gửi Telegram, gắn tag.
 
-## Cần anh quyết
-1. VIP: bỏ hẳn, hay làm thuê bao thật?
-2. Năng lượng 6 phút/điểm có chấp nhận được không (hay 4–5 phút)?
-3. Ai làm trang chính sách: em tạo trang tĩnh (GitHub Pages của repo) được không?
+## Anh đã chốt (02/11/2026)
+1. **VIP: làm gói thuê bao thật** qua Google Play Billing (1.3 = subscription, có khôi phục gói đã mua).
+2. **Năng lượng hồi 6 phút/điểm** (2.3).
+3. **Trang chính sách giữ nguyên** — bỏ việc 1.4 khỏi đợt 1.
+
+## Bắt đầu phiên mới
+Đọc `CLAUDE.md` (quy tắc 4b Graphify, 4c Codex) rồi file này; làm từ **Đợt 0**. Trước mỗi việc code: `py tools/graph_prep.py` → `graphify explain/affected` để lấy phạm vi; vẽ giao Codex chạy trực tiếp; việc code giao agent (xhigh chỉ cho 1.1, 2.2, 3.2, 3.3); agent báo cáo ngắn, chi tiết ghi file.

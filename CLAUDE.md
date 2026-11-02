@@ -1,5 +1,7 @@
 # Nova Valkyrie — project guide for Claude
 
+> Current work: `docs/FIX_PLAN.md` (start at the first unfinished wave). Token budget matters: scope with Graphify first, art via Codex directly, agents only for code, short reports, few screenshots.
+
 Anime mecha-girl fork of Nova Vanguard (HTML5 canvas shooter, Capacitor → Android). The owner writes in Vietnamese; reply in Vietnamese, "em" voice, address the owner as "anh".
 
 ## How to work a request (orchestration)
