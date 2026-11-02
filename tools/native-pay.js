@@ -1,8 +1,10 @@
 /* Native bridge for the Android app (injected by tools/build-www.mjs, never part of the web playtest).
  * Exposes window.NV_NATIVE = { ads, billing } on top of Capacitor plugins:
  *   - AdMob (@capacitor-community/admob): UMP consent, preloaded rewarded + interstitial
- *   - NvBilling (android/.../NvBillingPlugin.java): Play Billing 8 one-time products
+ *   - NvBilling (android/.../NvBillingPlugin.java): Play Billing 8 one-time products + the VIP subscription
  * The game grants items through window.__nvGrant(productId, fresh) and never talks to plugins directly.
+ * VIP (subscription nv_vip_monthly): every status Play reports (start, resume, buy, restore) goes to
+ * window.__nvVip({ on, until, renew, pend }); the game derives S.vip from that alone (docs/VIP_SUBSCRIPTION.md).
  * Ad unit ids: Google's public test ids until Nova Vanguard has its own AdMob units (window.NV_ADS_LIVE). */
 (function () {
   var C = window.Capacitor;
@@ -103,13 +105,60 @@
       return handle(r.purchases).then(function () { return 'ok'; });
     }).catch(function () { return 'fail'; });
   };
+  /* ---------------- VIP subscription ---------------- */
+  var VIP_ID = 'nv_vip_monthly';
+  billing.vipReady = false; billing.vipPrice = ''; billing.vipPeriod = 'P1M';
+  function vipReport(st) { try { if (window.__nvVip) window.__nvVip(st); } catch (e) {} return st; }
+  /* subs()/buy() purchases -> game status; acknowledges a new subscription (Play refunds it if unacknowledged for 3 days) */
+  function vipApply(r) {
+    var mine = ((r && r.purchases) || []).filter(function (p) { return p.productId === VIP_ID; });
+    var on = mine.filter(function (p) { return p.state === 'purchased'; })[0];
+    var pend = !on && mine.some(function (p) { return p.state === 'pending'; });
+    if (on && !on.acknowledged && !inFlight[on.token]) {
+      inFlight[on.token] = 1;
+      Billing.finish({ token: on.token, consume: false }).catch(function () {}).then(function () { delete inFlight[on.token]; });
+    }
+    return vipReport({ on: !!on, until: on ? +on.expiry || 0 : 0, renew: !!(on && on.autoRenew), pend: pend });
+  }
+  /* resolves the new status, or null when Play is unreachable (the game then keeps its cached status) */
+  billing.vipSync = function () { return Billing.subs().then(vipApply).catch(function () { return null; }); };
+  /* resolves 'ok' | 'pending' | 'cancel' | 'fail' */
+  billing.vipBuy = function () {
+    if (!billing.vipReady) return Promise.resolve('fail');
+    return Billing.buy({ id: VIP_ID }).then(function (r) {
+      if (r.result === 'owned') return billing.vipSync().then(function (st) { return st && st.on ? 'ok' : 'fail'; });
+      if (r.result !== 'ok') return r.result === 'cancel' ? 'cancel' : 'fail';
+      var fromBuy = (r.purchases || []).some(function (p) { return p.productId === VIP_ID; });
+      return (fromBuy ? Promise.resolve(vipApply(r)) : billing.vipSync()).then(function (st) {
+        return st && st.on ? 'ok' : st && st.pend ? 'pending' : 'fail';
+      });
+    }).catch(function () { return 'fail'; });
+  };
+  /* Restore purchases: re-grant one-time packs + re-read the subscription; resolves true when anything is owned */
+  billing.restore = function () {
+    return Promise.all([billing.ready ? billing.sync() : Promise.resolve(false), billing.vipSync()])
+      .then(function (r) { return !!r[0] || !!(r[1] && r[1].on); });
+  };
+
   if (Billing) {
+    Billing.addListener('purchases', function (ev) { // a pending purchase completed outside buy()
+      var list = ev.purchases || [];
+      if (list.some(function (p) { return p.productId === VIP_ID; })) billing.vipSync();
+      handle(list.filter(function (p) { return p.productId !== VIP_ID; }));
+    });
+    Billing.addListener('subs', vipApply); // the plugin re-queries subscriptions on every app resume
+    // one query at a time while the billing connection starts
     Billing.products({ ids: PRODUCTS }).then(function (r) {
       (r.products || []).forEach(function (p) { billing.prices[p.id] = p.price; });
       billing.ready = (r.products || []).length > 0;
-      Billing.addListener('purchases', function (ev) { handle(ev.purchases); });
       return billing.sync();
-    }).catch(function () { billing.ready = false; });
+    }).catch(function () { billing.ready = false; })
+      .then(function () { return Billing.products({ ids: [VIP_ID], type: 'subs' }); })
+      .then(function (r) {
+        var p = (r.products || [])[0];
+        if (p) { billing.vipPrice = p.price || ''; billing.vipPeriod = p.period || 'P1M'; billing.vipReady = true; }
+      }, function () { billing.vipReady = false; })
+      .then(function () { return billing.vipSync(); });
     if (C.Plugins.App) C.Plugins.App.addListener('resume', function () { if (billing.ready) billing.sync(); });
   }
 

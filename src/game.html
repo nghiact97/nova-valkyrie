@@ -1789,6 +1789,32 @@ window.__nvGrant=function(id,fresh){const gp=GEMPACKS.find(x=>x.id===id);
 /* id = Play product; test() = what the web mockup / debug build grants instead */
 function pay(id,test){if(natBill()){if(buying)return;buying=true;NAT().billing.buy(id).then(r=>{buying=false;if(r==="ok")sfx("coin");else if(r==="pending")toast("Payment pending, the item arrives when it completes");else if(r==="cancel")toast("Purchase cancelled");else toast("Purchase failed, try again later");});return;}
   if(REL){toast("Store unavailable, try again later");return;}test();}
+/* ---- VIP pass = Play subscription "nv_vip_monthly" (tools/native-pay.js, docs/VIP_SUBSCRIPTION.md) ----
+   S.vipSub = last status Play verified {on,until,renew,pend,at}; S.vip is ONLY derived from it (vipApply), so VIP turns off as soon as
+   Play stops reporting the subscription, or `until` passes without a fresh check. The web mockup (no Capacitor) writes a mock status. */
+const VIP_ID="nv_vip_monthly",VIP_MANAGE="https://play.google.com/store/account/subscriptions?sku="+VIP_ID+"&package=com.novavanguard.valkyrie";
+function isApp(){const C=window.Capacitor;return !!(C&&C.isNativePlatform&&C.isNativePlatform());}
+function vipOn(){const v=S.vipSub;return !!(v&&v.on&&Date.now()<v.until&&!(v.mock&&isApp()));}
+function vipApply(){const n=vipOn()?1:0,ch=S.vip!==n;S.vip=n;if(ch)save();return ch;}
+function vipRedraw(){refresh();if(cur==="shop")renderShop();}
+window.__nvVip=function(st){if(!st)return;S.vipSub={on:!!st.on,until:+st.until||0,renew:!!st.renew,pend:!!st.pend,at:Date.now()};vipApply();save();vipRedraw();};
+vipApply();
+setInterval(()=>{const v=S.vipSub,N=NAT();if(v&&v.on&&!v.mock&&Date.now()>=v.until&&N&&N.billing.vipSync)N.billing.vipSync();if(vipApply())vipRedraw();},60000);
+function vipPrice(){const N=NAT();return N&&N.billing.vipReady&&N.billing.vipPrice||"$4.99";}
+function vipDate(t){const vi=S.set.lang==="VI";return new Date(t).toLocaleDateString(vi?"vi-VN":"en-US",vi?{day:"2-digit",month:"2-digit",year:"numeric"}:{day:"numeric",month:"short",year:"numeric"});}
+function vipTitle(){return S.vip?L("Active until ","Hiệu lực đến ")+vipDate(S.vipSub.until):L("Monthly pass · auto-renews","Thẻ tháng · tự gia hạn");}
+function vipPill(){return S.vip?L("Active","Đang dùng"):S.vipSub&&S.vipSub.pend?L("Pending","Đang chờ"):vipPrice();}
+function buyVip(){const N=NAT(),pendMsg=()=>toast(L("Payment pending, VIP starts when it completes","Giao dịch đang chờ, VIP sẽ bật khi xong"));
+  if(S.vip){if(isApp())location.href=VIP_MANAGE;else toast(vipTitle());return;}  // active: manage / cancel in Google Play
+  if(isApp()&&S.vipSub&&S.vipSub.pend){pendMsg();N&&N.billing.vipSync&&N.billing.vipSync();return;}
+  if(N&&N.billing.vipReady){if(buying)return;buying=true;N.billing.vipBuy().then(r=>{buying=false;
+    if(r==="ok"){sfx("coin");if(S.vip)claimFx(L("VIP active!","Đã kích hoạt VIP!"));}else if(r==="pending")pendMsg();
+    else if(r==="cancel")toast("Purchase cancelled");else toast("Purchase failed, try again later");});return;}
+  if(isApp()){toast("Store unavailable, try again later");return;}
+  S.vipSub={on:true,until:Date.now()+30*864e5,renew:true,pend:false,at:Date.now(),mock:true};vipApply();save();claimFx(L("VIP active (test purchase)","Đã bật VIP (mua thử)"));vipRedraw();}
+function restorePurchases(){const N=NAT(),res=any=>{toast(any?"Purchases restored":L("No purchases to restore","Không có giao dịch để khôi phục"));vipRedraw();};
+  if(N&&N.billing.restore){N.billing.restore().then(res);return;}
+  vipApply();res(!!S.vip);}
 const COINPACKS=[{c:5000,g:50},{c:12000,g:110},{c:30000,g:250}];
 const CHESTS=[{n:"Supply Crate",g:60,tier:0},{n:"Epic Crate",g:180,tier:1},{n:"Legend Crate",g:450,tier:2}];
 function renderShop(){refresh();const B=$("#shopBody");
@@ -1821,7 +1847,7 @@ function renderShop(){refresh();const B=$("#shopBody");
    <div class="sec-t">Coins</div>
    <div class="grid3">${COINPACKS.map((p,i)=>`<button class="card item" data-cp="${i}"><i class="ic-coin" style="width:${24+i*5}px;height:${24+i*5}px;border-radius:50%"></i><span class="q">${fmt(p.c)}</span><span class="chip">${priceTxt({gem:p.g})}</span></button>`).join("")}</div>
    <div class="sec-t">VIP pass</div>
-   <div class="card row"><div class="disp" style="font-size:26px;color:var(--gold)">VIP</div><div style="flex:1;font-size:12px;font-weight:700;color:var(--mute)">No ads · 2× daily login · +1 free spin/day · 100 gems daily for 30 days</div><button class="btn sm" id="vip">${S.vip?"Active":"$4.99"}</button></div>
+   <div class="card row"><div class="disp" style="font-size:26px;color:var(--gold)">VIP</div><div style="flex:1;font-size:12px;font-weight:700;color:var(--mute)">No ads · 2× daily login · +1 free spin/day · 100 gems daily for 30 days</div><button class="btn sm" id="vip">${vipPill()}</button></div>
    <p style="font-size:11px;color:var(--mute);text-align:center;margin-top:14px">Mockup: real-money buttons grant items instantly, no payment.</p>`;
   $$("#shopBody [data-chest]").forEach(b=>{drawChest(b.querySelector("canvas"),+b.dataset.chest);b.onclick=()=>openChest(+b.dataset.chest);});
   $$("[data-gp]").forEach(b=>b.onclick=()=>{const gp=GEMPACKS[b.dataset.gp];pay(gp.id,()=>{give({g:gp.g});sfx("coin");toast(`+${fmt(gp.g)} gems (test purchase)`);renderShop();});});
@@ -1829,7 +1855,7 @@ function renderShop(){refresh();const B=$("#shopBody");
   $$("[data-boost]").forEach(b=>b.onclick=()=>{const k=b.dataset.boost;if(spend(k==="shield"?{coin:1500}:{gem:20})){give({b:k,n:2});toast(`+2 ${k}`);renderShop();}});
   $("[data-free]").onclick=()=>fakeAd(()=>{give({g:10});toast("+10 gems");renderShop();});
   $("#buyStarter")&&($("#buyStarter").onclick=()=>pay("nv_starter",()=>{grantStarter();claimFx("Starter pack claimed!");renderShop();}));
-  $("#vip").onclick=()=>{if(!S.vip){S.vip=1;save();claimFx("VIP active for 30 days");renderShop();}};}
+  $("#vip").onclick=buyVip;}
 function openChest(i){const c=CHESTS[i];if(!spend({gem:c.g}))return;
   const roll=Math.random();let res;
   if(i===2&&roll<.35||i===1&&roll<.12){const locked=SHIPS.filter(s=>!S.ships[s.id]);if(locked.length){const s=locked[0];S.ships[s.id]={lv:1,star:1};res=`<b class="rtag rar-${s.rar}">${RAR[s.rar]} ship</b><div class="disp" style="font-size:22px">${s.name}</div>`;}}
@@ -1898,7 +1924,7 @@ function renderSettings(){const s=S.set;const tg=k=>`<button class="toggle ${s[k
   $$("[data-q2]").forEach(b=>b.onclick=()=>{s.quality=b.dataset.q2;save();applySettings();renderSettings();toast(s.quality==="low"?"Low: fewer effects, lower resolution":"High: full effects");});
   $$("[data-l]").forEach(b=>b.onclick=()=>{s.lang=b.dataset.l;save();applySettings();renderSettings();});
   if($("#aLink"))$("#aLink").onclick=()=>{S.linked=!S.linked;save();renderSettings();toast(S.linked?"Linked (mockup)":"Unlinked");};
-  $("#aRestore").onclick=()=>{const N=window.NV_NATIVE;if(N&&N.billing.ready)N.billing.sync().then(any=>toast(any?"Purchases restored":"No purchases to restore"));else toast("No purchases to restore");};
+  $("#aRestore").onclick=restorePurchases;
   $("#aSup").onclick=()=>{const id=pid(),done=()=>toast("Player ID copied");try{navigator.clipboard.writeText(id).then(done,()=>toast("ID: "+id));}catch(e){toast("ID: "+id);}};
   $$("[data-url]").forEach(b=>b.onclick=()=>{const u=SITE+"/"+b.dataset.url,C=window.Capacitor;
     if(C&&C.isNativePlatform&&C.isNativePlatform())location.href=u;else if(!window.open(u,"_blank"))toast(u);});  // native: Capacitor hands external URLs to the browser

@@ -246,6 +246,8 @@ const shop = `
 .vs-sec::before{content:"";width:4px;height:16px;background:#ff6fae;transform:skewX(-14deg)}
 .vs-sec::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,#cfeeff55,transparent)}
 .vs-sec small{font-size:11px;font-style:normal;font-weight:600;letter-spacing:.1em;color:#5ee7ff}
+.vs-vip .go{white-space:nowrap}
+.vs-sec .vs-rst{order:1;padding:2px 9px;border:1px solid #5ee7ff66;border-radius:0;background:#0a1030aa;color:#5ee7ff;font-family:inherit;font-size:10px;font-style:normal;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;box-shadow:none}
 .vs-cut{clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px)}
 /* banners (offers) */
 .vs-ban{position:relative;display:block;width:100%;height:150px;margin-bottom:10px;overflow:hidden;text-align:left;color:#fff;animation:vsIn .35s ease-out backwards}
@@ -1635,7 +1637,7 @@ drawDroneBody=function(c,dd,x,y,t,o={}){const s=(o.size||13)*1.3,col=dd.col,im=p
   if(o.pet&&o.vip>=3){c.rotate(-tilt);petVipOver(c,s,t);}
   c.restore();};
 /* ===== Battle pet: ONE companion instead of the left/right pair. Same total output (PET_MUL), spring follow, idle loop, VIP tiers ===== */
-function vipLevel(){const v=S.vipLv??(S.vip?1:0);return Math.max(0,Math.min(3,+v||0));}
+function vipLevel(){const v=S.vip?(S.vipLv??1):0;return Math.max(0,Math.min(3,+v||0));}
 const PET_MUL=2;   // one pet deals what the old pair dealt
 const PET_GX={};   // pre-rendered additive glow sprites
 function petGlow(key,R,stops,sy=1){if(PET_GX[key])return PET_GX[key];const cv=document.createElement("canvas"),z=Math.ceil(R*2+4);cv.width=z;cv.height=Math.ceil(z*sy);const g=cv.getContext("2d");
@@ -1997,8 +1999,8 @@ renderShop=function(){refresh();const B=$("#shopBody");if(SPR_HAS("bg_home"))$("
       <button class="vs-tile vs-cut" data-free="ad"><span class="ico"><i class="ic-gem" style="width:34px;height:34px"></i></span><span class="q">+10</span><span class="pb ad">▶ \${L("Free","Miễn phí")}</span></button>
       <button class="vs-tile vs-cut" data-boost="shield"><span class="ico">\${vIcon("shield","",false)}</span><span class="n">\${L("Shield","Khiên")}</span><span class="q">×2</span><span class="pb cur">\${priceTxt({coin:1500})}</span></button>
       <button class="vs-tile vs-cut" data-boost="power"><span class="ico">\${vIcon("power","",false)}</span><span class="n">\${L("Power","Sức mạnh")}</span><span class="q">×2</span><span class="pb cur">\${priceTxt({gem:20})}</span></button></div>
-      <div class="vs-sec">VIP</div>
-      <button class="vs-wide vs-vip vs-cut" id="vip"><span class="v">VIP</span><span><b>\${L("30-day pass","Thẻ 30 ngày")}</b><em>\${L("No ads · 2× daily login · +1 spin/day · 100 gems daily","Không quảng cáo · điểm danh ×2 · +1 lượt quay/ngày · 100 gem mỗi ngày")}</em></span><span class="go">\${S.vip?L("Active","Đang dùng"):"$4.99"}</span></button>\`;}
+      <div class="vs-sec">VIP<button class="vs-rst" id="vipRestore">\${L("Restore purchases","Khôi phục giao dịch")}</button></div>
+      <button class="vs-wide vs-vip vs-cut" id="vip"><span class="v">VIP</span><span><b>\${vipTitle()}</b><em>\${L("No ads · 2× daily login · +1 spin/day · 100 gems daily","Không quảng cáo · điểm danh ×2 · +1 lượt quay/ngày · 100 gem mỗi ngày")}</em></span><span class="go">\${vipPill()}</span></button>\`;}
   if(vsTab==="gems"){
     const CR=[{n:L("Supply Crate","Rương Tiếp tế"),col:"#5ee7ff",its:[["ic-coin","2,000–3,000"],["bomb",L("Bomb ×1","Bom ×1")]]},
       {n:L("Epic Crate","Rương Sử thi"),col:"#c39bff",its:[["pilot",L("New pilot 12%","Phi công mới 12%")],["ic-coin","6,000–8,000"],["ic-gem","20"]]},
@@ -2037,7 +2039,7 @@ renderShop=function(){refresh();const B=$("#shopBody");if(SPR_HAS("bg_home"))$("
   $("#shopBody [data-free]")&&($("#shopBody [data-free]").onclick=()=>fakeAd(()=>{give({g:10});toast("+10 gems");renderShop();}));
   $$("#shopBody [data-gw]").forEach(b=>b.onclick=()=>POPS.gearSpin(b.dataset.gw==="c"?{coin:1,n:1}:{n:+b.dataset.gw}));
   $("#buyStarter")&&($("#buyStarter").onclick=()=>pay("nv_starter",()=>{grantStarter();claimFx("Starter pack claimed!");renderShop();}));
-  $("#vip")&&($("#vip").onclick=()=>{if(!S.vip){S.vip=1;save();claimFx("VIP active for 30 days");renderShop();}});};
+  $("#vip")&&($("#vip").onclick=buyVip);$("#vipRestore")&&($("#vipRestore").onclick=restorePurchases);};
 RENDER.shop=renderShop;
 
 /* Special Offer redesign: full-screen Seraphina bundle */
