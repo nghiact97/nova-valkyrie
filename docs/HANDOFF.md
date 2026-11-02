@@ -32,7 +32,7 @@ git tag vX.Y.Z && git push origin main --tags
 | 1.5 Đồng bộ phiên bản hiển thị | Xong (phần AAB đã ký còn chờ, xem mục 5) |
 | 2.1 Gợi ý cụ thể khi thua | Xong (merge `9620739`) |
 | 2.4 Hành trình 7 ngày | Xong |
-| 1.3 VIP thuê bao thật | **Đang làm** trên nhánh `task/vip-sub`. Kiểm tra nhánh: nếu đã có commit thì review rồi merge, nếu không thì làm lại theo FIX_PLAN 1.3 |
+| 1.3 VIP thuê bao thật | **Làm dở** trên nhánh `task/vip-sub` (commit WIP `1c98b06`: đã sửa NvBillingPlugin.java, native-pay.js, game.html, anime-mock.mjs; chưa có docs/VIP_SUBSCRIPTION.md, chưa kiểm tra build). Review, làm nốt theo FIX_PLAN 1.3, build thử rồi merge |
 
 ## 4. Việc còn lại (theo `docs/FIX_PLAN.md`)
 | # | Việc | Ghi chú |
