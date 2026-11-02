@@ -1,0 +1,282 @@
+{"day":1,"minute":0,"type":"fresh_start","screen":"home","coins":2500,"gems":120,"energy":30,"stage":0,"pilotLevel":1,"shipLevel":1,"gear":{"cannon":null,"engine":null,"plating":null,"core":null},"popup":"","tutorial":"Hi Commander! I'm Mika, your pilot. Tap Sortie to launch!"}
+{"day":1,"minute":0,"type":"session_start","targetMinutes":30}
+{"day":1,"minute":0,"type":"rewarded_ad_prompt","context":"daily x2","text":"DAILY LOGIN\n7-DAY CHECK-IN\n✕\nDay 1\n500 coins\nDay 2\n20 gems\nDay 3\n1,000 coins\nDay 4\n2× Shield\nDay 5\n2,000 coins\nDay 6\n50 gems\nDay 7\n150 gems + crate\nCLAIM\n▶ CLAIM ×2"}
+{"day":1,"minute":0.4,"type":"session_resources","screen":"home","coins":3000,"gems":120,"energy":30,"stage":0,"pilotLevel":1,"shipLevel":1,"gear":{"cannon":null,"engine":null,"plating":null,"core":null},"popup":"","tutorial":""}
+{"day":1,"minute":0.4,"type":"stage_start","stage":"1-1","coins":3000,"gems":120,"energy":30}
+{"day":1,"minute":0.4,"type":"level_card_pick","stage":"1-1"}
+{"day":1,"minute":0.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":1,"minute":0.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":1,"minute":0.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":1,"minute":0.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":1,"minute":0.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":1,"minute":0.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":1,"minute":0.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":1,"minute":0.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":1,"minute":0.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":1,"minute":0.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":1,"minute":0.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":1,"minute":0.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":1,"minute":0.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":1,"minute":0.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":1,"minute":0.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":1,"minute":0.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":1,"minute":0.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":1,"minute":0.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":1,"minute":2.9,"type":"stage_result","stage":"1-1","result":"win","hp":2,"score":3754,"kills":21,"rewardText":"VICTORY!\n✕\n★\n★\n★\nSTAGE 1-1 · NORMAL\n3,754\nScore\n21\nDestroyed\nLv 3\nPilot level\nREWARDS\n531\nCoins\n5\nGems\n6\nAlloy\nSKILLS BUILT\n1\n1\n▶ WATCH AD ·\n×2 COINS\n1,062\nHOME\nNEXT ▶","coins":3531,"gems":125,"energy":30}
+{"day":1,"minute":2.9,"type":"first_result","result":"win","stage":"1-1","minutes":2.9}
+{"day":1,"minute":2.9,"type":"rewarded_ad_prompt","context":"victory x2 coins","text":"▶ WATCH AD ·\n×2 COINS\n1,062"}
+{"day":1,"minute":2.9,"type":"rewarded_ad_watched","context":"victory x2 coins"}
+{"day":1,"minute":2.9,"type":"upgrade_affordability","coins":4062,"shipLevel":1,"cost":300,"affordable":true}
+{"day":1,"minute":2.9,"type":"upgrade_affordability","coins":3762,"shipLevel":2,"cost":380,"affordable":true}
+{"day":1,"minute":2.9,"type":"upgrade_affordability","coins":3382,"shipLevel":3,"cost":490,"affordable":true}
+{"day":1,"minute":2.9,"type":"upgrade_affordability","coins":2892,"shipLevel":4,"cost":630,"affordable":true}
+{"day":1,"minute":2.9,"type":"stage_start","stage":"1-2","coins":2262,"gems":125,"energy":30}
+{"day":1,"minute":2.9,"type":"skill_used","skill":"shield","hp":2}
+{"day":1,"minute":2.9,"type":"skill_used","skill":"shield","hp":2}
+{"day":1,"minute":2.9,"type":"skill_used","skill":"shield","hp":2}
+{"day":1,"minute":2.9,"type":"skill_used","skill":"shield","hp":2}
+{"day":1,"minute":2.9,"type":"level_card_pick","stage":"1-2"}
+{"day":1,"minute":2.9,"type":"skill_used","skill":"shield","hp":2}
+{"day":1,"minute":2.9,"type":"skill_used","skill":"shield","hp":2}
+{"day":1,"minute":2.9,"type":"skill_used","skill":"shield","hp":2}
+{"day":1,"minute":2.9,"type":"level_card_pick","stage":"1-2"}
+{"day":1,"minute":2.9,"type":"level_card_pick","stage":"1-2"}
+{"day":1,"minute":5.4,"type":"stage_result","stage":"1-2","result":"win","hp":3,"score":6645,"kills":34,"rewardText":"VICTORY!\n✕\n★\n★\n★\nSTAGE 1-2 · NORMAL\n6,645\nScore\n34\nDestroyed\nLv 6\nPilot level\nREWARDS\n1,085\nCoins\n5\nGems\n4\nAlloy\nSKILLS BUILT\n1\n1\n1\n▶ WATCH AD ·\n×2 COINS\n2,170\nHOME\nNEXT ▶","coins":3347,"gems":130,"energy":30}
+{"day":1,"minute":5.4,"type":"rewarded_ad_prompt","context":"victory x2 coins","text":"▶ WATCH AD ·\n×2 COINS\n2,170"}
+{"day":1,"minute":5.4,"type":"reward_claimed","source":"missions"}
+{"day":1,"minute":5.4,"type":"reward_claimed","source":"missions"}
+{"day":1,"minute":5.4,"type":"upgrade_affordability","coins":4447,"shipLevel":5,"cost":810,"affordable":true}
+{"day":1,"minute":5.4,"type":"upgrade_affordability","coins":3637,"shipLevel":6,"cost":1030,"affordable":true}
+{"day":1,"minute":5.4,"type":"upgrade_affordability","coins":2607,"shipLevel":7,"cost":1320,"affordable":true}
+{"day":1,"minute":5.4,"type":"upgrade_affordability","coins":1287,"shipLevel":8,"cost":1690,"affordable":false}
+{"day":1,"minute":5.4,"type":"stage_start","stage":"1-3","coins":1287,"gems":130,"energy":30}
+{"day":1,"minute":5.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":1,"minute":5.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":1,"minute":5.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":1,"minute":5.4,"type":"level_card_pick","stage":"1-3"}
+{"day":1,"minute":5.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":1,"minute":5.4,"type":"level_card_pick","stage":"1-3"}
+{"day":1,"minute":5.4,"type":"level_card_pick","stage":"1-3"}
+{"day":1,"minute":7.9,"type":"stage_result","stage":"1-3","result":"win","hp":3,"score":7819,"kills":38,"rewardText":"VICTORY!\n✕\n★\n★\n★\nSTAGE 1-3 · NORMAL\n7,819\nScore\n38\nDestroyed\nLv 6\nPilot level\nREWARDS\n983\nCoins\n5\nGems\n3\nAlloy\nSKILLS BUILT\n1\n1\n1\n▶ WATCH AD ·\n×2 COINS\n1,966\nHOME\nNEXT ▶","coins":2270,"gems":135,"energy":30}
+{"day":1,"minute":7.9,"type":"rewarded_ad_prompt","context":"victory x2 coins","text":"▶ WATCH AD ·\n×2 COINS\n1,966"}
+{"day":1,"minute":7.9,"type":"upgrade_affordability","coins":2270,"shipLevel":8,"cost":1690,"affordable":true}
+{"day":1,"minute":7.9,"type":"upgrade_affordability","coins":580,"shipLevel":9,"cost":2160,"affordable":false}
+{"day":1,"minute":7.9,"type":"stage_start","stage":"1-4","coins":580,"gems":135,"energy":30}
+{"day":1,"minute":7.9,"type":"level_card_pick","stage":"1-4"}
+{"day":1,"minute":7.9,"type":"skill_used","skill":"shield","hp":2}
+{"day":1,"minute":7.9,"type":"level_card_pick","stage":"1-4"}
+{"day":1,"minute":7.9,"type":"skill_used","skill":"shield","hp":2}
+{"day":1,"minute":7.9,"type":"skill_used","skill":"shield","hp":1}
+{"day":1,"minute":7.9,"type":"skill_used","skill":"shield","hp":1}
+{"day":1,"minute":7.9,"type":"skill_used","skill":"shield","hp":1}
+{"day":1,"minute":7.9,"type":"skill_used","skill":"shield","hp":1}
+{"day":1,"minute":7.9,"type":"skill_used","skill":"shield","hp":0}
+{"day":1,"minute":7.9,"type":"skill_used","skill":"shield","hp":0}
+{"day":1,"minute":7.9,"type":"skill_used","skill":"shield","hp":0}
+{"day":1,"minute":7.9,"type":"skill_used","skill":"shield","hp":0}
+{"day":1,"minute":7.9,"type":"skill_used","skill":"shield","hp":0}
+{"day":1,"minute":7.9,"type":"skill_used","skill":"shield","hp":0}
+{"day":1,"minute":7.9,"type":"skill_used","skill":"shield","hp":0}
+{"day":1,"minute":10.4,"type":"stage_result","stage":"1-4","result":"loss","hp":0,"score":2588,"kills":17,"rewardText":"DEFEAT\n✕\nSTAGE 1-4 · NORMAL\nUpgrade your ship or gear, then try again\n2,588\nScore\n17\nDestroyed\nLv 3\nPilot level\nREWARDS\n144\nCoins\nSKILLS BUILT\n1\n1\nHOME\nRETRY\nUPGRADE","coins":724,"gems":135,"energy":27}
+{"day":1,"minute":10.4,"type":"upgrade_affordability","coins":724,"shipLevel":9,"cost":2160,"affordable":false}
+{"day":1,"minute":10.4,"type":"stuck","stage":"1-4","reason":"defeat despite active dodging; upgrade currency/gear insufficient"}
+{"day":1,"minute":10.4,"type":"session_end","screen":"home","coins":724,"gems":135,"energy":28,"stage":3,"pilotLevel":2,"shipLevel":9,"gear":{"cannon":null,"engine":null,"plating":null,"core":null},"popup":"","tutorial":""}
+{"day":2,"minute":30,"type":"day_clock_advanced","days":1,"method":"Date shifted by 24h; energy timer advanced equally"}
+{"day":2,"minute":30,"type":"session_start","targetMinutes":15}
+{"day":2,"minute":30,"type":"rewarded_ad_prompt","context":"daily x2","text":"DAILY LOGIN\n7-DAY CHECK-IN\n✕\nDay 1\n500 coins\nDay 2\n20 gems\nDay 3\n1,000 coins\nDay 4\n2× Shield\nDay 5\n2,000 coins\nDay 6\n50 gems\nDay 7\n150 gems + crate\nCLAIM\n▶ CLAIM ×2"}
+{"day":2,"minute":30.4,"type":"session_resources","screen":"home","coins":3000,"gems":120,"energy":30,"stage":0,"pilotLevel":1,"shipLevel":1,"gear":{"cannon":null,"engine":null,"plating":null,"core":null},"popup":"","tutorial":""}
+{"day":2,"minute":30.4,"type":"stage_start","stage":"1-1","coins":3000,"gems":120,"energy":30}
+{"day":2,"minute":30.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":2,"minute":30.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":2,"minute":30.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":2,"minute":30.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":2,"minute":30.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":2,"minute":30.4,"type":"level_card_pick","stage":"1-1"}
+{"day":2,"minute":30.4,"type":"level_card_pick","stage":"1-1"}
+{"day":2,"minute":30.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":2,"minute":30.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":2,"minute":30.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":2,"minute":30.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":2,"minute":30.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":2,"minute":30.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":2,"minute":30.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":2,"minute":30.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":2,"minute":30.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":2,"minute":30.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":2,"minute":30.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":2,"minute":30.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":2,"minute":30.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":2,"minute":30.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":2,"minute":30.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":2,"minute":30.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":2,"minute":30.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":2,"minute":32.9,"type":"stage_result","stage":"1-1","result":"win","hp":2,"score":3864,"kills":21,"rewardText":"VICTORY!\n✕\n★\n★\n★\nSTAGE 1-1 · NORMAL\n3,864\nScore\n21\nDestroyed\nLv 5\nPilot level\nREWARDS\n696\nCoins\n5\nGems\n5\nAlloy\nSKILLS BUILT\n1\n1\n1\n▶ WATCH AD ·\n×2 COINS\n1,392\nHOME\nNEXT ▶","coins":3696,"gems":125,"energy":30}
+{"day":2,"minute":32.9,"type":"first_result","result":"win","stage":"1-1","minutes":32.9}
+{"day":2,"minute":32.9,"type":"rewarded_ad_prompt","context":"victory x2 coins","text":"▶ WATCH AD ·\n×2 COINS\n1,392"}
+{"day":2,"minute":32.9,"type":"upgrade_affordability","coins":3696,"shipLevel":1,"cost":300,"affordable":true}
+{"day":2,"minute":32.9,"type":"upgrade_affordability","coins":3396,"shipLevel":2,"cost":380,"affordable":true}
+{"day":2,"minute":32.9,"type":"upgrade_affordability","coins":3016,"shipLevel":3,"cost":490,"affordable":true}
+{"day":2,"minute":32.9,"type":"upgrade_affordability","coins":2526,"shipLevel":4,"cost":630,"affordable":true}
+{"day":2,"minute":32.9,"type":"stage_start","stage":"1-2","coins":1896,"gems":125,"energy":30}
+{"day":2,"minute":32.9,"type":"level_card_pick","stage":"1-2"}
+{"day":2,"minute":32.9,"type":"level_card_pick","stage":"1-2"}
+{"day":2,"minute":32.9,"type":"level_card_pick","stage":"1-2"}
+{"day":2,"minute":32.9,"type":"level_card_pick","stage":"1-2"}
+{"day":2,"minute":35.4,"type":"stage_result","stage":"1-2","result":"win","hp":4,"score":6651,"kills":34,"rewardText":"VICTORY!\n✕\n★\n★\n★\nSTAGE 1-2 · NORMAL\n6,651\nScore\n34\nDestroyed\nLv 6\nPilot level\nREWARDS\n962\nCoins\n5\nGems\n4\nAlloy\nSKILLS BUILT\n1\n1\n1\n1\n▶ WATCH AD ·\n×2 COINS\n1,924\nHOME\nNEXT ▶","coins":2858,"gems":130,"energy":30}
+{"day":2,"minute":35.4,"type":"rewarded_ad_prompt","context":"victory x2 coins","text":"▶ WATCH AD ·\n×2 COINS\n1,924"}
+{"day":2,"minute":35.4,"type":"reward_claimed","source":"missions"}
+{"day":2,"minute":35.4,"type":"reward_claimed","source":"missions"}
+{"day":2,"minute":35.4,"type":"upgrade_affordability","coins":3958,"shipLevel":5,"cost":810,"affordable":true}
+{"day":2,"minute":35.4,"type":"upgrade_affordability","coins":3148,"shipLevel":6,"cost":1030,"affordable":true}
+{"day":2,"minute":35.4,"type":"upgrade_affordability","coins":2118,"shipLevel":7,"cost":1320,"affordable":true}
+{"day":2,"minute":35.4,"type":"upgrade_affordability","coins":798,"shipLevel":8,"cost":1690,"affordable":false}
+{"day":2,"minute":35.4,"type":"stage_start","stage":"1-3","coins":798,"gems":130,"energy":30}
+{"day":2,"minute":35.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":2,"minute":35.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":2,"minute":35.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":2,"minute":35.4,"type":"level_card_pick","stage":"1-3"}
+{"day":2,"minute":35.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":2,"minute":35.4,"type":"skill_used","skill":"shield","hp":1}
+{"day":2,"minute":35.4,"type":"level_card_pick","stage":"1-3"}
+{"day":2,"minute":35.4,"type":"level_card_pick","stage":"1-3"}
+{"day":2,"minute":35.4,"type":"level_card_pick","stage":"1-3"}
+{"day":2,"minute":35.4,"type":"level_card_pick","stage":"1-3"}
+{"day":2,"minute":35.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":2,"minute":35.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":2,"minute":37.9,"type":"stage_result","stage":"1-3","result":"win","hp":2,"score":7753,"kills":38,"rewardText":"VICTORY!\n✕\n★\n★\n★\nSTAGE 1-3 · NORMAL\n7,753\nScore\n38\nDestroyed\nLv 6\nPilot level\nREWARDS\n961\nCoins\n5\nGems\n5\nAlloy\nSKILLS BUILT\n2\n2\n1\n▶ WATCH AD ·\n×2 COINS\n1,922\nHOME\nNEXT ▶","coins":1759,"gems":135,"energy":30}
+{"day":2,"minute":37.9,"type":"rewarded_ad_prompt","context":"victory x2 coins","text":"▶ WATCH AD ·\n×2 COINS\n1,922"}
+{"day":2,"minute":37.9,"type":"upgrade_affordability","coins":1759,"shipLevel":8,"cost":1690,"affordable":true}
+{"day":2,"minute":37.9,"type":"upgrade_affordability","coins":69,"shipLevel":9,"cost":2160,"affordable":false}
+{"day":2,"minute":37.9,"type":"stage_start","stage":"1-4","coins":69,"gems":135,"energy":30}
+{"day":2,"minute":37.9,"type":"level_card_pick","stage":"1-4"}
+{"day":2,"minute":37.9,"type":"level_card_pick","stage":"1-4"}
+{"day":2,"minute":37.9,"type":"skill_used","skill":"shield","hp":2}
+{"day":2,"minute":37.9,"type":"skill_used","skill":"shield","hp":2}
+{"day":2,"minute":37.9,"type":"skill_used","skill":"shield","hp":1}
+{"day":2,"minute":37.9,"type":"skill_used","skill":"shield","hp":1}
+{"day":2,"minute":37.9,"type":"skill_used","skill":"shield","hp":0}
+{"day":2,"minute":37.9,"type":"skill_used","skill":"shield","hp":0}
+{"day":2,"minute":37.9,"type":"skill_used","skill":"shield","hp":0}
+{"day":2,"minute":37.9,"type":"skill_used","skill":"shield","hp":0}
+{"day":2,"minute":37.9,"type":"skill_used","skill":"shield","hp":0}
+{"day":2,"minute":37.9,"type":"skill_used","skill":"shield","hp":0}
+{"day":2,"minute":37.9,"type":"skill_used","skill":"shield","hp":0}
+{"day":2,"minute":40.4,"type":"stage_result","stage":"1-4","result":"loss","hp":0,"score":2457,"kills":17,"rewardText":"DEFEAT\n✕\nSTAGE 1-4 · NORMAL\nUpgrade your ship or gear, then try again\n2,457\nScore\n17\nDestroyed\nLv 3\nPilot level\nREWARDS\n117\nCoins\nSKILLS BUILT\n1\n1\nHOME\nRETRY\nUPGRADE","coins":186,"gems":135,"energy":27}
+{"day":2,"minute":40.4,"type":"upgrade_affordability","coins":186,"shipLevel":9,"cost":2160,"affordable":false}
+{"day":2,"minute":40.4,"type":"stuck","stage":"1-4","reason":"defeat despite active dodging; upgrade currency/gear insufficient"}
+{"day":2,"minute":40.4,"type":"session_end","screen":"home","coins":186,"gems":135,"energy":28,"stage":3,"pilotLevel":2,"shipLevel":9,"gear":{"cannon":null,"engine":null,"plating":null,"core":null},"popup":"","tutorial":""}
+{"day":3,"minute":45,"type":"day_clock_advanced","days":2,"method":"Date shifted by 24h; energy timer advanced equally"}
+{"day":3,"minute":45,"type":"session_start","targetMinutes":15}
+{"day":3,"minute":45,"type":"rewarded_ad_prompt","context":"daily x2","text":"DAILY LOGIN\n7-DAY CHECK-IN\n✕\nDay 1\n500 coins\nDay 2\n20 gems\nDay 3\n1,000 coins\nDay 4\n2× Shield\nDay 5\n2,000 coins\nDay 6\n50 gems\nDay 7\n150 gems + crate\nCLAIM\n▶ CLAIM ×2"}
+{"day":3,"minute":45.4,"type":"session_resources","screen":"home","coins":3000,"gems":120,"energy":30,"stage":0,"pilotLevel":1,"shipLevel":1,"gear":{"cannon":null,"engine":null,"plating":null,"core":null},"popup":"","tutorial":"Hi Commander! I'm Mika, your pilot. Tap Sortie to launch!"}
+{"day":3,"minute":45.4,"type":"stage_start","stage":"1-1","coins":3000,"gems":120,"energy":30}
+{"day":3,"minute":45.4,"type":"level_card_pick","stage":"1-1"}
+{"day":3,"minute":45.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":45.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":45.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":45.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":45.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":45.4,"type":"level_card_pick","stage":"1-1"}
+{"day":3,"minute":45.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":45.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":45.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":45.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":45.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":45.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":45.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":45.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":45.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":45.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":47.9,"type":"stage_result","stage":"1-1","result":"win","hp":2,"score":3836,"kills":21,"rewardText":"VICTORY!\n✕\n★\n★\n★\nSTAGE 1-1 · NORMAL\n3,836\nScore\n21\nDestroyed\nLv 4\nPilot level\nREWARDS\n654\nCoins\n5\nGems\n7\nAlloy\nNEW\nCOMMON\nCannon\nSKILLS BUILT\n3\n▶ WATCH AD ·\n×2 COINS\n1,308\nHOME\nNEXT ▶","coins":3654,"gems":125,"energy":30}
+{"day":3,"minute":47.9,"type":"first_result","result":"win","stage":"1-1","minutes":47.9}
+{"day":3,"minute":47.9,"type":"rewarded_ad_prompt","context":"victory x2 coins","text":"▶ WATCH AD ·\n×2 COINS\n1,308"}
+{"day":3,"minute":47.9,"type":"upgrade_affordability","coins":3654,"shipLevel":1,"cost":300,"affordable":true}
+{"day":3,"minute":47.9,"type":"upgrade_affordability","coins":3354,"shipLevel":2,"cost":380,"affordable":true}
+{"day":3,"minute":47.9,"type":"upgrade_affordability","coins":2974,"shipLevel":3,"cost":490,"affordable":true}
+{"day":3,"minute":47.9,"type":"upgrade_affordability","coins":2484,"shipLevel":4,"cost":630,"affordable":true}
+{"day":3,"minute":47.9,"type":"stage_start","stage":"1-2","coins":1854,"gems":125,"energy":30}
+{"day":3,"minute":47.9,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":47.9,"type":"level_card_pick","stage":"1-2"}
+{"day":3,"minute":47.9,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":47.9,"type":"skill_used","skill":"shield","hp":1}
+{"day":3,"minute":47.9,"type":"level_card_pick","stage":"1-2"}
+{"day":3,"minute":47.9,"type":"level_card_pick","stage":"1-2"}
+{"day":3,"minute":50.4,"type":"stage_result","stage":"1-2","result":"win","hp":3,"score":6530,"kills":34,"rewardText":"VICTORY!\n✕\n★\n★\n★\nSTAGE 1-2 · NORMAL\n6,530\nScore\n34\nDestroyed\nLv 5\nPilot level\nREWARDS\n879\nCoins\n5\nGems\n3\nAlloy\nSKILLS BUILT\n2\n1\n▶ WATCH AD ·\n×2 COINS\n1,758\nHOME\nNEXT ▶","coins":2733,"gems":130,"energy":30}
+{"day":3,"minute":50.4,"type":"rewarded_ad_prompt","context":"victory x2 coins","text":"▶ WATCH AD ·\n×2 COINS\n1,758"}
+{"day":3,"minute":50.4,"type":"reward_claimed","source":"missions"}
+{"day":3,"minute":50.4,"type":"reward_claimed","source":"missions"}
+{"day":3,"minute":50.4,"type":"upgrade_affordability","coins":3833,"shipLevel":5,"cost":810,"affordable":true}
+{"day":3,"minute":50.4,"type":"upgrade_affordability","coins":3023,"shipLevel":6,"cost":1030,"affordable":true}
+{"day":3,"minute":50.4,"type":"upgrade_affordability","coins":1993,"shipLevel":7,"cost":1320,"affordable":true}
+{"day":3,"minute":50.4,"type":"upgrade_affordability","coins":673,"shipLevel":8,"cost":1690,"affordable":false}
+{"day":3,"minute":50.4,"type":"stage_start","stage":"1-3","coins":673,"gems":130,"energy":30}
+{"day":3,"minute":50.4,"type":"level_card_pick","stage":"1-3"}
+{"day":3,"minute":50.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":50.4,"type":"level_card_pick","stage":"1-3"}
+{"day":3,"minute":50.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":50.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":50.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":50.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":50.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":50.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":50.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":50.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":50.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":50.4,"type":"level_card_pick","stage":"1-3"}
+{"day":3,"minute":50.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":50.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":50.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":50.4,"type":"level_card_pick","stage":"1-3"}
+{"day":3,"minute":50.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":50.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":50.4,"type":"level_card_pick","stage":"1-3"}
+{"day":3,"minute":50.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":50.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":50.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":50.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":50.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":50.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":50.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":50.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":50.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":50.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":50.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":50.4,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":52.9,"type":"stage_result","stage":"1-3","result":"win","hp":2,"score":7746,"kills":38,"rewardText":"VICTORY!\n✕\n★\n★\n★\nSTAGE 1-3 · NORMAL\n7,746\nScore\n38\nDestroyed\nLv 6\nPilot level\nREWARDS\n895\nCoins\n5\nGems\n3\nAlloy\nSKILLS BUILT\n1\n1\n1\n1\n1\n▶ WATCH AD ·\n×2 COINS\n1,790\nHOME\nNEXT ▶","coins":1568,"gems":135,"energy":30}
+{"day":3,"minute":52.9,"type":"rewarded_ad_prompt","context":"victory x2 coins","text":"▶ WATCH AD ·\n×2 COINS\n1,790"}
+{"day":3,"minute":52.9,"type":"upgrade_affordability","coins":1568,"shipLevel":8,"cost":1690,"affordable":false}
+{"day":3,"minute":52.9,"type":"stage_start","stage":"1-4","coins":1568,"gems":135,"energy":30}
+{"day":3,"minute":52.9,"type":"level_card_pick","stage":"1-4"}
+{"day":3,"minute":52.9,"type":"level_card_pick","stage":"1-4"}
+{"day":3,"minute":52.9,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":52.9,"type":"level_card_pick","stage":"1-4"}
+{"day":3,"minute":52.9,"type":"level_card_pick","stage":"1-4"}
+{"day":3,"minute":52.9,"type":"level_card_pick","stage":"1-4"}
+{"day":3,"minute":52.9,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":52.9,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":52.9,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":52.9,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":52.9,"type":"level_card_pick","stage":"1-4"}
+{"day":3,"minute":52.9,"type":"level_card_pick","stage":"1-4"}
+{"day":3,"minute":52.9,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":52.9,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":52.9,"type":"skill_used","skill":"shield","hp":2}
+{"day":3,"minute":52.9,"type":"skill_used","skill":"shield","hp":1}
+{"day":3,"minute":52.9,"type":"skill_used","skill":"shield","hp":1}
+{"day":3,"minute":52.9,"type":"skill_used","skill":"shield","hp":1}
+{"day":3,"minute":52.9,"type":"skill_used","skill":"shield","hp":1}
+{"day":3,"minute":52.9,"type":"skill_used","skill":"shield","hp":1}
+{"day":3,"minute":52.9,"type":"skill_used","skill":"shield","hp":1}
+{"day":3,"minute":52.9,"type":"skill_used","skill":"shield","hp":1}
+{"day":3,"minute":52.9,"type":"skill_used","skill":"shield","hp":1}
+{"day":3,"minute":52.9,"type":"skill_used","skill":"shield","hp":1}
+{"day":3,"minute":52.9,"type":"skill_used","skill":"shield","hp":1}
+{"day":3,"minute":52.9,"type":"skill_used","skill":"shield","hp":1}
+{"day":3,"minute":52.9,"type":"skill_used","skill":"shield","hp":1}
+{"day":3,"minute":52.9,"type":"skill_used","skill":"shield","hp":1}
+{"day":3,"minute":55.4,"type":"stage_result","stage":"1-4","result":"win","hp":1,"score":12868,"kills":41,"rewardText":"VICTORY!\n✕\n★\n★\n★\nSTAGE 1-4 · NORMAL\n12,868\nScore\n41\nDestroyed\nLv 8\nPilot level\nREWARDS\n1,132\nCoins\n5\nGems\n4\nAlloy\nNEW\nCOMMON\nCannon\nSKILLS BUILT\n2\n1\n1\n2\n1\n▶ WATCH AD ·\n×2 COINS\n2,264\nHOME\nNEXT ▶","coins":2700,"gems":140,"energy":27}
+{"day":3,"minute":55.4,"type":"rewarded_ad_prompt","context":"victory x2 coins","text":"▶ WATCH AD ·\n×2 COINS\n2,264"}
+{"day":3,"minute":55.4,"type":"upgrade_affordability","coins":2700,"shipLevel":8,"cost":1690,"affordable":true}
+{"day":3,"minute":55.4,"type":"upgrade_affordability","coins":1010,"shipLevel":9,"cost":2160,"affordable":false}
+{"day":3,"minute":55.4,"type":"session_end","screen":"home","coins":1010,"gems":140,"energy":28,"stage":4,"pilotLevel":2,"shipLevel":9,"gear":{"cannon":null,"engine":null,"plating":null,"core":null},"popup":"","tutorial":""}
+{"day":4,"minute":55.4,"type":"playtest_end","adsWatched":1,"screenshots":6,"final":{"coins":1010,"gems":140,"energy":28,"cleared":4}}

@@ -12,3 +12,5 @@ android/app/src/main/assets/public/
 .claude/worktrees/
 analysis/
 graphify-out/
+build/chrome-playtest/
+tools/playtest/chrome-profile*/
